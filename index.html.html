@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="配置管理">
+<title>配置管理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f5f5f7;
+  --surface:#ffffff;
+  --surface2:#f5f5f7;
+  --border:rgba(0,0,0,.08);
+  --text:#1d1d1f;
+  --text2:#6e6e73;
+  --text3:#86868b;
+  --accent:#0071e3;
+  --accent-light:rgba(10,132,255,.1);
+  --green:#34c759;
+  --green-bg:rgba(52,199,89,.1);
+  --orange:#ff9500;
+  --orange-bg:rgba(255,149,0,.1);
+  --red:#ff3b30;
+  --red-bg:rgba(255,59,48,.1);
+  --purple:#bf5af2;
+  --r:14px;--rs:10px;--rx:20px;
+  --sans:'Outfit',-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku Gothic ProN',sans-serif;
+  --sans-jp:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku Gothic ProN',sans-serif;
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+  --shadow-sm:0 1px 4px rgba(0,0,0,.05);
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#000;--surface:#1c1c1e;--surface2:#2c2c2e;
+    --border:rgba(255,255,255,.1);--text:#f5f5f7;--text2:#aeaeb2;--text3:#636366;
+    --accent:#0a84ff;--accent-light:rgba(10,132,255,.15);
+    --green:#30d158;--green-bg:rgba(48,209,88,.12);
+    --orange:#ff9f0a;--orange-bg:rgba(255,159,10,.12);
+    --red:#ff453a;--red-bg:rgba(255,69,58,.12);
+    --shadow:0 2px 12px rgba(0,0,0,.4);--shadow-sm:0 1px 4px rgba(0,0,0,.2);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
+
+/* STATUS BAR */
+.status-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 0;font-size:15px;font-weight:600;color:var(--text)}
+.time{font-size:17px;font-weight:700}
+.status-icons{display:flex;align-items:center;gap:6px}
+
+/* WIDGET TOP */
+.widget-top{margin:10px 16px 0;background:var(--surface);border-radius:var(--rx);padding:18px 20px;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.widget-date{font-size:12px;color:var(--text3);font-weight:500;margin-bottom:2px}
+.widget-title{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.widget-sub{font-size:13px;color:var(--text2);margin-top:4px}
+.widget-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap;gap:8px}
+.w-date-input{padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:13px;font-family:var(--sans);outline:none}
+.w-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:700}
+.b-ok{background:var(--green-bg);color:var(--green)}
+.b-warn{background:var(--orange-bg);color:var(--orange)}
+.b-bad{background:var(--red-bg);color:var(--red)}
+.bdot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.ios-add-btn{display:none;padding:7px 14px;background:var(--accent-light);color:var(--accent);border:1px solid rgba(0,113,227,.25);border-radius:var(--rs);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+
+/* TABS */
+.seg-wrap{background:var(--surface2);border-radius:var(--r);padding:3px;display:flex;gap:2px;margin:14px 16px 0}
+.seg{flex:1;padding:9px 6px;background:transparent;color:var(--text3);font-size:12px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);border-radius:11px;transition:all .2s;text-align:center;white-space:nowrap}
+.seg:hover{color:var(--text2)}
+.seg.active{background:var(--surface);color:var(--text);font-weight:700;box-shadow:var(--shadow-sm)}
+
+/* WRAP */
+.wrap{max-width:860px;margin:0 auto;padding:16px 16px 60px}
+
+/* PANELS */
+.panel{display:none}.panel.active{display:block;animation:fadeUp .22s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.gc{background:var(--surface);border-radius:var(--rx);border:1px solid var(--border);padding:20px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
+.gc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.gc-title{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.4px}
+.gc-sub{font-size:12px;color:var(--text3);margin-top:2px}
+
+/* STAFF GRID */
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.sbtn{padding:14px 10px;border-radius:var(--r);border:1.5px solid var(--border);background:var(--surface2);cursor:pointer;text-align:left;transition:all .18s;user-select:none;position:relative;overflow:hidden}
+.sbtn:hover{border-color:var(--accent)}
+.sbtn.present{border-color:var(--accent);background:var(--accent-light)}
+.sbtn.absent{opacity:.32;filter:grayscale(.4)}
+.sbtn.alert{border-color:var(--accent)!important;background:var(--accent-light)!important;opacity:1!important;filter:none!important;animation:alertPulse 1.8s ease infinite}
+@keyframes alertPulse{0%,100%{box-shadow:0 0 0 0 rgba(10,132,255,.35)}50%{box-shadow:0 0 0 6px rgba(10,132,255,0)}}
+.schk{position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.4);transition:all .22s cubic-bezier(.34,1.56,.64,1)}
+.sbtn.present .schk{opacity:1;transform:scale(1)}
+.schk svg{width:9px;height:9px;stroke:#fff;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.s-name{font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px;letter-spacing:.05em;font-family:'M PLUS Rounded 1c',sans-serif;line-height:1.1}
+.sbtn.present .s-name{color:var(--accent);font-family:'M PLUS Rounded 1c',sans-serif}
+.sn{font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px;letter-spacing:.05em;font-family:'M PLUS Rounded 1c',sans-serif;line-height:1.1}
+.sbtn.present .sn{color:var(--accent);font-family:'M PLUS Rounded 1c',sans-serif}
+.s-role{font-size:11px;color:var(--text2);line-height:1.4;margin-bottom:7px;font-weight:500}
+.s-type{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--surface2);color:var(--text2);border:1px solid var(--border);display:inline-block}
+.sbtn.present .s-type{background:var(--accent-light);color:var(--accent);border-color:rgba(0,113,227,.2)}
+.alert-hint{font-size:11px;color:var(--accent);font-weight:700;margin-top:6px;padding:3px 8px;background:var(--accent-light);border-radius:6px;display:inline-block}
+.ios-cta{width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:var(--r);font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;letter-spacing:-.2px;transition:opacity .15s}
+.ios-cta:hover{opacity:.85}
+
+/* LAYOUT MAP */
+.map-dir{text-align:center;font-size:11px;color:var(--text3);padding:8px 0;letter-spacing:.06em}
+.map-ctr{text-align:center;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-light);border:1px solid rgba(0,113,227,.2);border-radius:8px;padding:6px;letter-spacing:.04em}
+.map-rl{font-size:10px;font-weight:700;color:var(--text2);margin:16px 0 8px;letter-spacing:.08em;text-transform:uppercase}
+.seat-row,.srow{display:flex;gap:10px;flex-wrap:wrap}
+.seat{flex:1;min-width:110px;padding:13px 12px;border-radius:var(--r);border:1px solid var(--border);background:var(--surface2);text-align:center;transition:all .2s}
+.seat.empty{border-style:dashed;opacity:.3}
+.seat-n{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;letter-spacing:-.2px}
+.seat-r{font-size:11px;color:var(--text2);line-height:1.4;font-weight:500}
+.seat-blue{background:rgba(0,113,227,.08);border-color:rgba(0,113,227,.25)}.seat-blue .seat-n{color:var(--accent)}
+.seat-teal{background:rgba(52,199,89,.07);border-color:rgba(52,199,89,.25)}.seat-teal .seat-n{color:#1a8f3c}
+.seat-purple{background:rgba(191,90,242,.07);border-color:rgba(191,90,242,.25)}.seat-purple .seat-n{color:var(--purple)}
+.seat-coral{background:var(--red-bg);border-color:rgba(255,59,48,.25)}.seat-coral .seat-n{color:var(--red)}
+.seat-gray .seat-n{color:var(--text3)}
+.seat-editable{border-style:dashed!important;border-color:rgba(0,113,227,.35)!important;background:var(--accent-light)!important;cursor:pointer}
+.seat-selected{border-color:var(--accent)!important;box-shadow:0 0 0 3px rgba(0,113,227,.25)!important;transform:scale(1.04)}
+.drag-hover{border-color:var(--accent)!important;background:var(--accent-light)!important;transform:scale(1.03)}
+.seat-select-hint{text-align:center;font-size:11px;color:var(--accent);padding:6px;margin-top:4px;background:var(--accent-light);border-radius:8px;margin-bottom:8px}
+.drag-handle{display:none}
+.seat-drop-zone{min-height:60px}
+
+/* PATTERN */
+.pat{border-radius:var(--r);padding:16px;margin-bottom:12px;border:1px solid transparent}
+.pat-ok{background:var(--green-bg);border-color:rgba(52,199,89,.2)}.pat-ok .pt{color:var(--green)}
+.pat-warn{background:var(--orange-bg);border-color:rgba(255,149,0,.2)}.pat-warn .pt{color:var(--orange)}
+.pat-danger{background:var(--red-bg);border-color:rgba(255,59,48,.2)}.pat-danger .pt{color:var(--red)}
+.pt{font-size:13px;font-weight:700;margin-bottom:10px;letter-spacing:-.2px}
+.pl{padding-left:14px}
+.pl li{font-size:13px;color:var(--text);margin-bottom:5px;line-height:1.7}
+.alert-blk{margin-top:10px;padding:10px 12px;background:rgba(255,59,48,.06);border-radius:var(--rs);border-left:3px solid var(--red)}
+.alert-blk strong{font-size:11px;color:var(--red);font-weight:700;display:block;margin-bottom:4px;letter-spacing:.04em}
+.alert-blk p{font-size:12px;color:var(--text2);line-height:1.7}
+.ab-block{margin-top:12px;padding:12px 14px;background:var(--surface2);border-radius:var(--rs);border:1px solid var(--border)}
+.ab-block strong{font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.06em;display:block;margin-bottom:6px}
+.atag{display:inline-block;padding:3px 9px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text2);margin:2px}
+.rule-blk{margin-top:14px;padding:14px;background:var(--surface2);border-radius:var(--rs);border:1px solid var(--border)}
+.rule-blk strong{font-size:12px;font-weight:700;display:block;margin-bottom:8px;color:var(--text)}
+.rule-blk p{font-size:13px;color:var(--text2);line-height:2.1}
+
+/* CHECKLIST */
+.prog-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.prog-track{flex:1;height:4px;background:var(--surface2);border-radius:4px;overflow:hidden}
+.prog-fill{height:4px;background:var(--accent);border-radius:4px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.prog-n{font-size:12px;color:var(--text2);white-space:nowrap;font-weight:600}
+.rst-btn{padding:5px 12px;background:transparent;border:1px solid var(--border);border-radius:var(--rs);font-size:11px;color:var(--text2);cursor:pointer;font-family:var(--sans)}
+.rst-btn:hover{background:var(--surface2)}
+.csec{margin-bottom:20px}
+.csec-h{font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.06em;margin-bottom:10px;padding:7px 12px;background:var(--surface2);border-radius:var(--rs)}
+.ci{display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)}
+.ci:last-child{border-bottom:none}
+.ci input[type=checkbox]{width:17px;height:17px;margin-top:1px;cursor:pointer;flex-shrink:0;accent-color:var(--accent)}
+.ci label{font-size:13px;color:var(--text);cursor:pointer;line-height:1.6;font-weight:500}
+.ci.done label{color:var(--text3);text-decoration:line-through}
+
+/* INSTALL */
+.inst-bar{display:none;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rx);padding:14px 18px;margin:12px 16px 0;box-shadow:var(--shadow-sm)}
+.inst-bar p{font-size:13px;color:var(--text);flex:1;line-height:1.5}
+.inst-bar p span{display:block;font-size:11px;color:var(--text3);margin-top:1px}
+.inst-btn{padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:var(--rs);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+.inst-x{background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:0 2px;flex-shrink:0}
+.ios-guide{display:none;background:var(--accent-light);border:1px solid rgba(0,113,227,.2);border-radius:var(--rx);padding:16px 18px;margin:12px 16px 0;position:relative}
+.ios-guide strong{display:block;font-size:14px;font-weight:700;margin-bottom:10px;color:var(--text)}
+.ios-guide ol{padding-left:18px;color:var(--text2);font-size:13px;line-height:2.2}
+.ig-x{position:absolute;top:14px;right:16px;background:none;border:none;font-size:18px;color:var(--text3);cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="status-bar">
+  <div class="time" id="clock">--:--</div>
+  <div class="status-icons">
+    <svg width="17" height="12" viewBox="0 0 17 12" fill="white" opacity=".9"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" opacity=".9"><path d="M8 3.5C9.8 3.5 11.4 4.2 12.6 5.3L14 3.9C12.4 2.4 10.3 1.5 8 1.5S3.6 2.4 2 3.9L3.4 5.3C4.6 4.2 6.2 3.5 8 3.5Z" fill="white"/><path d="M8 6.5C9.1 6.5 10.1 6.9 10.8 7.6L12.2 6.2C11.1 5.2 9.6 4.5 8 4.5S4.9 5.2 3.8 6.2L5.2 7.6C5.9 6.9 6.9 6.5 8 6.5Z" fill="white"/><circle cx="8" cy="10.5" r="1.5" fill="white"/></svg>
+    <svg width="26" height="13" viewBox="0 0 26 13" fill="none" opacity=".9"><rect x=".5" y=".5" width="22" height="12" rx="3.5" stroke="white" stroke-opacity=".35"/><rect x="1.5" y="1.5" width="17" height="10" rx="2.5" fill="white"/><path d="M23.5 4.5v4a2 2 0 000-4z" fill="white" fill-opacity=".4"/></svg>
+  </div>
+</div>
+
+<div class="widget-top">
+  <div class="widget-date" id="widget-date">読み込み中...</div>
+  <div class="widget-title">人員配置管理</div>
+  <div class="widget-sub">出勤者を選ぶと配置が自動で決まります</div>
+  <div class="widget-row">
+    <input type="date" id="today-date" class="w-date-input">
+    <span id="count-display" class="w-badge b-ok"><span class="bdot"></span>6名出勤</span>
+    <button id="ios-install-btn" class="ios-add-btn" onclick="showIosGuide()">ホーム画面に追加</button>
+  </div>
+</div>
+
+<div class="inst-bar" id="install-bar">
+  <p>ホーム画面に追加できます<span>アプリのようにすぐ開けます</span></p>
+  <button class="inst-btn" onclick="doInstall()">追加</button>
+  <button class="inst-x" onclick="closeInstallBar()">×</button>
+</div>
+<div class="ios-guide" id="ios-guide">
+  <button class="ig-x" onclick="document.getElementById('ios-guide').style.display='none'">×</button>
+  <strong>iPhone のホーム画面に追加</strong>
+  <ol>
+    <li>画面下の「共有」ボタン（□↑）をタップ</li>
+    <li>「ホーム画面に追加」をタップ</li>
+    <li>右上の「追加」をタップして完了</li>
+  </ol>
+</div>
+
+<div class="seg-wrap">
+  <button class="seg active" onclick="switchTab('attendance')">出勤選択</button>
+  <button class="seg" onclick="switchTab('layout')">配置図</button>
+  <button class="seg" onclick="switchTab('pattern')">欠員対応</button>
+  <button class="seg" onclick="switchTab('checklist')">工程会議 <span id="check-badge" style="display:none;background:var(--blue);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:3px;font-weight:700"></span></button>
+  <button class="seg" onclick="switchTab('kpi')">KPI</button>
+</div>
+
+<!-- 出勤選択 -->
+<div class="panel active" id="panel-attendance">
+  <div class="gc">
+    <div class="gc-head">
+      <div><div class="gc-title">本日の出勤者</div><div class="gc-sub">タップで出欠を切り替え</div></div>
+    </div>
+    <div class="sgrid" id="staff-grid"></div>
+    <button class="ios-cta" onclick="switchTab('layout')">配置図を確認 →</button>
+  </div>
+</div>
+
+<!-- 配置図 -->
+<div class="panel" id="panel-layout">
+  <div class="gc">
+    <div class="gc-head"><div class="gc-title">本日の配置図</div></div>
+    <div id="layout-area"></div>
+  </div>
+</div>
+
+<!-- 欠員対応 -->
+<div class="panel" id="panel-pattern">
+  <div class="gc">
+    <div class="gc-head"><div class="gc-title">欠員対応・注意事項</div></div>
+    <div id="pattern-area"></div>
+  </div>
+</div>
+
+<!-- 工程会議 -->
+<div class="panel" id="panel-checklist">
+  <div class="gc">
+    <div class="gc-head">
+      <div><div class="gc-title">工程会議チェックリスト</div></div>
+      <button class="rst-btn" onclick="resetChecks()">RESET</button>
+    </div>
+    <div class="prog-row">
+      <div class="prog-track"><div class="prog-fill" id="progress-bar" style="width:0%"></div></div>
+      <span class="prog-n" id="check-progress">0/0</span>
+    </div>
+    <div id="checklist-area"></div>
+  </div>
+</div>
+
+<div class="panel" id="panel-kpi">
+  <!-- 来店カウンター -->
+  <div class="gc" style="margin-bottom:14px">
+    <div class="gc-head">
+      <div><div class="gc-title">来店カウンター</div><div class="gc-sub">本日の来店組数</div></div>
+      <button class="rst-btn" onclick="resetCounter()">リセット</button>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:20px;padding:12px 0 8px">
+      <button onclick="changeCount(-1)" style="width:52px;height:52px;border-radius:50%;border:none;background:rgba(255,59,48,.1);color:#ff3b30;font-size:26px;font-weight:300;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">−</button>
+      <div style="text-align:center">
+        <div id="visit-count" style="font-size:56px;font-weight:700;color:var(--blue);letter-spacing:-2px;line-height:1">0</div>
+        <div style="font-size:12px;color:#8e8e93;margin-top:4px">組</div>
+      </div>
+      <button onclick="changeCount(1)" style="width:52px;height:52px;border-radius:50%;border:none;background:rgba(58,142,255,.12);color:var(--blue);font-size:26px;font-weight:300;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">＋</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <div style="flex:1;text-align:center;padding:10px 8px;background:rgba(52,199,89,.08);border-radius:10px;border:1px solid rgba(52,199,89,.2)">
+        <div style="font-size:18px;font-weight:700;color:#1a8f3c" id="visit-target">30</div>
+        <div style="font-size:10px;color:#8e8e93;margin-top:2px">目標</div>
+      </div>
+      <div style="flex:1;text-align:center;padding:10px 8px;background:rgba(58,142,255,.06);border-radius:10px;border:1px solid rgba(58,142,255,.15)">
+        <div style="font-size:18px;font-weight:700;color:var(--blue)" id="visit-remain">30</div>
+        <div style="font-size:10px;color:#8e8e93;margin-top:2px">残り</div>
+      </div>
+      <div style="flex:1;text-align:center;padding:10px 8px;background:rgba(255,159,10,.07);border-radius:10px;border:1px solid rgba(255,159,10,.2)">
+        <div style="font-size:18px;font-weight:700;color:#a05f00" id="visit-rate">0%</div>
+        <div style="font-size:10px;color:#8e8e93;margin-top:2px">達成率</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:10px">
+      <span style="font-size:12px;color:#8e8e93">目標来店数：</span>
+      <input type="number" id="target-input" value="30" min="1" max="99"
+        style="width:60px;padding:6px 10px;border:1px solid rgba(0,0,0,.1);border-radius:8px;font-size:14px;font-family:inherit;text-align:center;color:#1c1c1e;background:#fff"
+        oninput="updateCounter()">
+      <span style="font-size:12px;color:#8e8e93">組</span>
+    </div>
+  </div>
+
+  <!-- KPI入力 -->
+  <div class="gc">
+    <div class="gc-head">
+      <div><div class="gc-title">本日のKPI</div><div class="gc-sub">目標 / 実績を入力</div></div>
+      <button class="rst-btn" onclick="resetKpi()">リセット</button>
+    </div>
+    <!-- 担当者選択 -->
+    <div style="margin-bottom:14px">
+      <select id="kpi-person-select" onchange="onKpiPersonChange(this.value)"
+        style="width:100%;padding:11px 14px;border:1.5px solid rgba(0,0,0,.1);border-radius:12px;background:#fff;color:#1c1c1e;font-size:15px;font-family:inherit;outline:none;-webkit-appearance:none;appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22><path d=%22M1 1l5 5 5-5%22 fill=%22none%22 stroke=%22%238e8e93%22 stroke-width=%221.5%22 stroke-linecap=%22round%22/></svg>');background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;font-weight:500">
+        <option value="">担当者を選択してください</option>
+        <option value="fujita">藤田さん</option>
+        <option value="kado">角さん</option>
+        <option value="tanoue">田上さん</option>
+        <option value="kitazawa">北沢さん</option>
+        <option value="tominae">冨永さん</option>
+        <option value="other">その他</option>
+      </select>
+    </div>
+    <div id="kpi-area"></div>
+  </div>
+</div>
+<script>
+// 時計
+function updateClock(){
+  const n=new Date();
+  document.getElementById('clock').textContent=n.getHours()+':'+(n.getMinutes()<10?'0':'')+n.getMinutes();
+}
+updateClock();setInterval(updateClock,10000);
+
+// 日付表示
+const DAYS=['日','月','火','水','木','金','土'];
+function updateDateLabel(d){
+  const dt=new Date(d+'T00:00:00');
+  document.getElementById('widget-date').textContent=`${dt.getMonth()+1}月${dt.getDate()}日（${DAYS[dt.getDay()]}）`;
+}
+document.getElementById('today-date').addEventListener('change',e=>updateDateLabel(e.target.value));
+
+const STAFF=[
+  {id:'yoshinaga',name:'吉永さん',role:'司令塔・数字管理',type:'社員',color:'coral'},
+  {id:'fujita',name:'藤田さん',role:'コントローラー・緊急時入出庫サポート',type:'社員',color:'blue'},
+  {id:'tanoue',name:'田上さん',role:'全体サポート',type:'社員',color:'purple'},
+  {id:'kado',name:'角さん',role:'接客メイン',type:'社員',color:'teal'},
+  {id:'tominae',name:'冨永さん',role:'接客サポート',type:'パート',color:'teal'},
+  {id:'kitazawa',name:'北沢さん',role:'書類作成（固定）',type:'パート',color:'gray'},
+  {id:'sato',name:'佐藤さん',role:'書類作成（緊急代行）',type:'社員',color:'blue'},
+];
+
+// 通常メンバー（佐藤さんは緊急要員なので人数カウント除外）
+const CORE_STAFF = ['yoshinaga','fujita','tanoue','kado','tominae','kitazawa'];
+
+let present=new Set(STAFF.map(s=>s.id));
+let checks={};
+
+function init(){
+  const d=new Date();
+  const ds=d.toISOString().split('T')[0];
+  document.getElementById('today-date').value=ds;
+  updateDateLabel(ds);
+  renderStaffGrid();renderAll();
+}
+
+function toggleStaff(id){
+  if(present.has(id))present.delete(id);else present.add(id);
+  const absentCount = CORE_STAFF.filter(id=>!present.has(id)).length;
+  if(absentCount >= 4){
+    showOverLimitAlert();
+    CORE_STAFF.forEach(id=>present.add(id));
+    manualLayout = null;
+    renderStaffGrid();renderAll();
+    return;
+  }
+  manualLayout = null;
+  renderStaffGrid();renderAll();
+}
+
+function showOverLimitAlert(){
+  const existing = document.getElementById('over-limit-modal');
+  if(existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'over-limit-modal';
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  modal.innerHTML=`
+    <div style="background:#fff;border-radius:22px;padding:28px 24px;width:100%;max-width:320px;box-shadow:0 24px 60px rgba(0,0,0,.35);text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">⚠️</div>
+      <div style="font-size:17px;font-weight:700;color:#1c1c1e;margin-bottom:10px;line-height:1.4">4名以上不在は<br>対応できません</div>
+      <div style="font-size:13px;color:#636366;margin-bottom:22px;line-height:1.6">最低4名の出勤が必要です。<br>出勤者を全員出勤に戻しました。</div>
+      <button onclick="document.getElementById('over-limit-modal').remove()"
+        style="width:100%;padding:13px;background:#ff3b30;color:#fff;border:none;border-radius:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit">
+        確認
+      </button>
+    </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
+}
+
+
+function updateBadge(){
+  // 佐藤さんを除いたコアメンバーの出勤数でバッジ表示
+  const n=CORE_STAFF.filter(id=>present.has(id)).length;
+  const el=document.getElementById('count-display');
+  el.innerHTML=`<span class="bdot"></span>${n}名出勤`;
+  el.className='w-badge '+(n>=5?'b-ok':n>=4?'b-warn':'b-bad');
+}
+
+function buildLayout(){
+  const layout={counter:[],row2:[],row3:[]};
+  const p=id=>present.has(id);
+  const coreCount=CORE_STAFF.filter(id=>p(id)).length;
+  const isFull=coreCount>=6; // 佐藤さん除く6名フル
+
+  // ── 1列目：受付カウンター（2席固定）──
+  // 左席：欠員時の代行者
+  let counter1=null;
+  if(!p('fujita') && p('tanoue'))    counter1={name:'田上さん',role:'入出庫受付（代行）・全体指示',color:'purple'};
+  else if(!p('fujita') && p('kado')) counter1={name:'角さん',role:'入出庫受付（代行）',color:'teal'};
+  else if(!p('fujita') && p('yoshinaga')) counter1={name:'吉永さん',role:'受付（緊急対応）',color:'coral'};
+  layout.counter.push(counter1 ? counter1 : {name:'空席',role:'タップして名前を入力',color:'',empty:true,editable:true});
+
+  // 右席：接客担当
+  const counter1name = counter1?.name;
+  if(p('kado') && counter1name!=='角さん'){
+    layout.counter.push({name:'角さん',role:'接客メイン',color:'teal'});
+  } else if(p('tominae') && counter1name!=='冨永さん'){
+    layout.counter.push({name:'冨永さん',role:'接客メイン（代行）',color:'teal'});
+  } else {
+    layout.counter.push({name:'空席',role:'タップして名前を入力',color:'',empty:true,editable:true});
+  }
+
+  // ── 2列目：サポートゾーン ──
+  const inCounter = layout.counter.map(s=>s.name);
+
+  // ── 2列目：3席固定（左・中・右端書類席）──
+  // 左席：田上さん（1列目にいない場合のみ）
+  if(p('tanoue') && !inCounter.includes('田上さん')){
+    layout.row2.push({name:'田上さん',role:'全体サポート',color:'purple'});
+  } else {
+    layout.row2.push({name:'—',role:'空席',color:'',empty:true});
+  }
+
+  // 中央席：冨永さん（1列目にいない場合のみ）
+  if(p('tominae') && !inCounter.includes('冨永さん')){
+    layout.row2.push({name:'冨永さん',role:'接客サポート',color:'teal'});
+  } else {
+    layout.row2.push({name:'—',role:'空席',color:'',empty:true});
+  }
+
+  // 右端席：書類作成専用（固定）
+  const coreAbsentCount = CORE_STAFF.filter(id=>!p(id)).length;
+  if(p('kitazawa')){
+    if(coreAbsentCount >= 3){
+      layout.row2.push({name:'北沢さん',role:'書類作成（右端・固定）\n場合によっては佐藤さんに要相談',color:'gray'});
+    } else {
+      layout.row2.push({name:'北沢さん',role:'書類作成（右端・固定）',color:'gray'});
+    }
+  } else if(p('yoshinaga')){
+    layout.row2.push({name:'吉永さん',role:'書類作成＋数字管理',color:'coral'});
+  } else if(p('fujita')){
+    layout.row2.push({name:'藤田さん（書類代行）',role:'書類作成担当\n吉永さん・北沢さん不在のため代行',color:'blue'});
+  } else if(coreAbsentCount >= 3){
+    layout.row2.push({name:'佐藤さん（要相談）',role:'書類作成担当\n3名以上不在のため代行を相談・依頼',color:'blue'});
+  } else {
+    layout.row2.push({name:'—',role:'書類担当なし',color:'',empty:true});
+  }
+
+  // ── 3列目：コントローラー席 ──
+  if(p('yoshinaga') && p('kitazawa')){
+    layout.row3.push({name:'吉永さん',role:'司令塔',color:'coral'});
+    if(p('fujita')){
+      layout.row3.push({name:'藤田さん',role:'コントローラー・緊急時入出庫サポート',color:'blue'});
+    }
+  } else if(p('yoshinaga') && !p('kitazawa')){
+    // 北沢さん不在時は吉永さんはRow2書類席のみ・Row3には表示しない
+    if(p('fujita')){
+      layout.row3.push({name:'藤田さん',role:'コントローラー・緊急時入出庫サポート',color:'blue'});
+    }
+  } else if(p('fujita')){
+    layout.row3.push({name:'藤田さん（店長代行）',role:'コントローラー・緊急時入出庫サポート\n数字管理兼務（店長代行）',color:'coral'});
+  } else if(p('tanoue')){
+    layout.row3.push({name:'田上さん（店長代行）',role:'コントローラー席・数字管理兼務',color:'coral'});
+  } else if(p('kado')){
+    layout.row3.push({name:'角さん（店長代行）',role:'コントローラー席・数字管理兼務',color:'coral'});
+  }
+
+  return layout;
+}
+
+function seatHtml(s, rowId, idx){
+  if(s.empty){
+    if(s.editable){
+      return`<div class="seat seat-editable draggable-seat" data-row="${rowId}" data-idx="${idx}" data-name="">
+        <div class="seat-n" style="color:#8e8e93;font-size:14px">空席</div>
+        <div class="seat-r">タップして入力</div>
+      </div>`;
+    }
+    return`<div class="seat empty" data-row="${rowId}" data-idx="${idx}"><div class="seat-n">—</div><div class="seat-r">${s.role}</div></div>`;
+  }
+  const parts = s.role.split('\n');
+  const roleMain = parts[0];
+  const roleSub = parts[1] ? `<div class="seat-r" style="color:var(--blue);margin-top:4px;font-weight:600">${parts[1]}</div>` : '';
+  return`<div class="seat seat-${s.color} draggable-seat" data-row="${rowId}" data-idx="${idx}" data-name="${s.name}">
+    <div class="seat-n">${s.name}</div>
+    <div class="seat-r">${roleMain}</div>${roleSub}
+  </div>`;
+}
+
+// 手動移動用のレイアウト状態
+let manualLayout = null;
+
+function renderLayout(){
+  const l = buildLayout();
+  // 初回または自動更新時はmanualLayoutをリセット
+  if(!manualLayout){
+    manualLayout = {
+      counter: [...l.counter],
+      row2: [...l.row2],
+      row3: [...l.row3]
+    };
+  }
+  const coreAbsentCount = CORE_STAFF.filter(id=>!present.has(id)).length;
+  const row2note = coreAbsentCount >= 3
+    ? ' <span style="font-size:10px;color:var(--blue);background:rgba(58,142,255,.1);padding:2px 7px;border-radius:5px;margin-left:4px">北沢さん書類対応 or 佐藤さんに要相談</span>'
+    : '';
+
+  const renderRow = (seats, rowId) =>
+    `<div class="seat-drop-zone srow" data-row="${rowId}" id="row-${rowId}">
+      ${seats.map((s,i)=>seatHtml(s,rowId,i)).join('')}
+    </div>`;
+
+  document.getElementById('layout-area').innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <div class="map-dir" style="margin:0">▼ &nbsp;お客様入口・来店方向</div>
+      <button onclick="resetLayout()" style="font-size:11px;padding:4px 10px;background:transparent;border:1px solid var(--line);border-radius:6px;color:#8e8e93;cursor:pointer;font-family:inherit">リセット</button>
+    </div>
+    <div class="seat-select-hint">席をタップして選択 → 移動先をタップで入れ替え</div>
+    <div class="map-ctr">入出庫受付カウンター</div>
+    <div class="map-rl">Row 1 — 受付カウンター</div>
+    ${renderRow(manualLayout.counter,'counter')}
+    <div class="map-rl">Row 2 — サポートゾーン${row2note}</div>
+    <div style="display:flex;gap:10px;flex-wrap:nowrap" class="seat-drop-zone" data-row="row2" id="row-row2">
+      ${manualLayout.row2.map((s,i)=>seatHtml(s,'row2',i)).join('')}
+    </div>
+    <div class="map-rl">Row 3 — コントローラー席</div>
+    ${renderRow(manualLayout.row3,'row3')}
+    <div class="map-dir" style="margin-top:16px">▲ &nbsp;工場・バックヤード方向</div>
+    ${renderShaken()}`;
+
+  initSeatSelect();
+  initShakenSelect();
+}
+
+// ── 車検更新枠 ──
+const SHAKEN_MEMBERS = ['田上さん','北沢さん','太田さん'];
+let shakenSelected = '';
+
+function renderShaken(){
+  const allNames = [];
+  if(manualLayout){
+    ['counter','row2','row3'].forEach(row=>{
+      (manualLayout[row]||[]).forEach(s=>{ if(s&&!s.empty) allNames.push(s.name); });
+    });
+  }
+  const selectedInLayout = shakenSelected && allNames.includes(shakenSelected);
+  const dispName = selectedInLayout ? shakenSelected+'（登録で外出中）' : (shakenSelected||'—');
+  const dispColor = selectedInLayout ? '#ff9f0a' : (shakenSelected ? '#1a8f3c' : 'var(--text3)');
+  const dispBg = selectedInLayout ? 'rgba(255,159,10,.08)' : (shakenSelected ? 'rgba(52,199,89,.07)' : 'var(--surface2)');
+  const dispBorder = selectedInLayout ? 'rgba(255,159,10,.3)' : (shakenSelected ? 'rgba(52,199,89,.25)' : 'var(--border)');
+
+  const menuItems = [['','担当者を選択',false]].concat(
+    SHAKEN_MEMBERS.map(name=>[name, allNames.includes(name)?name+'（登録で外出中）':name, allNames.includes(name)])
+  ).map(([v,label,gray])=>
+    '<div onclick="onShakenChange(\'' + v + '\')" style="padding:12px 16px;font-size:14px;cursor:pointer;border-bottom:1px solid var(--border);color:'+(gray?'var(--text3)':'var(--text)')+(v===shakenSelected?';background:var(--accent-light);font-weight:700':'')+'">' + label + '</div>'
+  ).join('');
+
+  return '<div style="margin-top:18px;padding:16px;background:var(--surface);border-radius:16px;border:1px solid var(--border)">'
+    + '<div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.1em;margin-bottom:12px">🚗 車検更新</div>'
+    + '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">'
+    + '<div style="flex:1;min-width:130px;padding:12px 14px;background:'+dispBg+';border:1.5px solid '+dispBorder+';border-radius:12px;text-align:center">'
+    + '<div style="font-size:15px;font-weight:700;color:'+dispColor+'">'+dispName+'</div>'
+    + '<div style="font-size:10px;color:var(--text3);margin-top:3px">担当者</div>'
+    + '</div>'
+    + '<div style="flex:1;min-width:130px;position:relative">'
+    + '<button onclick="toggleShakenDd()" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);font-size:14px;font-family:var(--sans);outline:none;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center">'
+    + '<span>'+(shakenSelected||'選択してください')+'</span>'
+    + '<span style="font-size:12px;color:var(--text3)">▲</span>'
+    + '</button>'
+    + '<div id="shaken-dd-list" style="display:none;position:absolute;bottom:calc(100% + 6px);left:0;right:0;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;box-shadow:0 -6px 24px rgba(0,0,0,.14);z-index:200;overflow:hidden">'
+    + menuItems
+    + '</div>'
+    + '</div></div></div>';
+}
+
+function toggleShakenDd(){
+  const list = document.getElementById('shaken-dd-list');
+  if(!list) return;
+  list.style.display = list.style.display==='none' ? 'block' : 'none';
+}
+// 外タップで閉じる
+document.addEventListener('click', e=>{
+  if(!e.target.closest('[onclick="toggleShakenDd()"]') && !e.target.closest('#shaken-dd-list')){
+    const list = document.getElementById('shaken-dd-list');
+    if(list) list.style.display='none';
+  }
+});
+
+function initShakenSelect(){
+  // renderShaken はHTMLを毎回再生成するので追加処理不要
+}
+
+function onShakenChange(val){
+  shakenSelected = val;
+  const list = document.getElementById('shaken-dd-list');
+  if(list) list.style.display='none';
+  renderLayout();
+}
+
+function resetLayout(){
+  manualLayout = null;
+  renderLayout();
+}
+
+// ─── タップ選択→タップ移動方式 ───
+let selectedSeat = null;
+let dragSrc = null;
+let touchDrag = null;
+let ghostEl = null;
+
+function initSeatSelect(){
+  document.querySelectorAll('.draggable-seat, .seat.empty, .seat-editable').forEach(el=>{
+    // タップ（クリック）
+    el.addEventListener('click', onSeatClick);
+    // タッチドラッグ
+    el.addEventListener('touchstart', onTouchDragStart, {passive:false});
+    el.addEventListener('touchmove',  onTouchDragMove,  {passive:false});
+    el.addEventListener('touchend',   onTouchDragEnd,   {passive:false});
+    // PCドラッグ
+    el.setAttribute('draggable', 'true');
+    el.addEventListener('dragstart', onDragStart);
+    el.addEventListener('dragend',   onDragEnd);
+    el.addEventListener('dragover',  e=>{ e.preventDefault(); el.classList.add('drag-hover'); });
+    el.addEventListener('dragleave', e=>{ el.classList.remove('drag-hover'); });
+    el.addEventListener('drop',      onDrop);
+  });
+}
+
+// ── PC ドラッグ ──
+function onDragStart(e){
+  const el = e.currentTarget;
+  dragSrc = {rowId: el.dataset.row, idx: parseInt(el.dataset.idx)};
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(()=>el.style.opacity='0.4', 0);
+}
+function onDragEnd(e){ e.currentTarget.style.opacity='1'; dragSrc=null; document.querySelectorAll('.drag-hover').forEach(el=>el.classList.remove('drag-hover')); }
+function onDrop(e){
+  e.preventDefault();
+  const dest = e.currentTarget;
+  dest.classList.remove('drag-hover');
+  if(!dragSrc) return;
+  swapSeats(dragSrc.rowId, dragSrc.idx, dest.dataset.row, parseInt(dest.dataset.idx));
+  dragSrc = null;
+}
+
+// ── タッチ ドラッグ ──
+function onTouchDragStart(e){
+  const el = e.currentTarget;
+  const t = e.touches[0];
+  // 短押し判定用タイマー（100ms以内ならクリック扱い）
+  touchDrag = {rowId: el.dataset.row, idx: parseInt(el.dataset.idx), el, startX: t.clientX, startY: t.clientY, moved: false};
+}
+function onTouchDragMove(e){
+  if(!touchDrag) return;
+  const t = e.touches[0];
+  const dx = Math.abs(t.clientX - touchDrag.startX);
+  const dy = Math.abs(t.clientY - touchDrag.startY);
+  if(dx > 8 || dy > 8){
+    e.preventDefault();
+    touchDrag.moved = true;
+    // ゴースト作成
+    if(!ghostEl){
+      ghostEl = touchDrag.el.cloneNode(true);
+      ghostEl.style.cssText=`position:fixed;opacity:.75;pointer-events:none;z-index:9999;width:${touchDrag.el.offsetWidth}px;border-radius:14px;transform:scale(1.06);transition:none`;
+      document.body.appendChild(ghostEl);
+      touchDrag.el.style.opacity='0.35';
+    }
+    ghostEl.style.left=(t.clientX - touchDrag.el.offsetWidth/2)+'px';
+    ghostEl.style.top =(t.clientY - touchDrag.el.offsetHeight/2-10)+'px';
+    // ホバーハイライト
+    document.querySelectorAll('.drag-hover').forEach(el=>el.classList.remove('drag-hover'));
+    const under = document.elementFromPoint(t.clientX, t.clientY);
+    const target = under?.closest('.draggable-seat, .seat-editable, .seat.empty');
+    if(target && target !== touchDrag.el) target.classList.add('drag-hover');
+  }
+}
+function onTouchDragEnd(e){
+  if(!touchDrag) return;
+  document.querySelectorAll('.drag-hover').forEach(el=>el.classList.remove('drag-hover'));
+  if(ghostEl){ ghostEl.remove(); ghostEl=null; }
+  touchDrag.el.style.opacity='1';
+  if(touchDrag.moved){
+    const t = e.changedTouches[0];
+    const under = document.elementFromPoint(t.clientX, t.clientY);
+    const target = under?.closest('.draggable-seat, .seat-editable, .seat.empty');
+    if(target && target !== touchDrag.el){
+      swapSeats(touchDrag.rowId, touchDrag.idx, target.dataset.row, parseInt(target.dataset.idx));
+    }
+  }
+  touchDrag = null;
+}
+
+// ── 入れ替え共通処理 ──
+function swapSeats(srcRow, srcIdx, destRow, destIdx){
+  if(!manualLayout[srcRow] || !manualLayout[destRow]) return;
+  if(srcRow===destRow && srcIdx===destIdx) return;
+  const a = manualLayout[srcRow][srcIdx];
+  const b = manualLayout[destRow][destIdx] ?? {name:'空席',role:'タップして名前を入力',color:'',empty:true,editable:true};
+  manualLayout[srcRow][srcIdx] = b;
+  manualLayout[destRow][destIdx] = a;
+  renderLayout();
+}
+
+// ── タップ（選択→移動 or 空席入力）──
+function onSeatClick(e){
+  if(touchDrag?.moved){ touchDrag=null; return; } // ドラッグ後のクリック無視
+  const el = e.currentTarget;
+  const seatEl = el.closest('.draggable-seat, .seat-editable, .seat.empty') || el;
+  if(!seatEl?.dataset?.row) return;
+  const rowId = seatEl.dataset.row;
+  const idx   = parseInt(seatEl.dataset.idx);
+
+  // 空席タップ → 名前入力
+  if(seatEl.classList.contains('seat-editable')){
+    if(selectedSeat){
+      // 選択中の席がある場合は移動
+      swapSeats(selectedSeat.rowId, selectedSeat.idx, rowId, idx);
+      clearSelect();
+    } else {
+      showNameInput(rowId, idx);
+    }
+    return;
+  }
+
+  if(!selectedSeat){
+    selectedSeat = {rowId, idx, el:seatEl};
+    seatEl.classList.add('seat-selected');
+    return;
+  }
+  if(selectedSeat.el === seatEl){ clearSelect(); return; }
+  swapSeats(selectedSeat.rowId, selectedSeat.idx, rowId, idx);
+  clearSelect();
+}
+
+function clearSelect(){
+  document.querySelectorAll('.seat-selected').forEach(el=>el.classList.remove('seat-selected'));
+  selectedSeat = null;
+}
+
+
+function showNameInput(rowId, idx){
+  // 既存のモーダルを削除
+  const existing = document.getElementById('name-modal');
+  if(existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'name-modal';
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  modal.innerHTML=`
+    <div style="background:var(--white);border-radius:20px;padding:24px;width:100%;max-width:320px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+      <div style="font-size:16px;font-weight:700;color:#1c1c1e;margin-bottom:16px">席に名前を入力</div>
+      <input id="name-input" type="text" placeholder="名前を入力" maxlength="10"
+        style="width:100%;padding:12px 14px;border:1.5px solid rgba(0,0,0,.15);border-radius:12px;font-size:15px;font-family:inherit;outline:none;color:#1c1c1e;background:#fff;margin-bottom:8px">
+      <input id="role-input" type="text" placeholder="役割を入力（任意）" maxlength="20"
+        style="width:100%;padding:10px 14px;border:1.5px solid rgba(0,0,0,.1);border-radius:12px;font-size:13px;font-family:inherit;outline:none;color:#1c1c1e;background:#fff;margin-bottom:16px">
+      <div style="display:flex;gap:10px">
+        <button onclick="document.getElementById('name-modal').remove()"
+          style="flex:1;padding:12px;background:rgba(0,0,0,.06);border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;color:#3c3c43">キャンセル</button>
+        <button onclick="applyNameInput('${rowId}',${idx})"
+          style="flex:1;padding:12px;background:var(--blue);border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;color:#fff">決定</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
+  setTimeout(()=>document.getElementById('name-input').focus(), 100);
+  document.getElementById('name-input').addEventListener('keydown', e=>{ if(e.key==='Enter') applyNameInput(rowId, idx); });
+}
+
+function applyNameInput(rowId, idx){
+  const name = document.getElementById('name-input').value.trim();
+  const role = document.getElementById('role-input').value.trim();
+  document.getElementById('name-modal').remove();
+  if(!name) return;
+  if(!manualLayout[rowId]) return;
+  manualLayout[rowId][idx] = {name, role: role||'（手動入力）', color:'teal', empty:false};
+  renderLayout();
+}
+
+function clearSelect(){
+  document.querySelectorAll('.seat-selected').forEach(el=>el.classList.remove('seat-selected'));
+  selectedSeat = null;
+}
+
+function renderPattern(){
+  const p=id=>present.has(id);
+  // 佐藤さんを除いたコアメンバーで欠員カウント
+  const coreAbsent=CORE_STAFF.filter(id=>!present.has(id));
+  const corePresent=CORE_STAFF.filter(id=>present.has(id));
+  const n=corePresent.length;
+  const aNames=coreAbsent.map(id=>STAFF.find(s=>s.id===id).name).join('・');
+
+  let html='';
+
+  if(n>=6){
+    html+=pat('ok','通常体制 — フルメンバー 6名',[
+      '藤田さん：緊急時入庫サポート・全体指示（通常は待機）',
+      '角さん：接客メイン ／ 冨永さん：接客サポート',
+      '田上さん：全体サポート ／ 北沢さん：書類専念',
+      '吉永さん：コントローラー席で数字管理・指示出し'
+    ],[]);
+
+  }else if(n===5){
+    let items=[], alerts=[];
+
+    // ── 吉永さん不在 ──
+    if(!p('yoshinaga')){
+      items.push('【藤田さん】司令塔に昇格・コントローラー席で数字管理・指示出し');
+      items.push('【田上さん】全体サポート（通常通り）');
+      items.push('【角さん】接客メイン（通常通り）');
+      items.push('【冨永さん】接客サポート（通常通り）');
+      items.push('【北沢さん】書類作成（通常通り）');
+    }
+    // ── 藤田さん不在 ──
+    else if(!p('fujita')){
+      items.push('【吉永さん】コントローラー席で数字管理（通常通り）');
+      items.push('【田上さん】全体指示役・入出庫受付を代行');
+      items.push('【角さん】接客メイン（通常通り）');
+      items.push('【冨永さん】接客サポートしながら全体も補佐');
+      items.push('【北沢さん】書類作成（通常通り）');
+    }
+    // ── 田上さん不在 ──
+    else if(!p('tanoue')){
+      items.push('【吉永さん】コントローラー席で数字管理（通常通り）');
+      items.push('【藤田さん】コントローラー・緊急時入出庫サポート（通常通り）');
+      items.push('【角さん】接客メイン（通常通り）');
+      items.push('【冨永さん】接客サポートしながら全体フォローも担う');
+      items.push('【北沢さん】書類作成（通常通り）');
+    }
+    // ── 角さん不在 ──
+    else if(!p('kado')){
+      items.push('【吉永さん】コントローラー席で数字管理（通常通り）');
+      items.push('【藤田さん】コントローラー・緊急時入出庫サポート（通常通り）');
+      items.push('【田上さん】全体サポート（通常通り）');
+      items.push('【冨永さん】接客メインに昇格・田上さんがすぐ補佐に入れる体制');
+      items.push('【北沢さん】書類作成（通常通り）');
+    }
+    // ── 冨永さん不在 ──
+    else if(!p('tominae')){
+      items.push('【吉永さん】コントローラー席で数字管理（通常通り）');
+      items.push('【藤田さん】コントローラー・緊急時入出庫サポート（通常通り）');
+      items.push('【田上さん】全体サポート・接客補佐も兼務');
+      items.push('【角さん】接客を1人でこなす・田上さんがすぐ入れる体制を維持');
+      items.push('【北沢さん】書類作成（通常通り）');
+    }
+    // ── 北沢さん不在 ──
+    else if(!p('kitazawa')){
+      items.push('【吉永さん】書類作成＋数字管理を担当（右端席に着席）');
+      items.push('【藤田さん】コントローラー・緊急時入出庫サポート（通常通り）');
+      items.push('【田上さん】全体サポート（通常通り）');
+      items.push('【角さん】接客メイン（通常通り）');
+      items.push('【冨永さん】接客サポート（通常通り）');
+    }
+    else { items.push('その他は通常通り'); }
+    html+=pat('ok',`1名欠員 — 5名体制（${aNames}不在）`,items,alerts);
+
+  }else if(n===4){
+    let items=[], alerts=['2名以上欠員のため工程会議で役割を必ず口頭確認','その人数でできることを優先・無理な件数は入れない'];
+    // 司令塔代行
+    if(!p('yoshinaga') && !p('fujita') && !p('tanoue')){
+      items.push('角さんがコントローラー席・数字管理兼務（吉永・藤田・田上さん全員不在）');
+      alerts.push('吉永さん・藤田さん・田上さん全員不在。角さんの負荷が非常に高いため、できることを優先する');
+    } else if(!p('yoshinaga') && !p('fujita')){
+      items.push('田上さんが数字管理・コントローラー席・全体指示を兼務');
+      alerts.push('吉永さん・藤田さんダブル不在。田上さんへの集中を避け、できる範囲の業務を優先する');
+    } else if(!p('yoshinaga') && p('fujita')){
+      items.push('藤田さんがコントローラー席・数字管理を兼務');
+      alerts.push('藤田さんへの集中を避け、できることを優先。予約間隔を広げることも検討する');
+    }
+    // 受付代行
+    if(!p('fujita') && !p('tanoue')){
+      items.push('角さんが全体指示役・入出庫受付に昇格');
+      items.push('冨永さんが接客メインしながら全体フォロー');
+    } else if(!p('fujita')){
+      items.push('田上さんが入出庫受付・全体指示を代行');
+    }
+    // 書類
+    if(!p('kitazawa')){
+      if(p('yoshinaga')) items.push('吉永さんが書類作成＋数字管理を担当');
+      else if(p('fujita')) items.push('藤田さんが書類代行（吉永さん・北沢さん不在）');
+      else{ items.push('3名以上不在 → 佐藤さんへ要相談・書類代行依頼'); alerts.push('佐藤さんへ開店前に連絡して書類対応を依頼する');}
+    }
+    if(items.length===0) items.push('役割の兼務が発生。工程会議で口頭確認必須');
+    html+=pat('warn',`2名欠員 — 4名体制（${aNames}不在）`,items,alerts);
+
+  }else if(n===3){
+    let items=[], alerts=['工程会議前に役割を口頭で全員に割り当てる','その人数でできることを優先・無理な件数は入れない','実績入力・書類作業は後回しにして対人対応を最優先','お客様への事前電話で待ち時間を説明する'];
+    if(!p('yoshinaga') && !p('fujita') && !p('tanoue')){
+      items.push('角さんがコントローラー席・数字管理を兼務（吉永・藤田・田上さん全員不在）');
+      alerts.push('吉永さん・藤田さん・田上さん全員不在かつ3名体制は最高リスク。できることだけに絞り実績入力は閉店後に後回し');
+    } else if(!p('yoshinaga') && !p('fujita')){
+      items.push('田上さんが数字管理・コントローラー席・全体指示を全て兼務');
+      alerts.push('吉永さん・藤田さんダブル不在かつ3名体制。できることだけに絞り実績入力は閉店後に後回し');
+    } else if(p('yoshinaga')){
+      items.push('吉永さんが現場に入る（数字管理は最低限）');
+    } else {
+      items.push('藤田さんまたは田上さんが数字管理を代行');
+    }
+    items.push('残存メンバーで接客・受付・書類を分担');
+    if(coreAbsent.length >= 3){
+      items.push('書類は佐藤さんへ要相談・緊急依頼');
+      alerts.push('佐藤さんへ開店前に連絡して書類対応を依頼する');
+    }
+    html+=pat('danger',`3名欠員 — 3名体制（${aNames}不在）`,items,alerts);
+
+  }else{
+    html+=`<div class="pat pat-danger"><div class="pt">運営不可ライン（${n}名）</div><ul class="pl"><li>4名以上出勤がないと店が回せません</li><li>吉永さんに即報告し、予約変更・応援手配を検討してください</li></ul></div>`;
+  }
+
+  // 不在者表示（佐藤さん除く）
+  if(coreAbsent.length>0){
+    const absentStaff=coreAbsent.map(id=>STAFF.find(s=>s.id===id));
+    html+=`<div class="ab-block"><strong>ABSENT</strong>${absentStaff.map(s=>`<span class="atag">${s.name}</span>`).join('')}</div>`;
+  }
+  // 佐藤さんアラート
+  if(coreAbsent.length >= 3){
+    const kitaPresent = present.has('kitazawa');
+    if(kitaPresent){
+      html+=`<div class="ab-block" style="background:rgba(58,142,255,.08);border:1px solid rgba(58,142,255,.2);margin-top:8px"><strong style="color:var(--blue)">📋 佐藤さんに要確認</strong><span class="atag">3名以上不在・北沢さん出勤中 — 書類対応できるか事前に確認してください</span></div>`;
+    } else {
+      html+=`<div class="ab-block" style="background:rgba(58,142,255,.08);border:1px solid rgba(58,142,255,.2);margin-top:8px"><strong style="color:var(--blue)">⚡ 佐藤さんに要相談</strong><span class="atag">3名以上不在のため書類代行を依頼してください</span></div>`;
+    }
+  }
+
+  html+=`<div class="rule-blk"><strong>ALWAYS — どのパターンでも守る3点</strong><p>① 来店時3秒以内の声かけ<br>② 待機中フォロー（5分以上待たせない）<br>③ お客様が出口を出るまで見送る</p></div>`;
+  document.getElementById('pattern-area').innerHTML=html;
+}
+
+function init(){
+  const d=new Date();
+  const ds=d.toISOString().split('T')[0];
+  document.getElementById('today-date').value=ds;
+  updateDateLabel(ds);
+  renderStaffGrid();renderAll();
+}
+
+function renderStaffGrid(){
+  const coreAbsentCount = CORE_STAFF.filter(id => !present.has(id)).length;
+  const satoAlert = coreAbsentCount >= 3;
+  const kitazawaPresent = present.has('kitazawa');
+  document.getElementById('staff-grid').innerHTML=STAFF
+    .filter(s => s.id !== 'sato' || satoAlert)
+    .map(s=>{
+      const isPresent = present.has(s.id);
+      let cls, hint='';
+      if(s.id==='sato'){
+        cls='alert';
+        hint = kitazawaPresent
+          ? '<div class="alert-hint">📋 北沢さん出勤中 — 書類対応できるか要確認</div>'
+          : '<div class="alert-hint">⚡ 要相談・書類代行を依頼</div>';
+      } else {
+        cls = isPresent ? 'present' : 'absent';
+      }
+      return `<div class="sbtn ${cls}" onclick="toggleStaff('${s.id}')">
+        <div class="schk"><svg viewBox="0 0 10 10"><polyline points="2,5 4.5,8 8,2"/></svg></div>
+        <div class="sn">${s.name}</div>
+        <div class="sr">${s.role}</div>
+        <span class="st">${s.type}</span>
+        ${hint}
+      </div>`;
+    }).join('');
+  updateBadge();
+}
+
+
+
+const CHECKS=[
+  {sec:'TODAY — 現場状況',items:['入庫予定台数を確認した','納車・完成予定台数を確認した','代車状況を確認した','要注意案件・遅れそうな案件を共有した']},
+  {sec:'ROLE — 役割分担',items:['本日の出勤者・欠員を全員に共有した','フロアコントロール担当を確認した','入庫・出庫担当を確認した','役割変更があれば口頭で全員に伝えた']},
+  {sec:'KPI — 目標数字',items:['車検予約獲得の目標件数を共有した','LINE登録の目標件数を共有した','マイカー登録の目標件数を共有した','保険提案・オイルパック・乗り換えの目標を共有した']},
+  {sec:'RISK — 危険ポイント',items:['混雑ピーク時間帯を予測して共有した','人員が薄い時間帯を確認した','長引きそうな作業を把握した','放置しやすい時間帯を確認した']},
+  {sec:'REVIEW — 昨日の振り返り',items:['良かったことを1つ共有した','詰まったことを確認した','今日改善することを1つ決めた']},
+  {sec:'SERVICE — お客様対応',items:['常連客の来店予定を全員に共有した','3秒声かけルールを確認した','5分以上待たせない基準を確認した','見送りルールを確認した']},
+];
+
+function pat(type,title,items,alerts){
+  return`<div class="pat pat-${type}"><div class="pt">${title}</div><ul class="pl">${items.map(i=>`<li>${i}</li>`).join('')}</ul>${alerts.length?`<div class="alert-blk"><strong>NOTICE</strong><p>${alerts.map(a=>`・${a}`).join('<br>')}</p></div>`:''}</div>`;
+}
+
+function renderChecklist(){
+  document.getElementById('checklist-area').innerHTML=CHECKS.map((sec,si)=>`
+    <div class="csec">
+      <div class="csec-h">${sec.sec}</div>
+      ${sec.items.map((item,ii)=>{
+        const key=`${si}-${ii}`,checked=!!checks[key];
+        return`<div class="ci${checked?' done':''}">
+          <input type="checkbox" id="c${key}" ${checked?'checked':''} onchange="toggleCheck('${key}',this.checked)">
+          <label for="c${key}">${item}</label>
+        </div>`;
+      }).join('')}
+    </div>`).join('');
+  updateProgress();
+}
+
+function toggleCheck(key,val){
+  checks[key]=val;
+  document.querySelector(`#c${key}`).closest('.ci').classList.toggle('done',val);
+  updateProgress();
+}
+
+function updateProgress(){
+  const total=CHECKS.reduce((s,sec)=>s+sec.items.length,0),done=Object.values(checks).filter(Boolean).length;
+  document.getElementById('check-progress').textContent=`${done}/${total}`;
+  document.getElementById('progress-bar').style.width=Math.round(done/total*100)+'%';
+  const badge=document.getElementById('check-badge');
+  if(badge){
+    const pct=Math.round(done/total*100);
+    if(done===0){badge.style.display='none';}
+    else if(done===total){badge.textContent='✓';badge.style.display='inline';badge.style.background='#30d158';}
+    else{badge.textContent=pct+'%';badge.style.display='inline';badge.style.background='var(--blue)';}
+  }
+}
+
+function resetChecks(){checks={};renderChecklist();}
+function renderAll(){renderLayout();renderPattern();renderChecklist();renderKpi();}
+
+function switchTab(id){
+  const ids=['attendance','layout','pattern','checklist','kpi'];
+  document.querySelectorAll('.seg').forEach((t,i)=>t.classList.toggle('active',ids[i]===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+}
+
+// ── 来店カウンター ──
+let visitCount = 0;
+function changeCount(d){
+  visitCount = Math.max(0, visitCount + d);
+  updateCounter();
+}
+function updateCounter(){
+  const target = parseInt(document.getElementById('target-input')?.value)||30;
+  const remain = Math.max(0, target - visitCount);
+  const rate   = target > 0 ? Math.round(visitCount/target*100) : 0;
+  const el = document.getElementById('visit-count');
+  if(el) el.textContent = visitCount;
+  const te = document.getElementById('visit-target');
+  if(te) te.textContent = target;
+  const re = document.getElementById('visit-remain');
+  if(re) re.textContent = remain;
+  const rat = document.getElementById('visit-rate');
+  if(rat){ rat.textContent = rate+'%'; rat.style.color = rate>=100?'#1a8f3c':rate>=70?'#a05f00':'#ff3b30'; }
+}
+function resetCounter(){ visitCount=0; updateCounter(); }
+
+// ── KPI入力（人別） ──
+const KPI_ITEMS = [
+  {id:'line',      label:'LINE登録',         unit:'件'},
+  {id:'mycar',     label:'マイカー登録',     unit:'件'},
+  {id:'ins',       label:'保険提案',         unit:'件'},
+  {id:'oil',       label:'オイルパック',     unit:'件'},
+  {id:'replace',   label:'乗り換え提案',     unit:'件'},
+  {id:'reserve',   label:'車検予約獲得',     unit:'件'},
+  {id:'pair',      label:'ペア予約',         unit:'件'},
+  {id:'monthly',   label:'当月予約',         unit:'件'},
+  {id:'tel',       label:'電話予約獲得',     unit:'件'},
+  {id:'freecheck', label:'無料点検予約',     unit:'件'},
+  {id:'inen',      label:'1年点検予約',      unit:'件'},
+];
+const KPI_PERSONS = [
+  {id:'fujita',   name:'藤田さん'},
+  {id:'kado',     name:'角さん'},
+  {id:'tanoue',   name:'田上さん'},
+  {id:'kitazawa', name:'北沢さん'},
+  {id:'tominae',  name:'冨永さん'},
+  {id:'other',    name:'その他'},
+];
+let kpiData = {};
+KPI_PERSONS.forEach(p=>{ kpiData[p.id]={}; KPI_ITEMS.forEach(k=>{ kpiData[p.id][k.id]=''; }); });
+let kpiPerson = '';
+
+function onKpiPersonChange(val){
+  kpiPerson = val;
+  renderKpi();
+}
+
+function kpiInput(itemId, val){
+  if(!kpiPerson) return;
+  kpiData[kpiPerson][itemId] = String(Math.max(0, parseInt(val)||0));
+  // 色だけ即時更新（再描画なし）
+  const a = parseInt(kpiData[kpiPerson][itemId])||0;
+  const inp = document.querySelector('[data-kpi="'+kpiPerson+'-'+itemId+'"]');
+  if(inp) inp.style.color = a>0 ? '#3a8eff' : '#1c1c1e';
+}
+
+function kpiStep(itemId, d){
+  if(!kpiPerson) return;
+  const cur = parseInt(kpiData[kpiPerson][itemId])||0;
+  kpiData[kpiPerson][itemId] = String(Math.max(0, cur+d));
+  renderKpi();
+}
+
+function renderKpiSummary(){
+  const totals = {};
+  KPI_ITEMS.forEach(k=>{ totals[k.id]=0; });
+  KPI_PERSONS.forEach(p=>{ KPI_ITEMS.forEach(k=>{ totals[k.id]+=(parseInt(kpiData[p.id][k.id])||0); }); });
+  const hasData = Object.values(totals).some(v=>v>0);
+  if(!hasData) return '';
+  const rows = KPI_ITEMS.filter(k=>totals[k.id]>0).map(k=>
+    '<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span style="color:#636366">'+k.label+'</span><span style="font-weight:700;color:#1c1c1e">'+totals[k.id]+' '+k.unit+'</span></div>'
+  ).join('');
+  return '<div style="margin-top:16px;padding:14px;background:rgba(0,0,0,.03);border:1px solid rgba(0,0,0,.07);border-radius:12px"><div style="font-size:11px;font-weight:700;color:#8e8e93;letter-spacing:.08em;margin-bottom:10px">全員合計</div>'+rows+'</div>';
+}
+
+function renderKpi(){
+  const el = document.getElementById('kpi-area');
+  if(!el) return;
+  if(!kpiPerson){
+    el.innerHTML = '<div style="text-align:center;padding:28px 0;color:#8e8e93;font-size:13px">上のプルダウンから担当者を選択してください</div>';
+    return;
+  }
+  const person = KPI_PERSONS.find(p=>p.id===kpiPerson);
+  const data = kpiData[kpiPerson];
+  const personRow = '<div style="padding:10px 14px;background:rgba(58,142,255,.07);border-radius:10px;margin-bottom:14px;display:flex;align-items:center;gap:8px"><span style="font-size:15px;font-weight:700;color:var(--blue)">'+person.name+'</span><span style="font-size:12px;color:#8e8e93">の実績入力</span></div>';
+  const grid = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px">'
+    + KPI_ITEMS.map(k=>{
+      const a = parseInt(data[k.id])||0;
+      const kid = k.id;
+      const pid = kpiPerson;
+      const numColor = a>0 ? '#3a8eff' : '#1c1c1e';
+      const bg = a>0 ? 'rgba(58,142,255,.07)' : 'rgba(0,0,0,.03)';
+      const border = a>0 ? '1.5px solid rgba(58,142,255,.25)' : '1px solid rgba(0,0,0,.08)';
+      return '<div style="background:'+bg+';border:'+border+';border-radius:12px;padding:10px 6px;text-align:center">'
+        +'<div style="font-size:11px;font-weight:600;color:#636366;margin-bottom:6px;line-height:1.3">'+k.label+'</div>'
+        +'<input type="number" min="0" max="999" value="'+a+'" inputmode="numeric" pattern="[0-9]*"'
+        +' data-kpi="'+pid+'-'+kid+'"'
+        +' oninput="kpiInput(\''+kid+'\',this.value)"'
+        +' style="width:56px;font-size:24px;font-weight:700;color:'+numColor+';line-height:1;margin-bottom:8px;text-align:center;border:none;background:transparent;font-family:inherit;outline:none;-webkit-appearance:none;appearance:none;">'
+        +'<div style="display:flex;justify-content:center;gap:6px">'
+        +'<button onclick="kpiStep(\''+kid+'\', -1)" style="width:30px;height:30px;border-radius:50%;border:none;background:rgba(0,0,0,.07);color:#3c3c43;font-size:18px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent">−</button>'
+        +'<button onclick="kpiStep(\''+kid+'\', 1)" style="width:30px;height:30px;border-radius:50%;border:none;background:rgba(58,142,255,.12);color:var(--blue);font-size:18px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent">＋</button>'
+        +'</div>'
+        +'</div>';
+    }).join('')
+    + '</div>';
+  el.innerHTML = personRow + grid + renderKpiSummary();
+}
+
+function resetKpi(){
+  KPI_PERSONS.forEach(p=>{ KPI_ITEMS.forEach(k=>{ kpiData[p.id][k.id]=''; }); });
+  const sel = document.getElementById('kpi-person-select');
+  if(sel) sel.value='';
+  kpiPerson='';
+  renderKpi();
+}
+
+
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('install-bar').style.display='flex';});
+function doInstall(){if(!deferredPrompt)return;deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;closeInstallBar();});}
+function closeInstallBar(){document.getElementById('install-bar').style.display='none';}
+function showIosGuide(){document.getElementById('ios-guide').style.display='block';document.getElementById('ios-guide').scrollIntoView({behavior:'smooth'});}
+const isIos=/iphone|ipad|ipod/i.test(navigator.userAgent);
+if(isIos&&!window.navigator.standalone)document.getElementById('ios-install-btn').style.display='inline-block';
+window.addEventListener('appinstalled',()=>closeInstallBar());
+init();
+</script>
+</body>
+</html>

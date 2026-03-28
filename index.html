@@ -1732,6 +1732,14 @@ function saveKpiData(){
     btn.textContent='✅ 保存しました'; btn.style.background='var(--green)';
     setTimeout(()=>{ btn.textContent=label; btn.style.background='var(--accent)'; },2000);
   }
+  // GAS URLが設定されていればスプレッドシートにも自動保存
+  if(localStorage.getItem('gasUrl')){
+    const url = localStorage.getItem('gasUrl');
+    fetch(url, {method:'POST', mode:'no-cors', body:JSON.stringify({
+      action:'save_kpi',
+      data: saved
+    })}).catch(()=>{});
+  }
 }
 
 

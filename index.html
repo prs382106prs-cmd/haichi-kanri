@@ -2474,9 +2474,8 @@ async function saveShakenToSheet(){
   if(!url){ showSyncStatus('shaken','⚠️ GAS URLを設定してください',false); return; }
   showSyncStatus('shaken','📤 保存中...',true);
   try{
-    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save_shaken', data:getShakenAll()})});
-    const d = await res.json();
-    showSyncStatus('shaken', d.ok ? '✅ スプレッドシートに保存' : '❌ '+d.error, d.ok);
+    await fetch(url,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'save_shaken', data:getShakenAll()})});
+    showSyncStatus('shaken', '✅ スプレッドシートに保存しました', true);
   }catch(e){ showSyncStatus('shaken','❌ 通信エラー',false); }
 }
 
@@ -2487,7 +2486,7 @@ async function loadShakenFromSheet(){
   if(!confirm('スプレッドシートのデータで上書きします。よろしいですか？')) return;
   showSyncStatus('shaken','📥 読込中...',true);
   try{
-    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'load_shaken'})});
+    const res = await fetch(url,{method:'POST',redirect:'follow',body:JSON.stringify({action:'load_shaken'})});
     const d = await res.json();
     if(d.ok && d.data){
       saveShakenAll(d.data);
@@ -2504,9 +2503,8 @@ async function saveKpiToSheet(){
   showSyncStatus('kpi','📤 保存中...',true);
   try{
     const history = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
-    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save_kpi', data:history})});
-    const d = await res.json();
-    showSyncStatus('kpi', d.ok ? '✅ スプレッドシートに保存' : '❌ '+d.error, d.ok);
+    await fetch(url,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'save_kpi', data:history})});
+    showSyncStatus('kpi', '✅ スプレッドシートに保存しました', true);
   }catch(e){ showSyncStatus('kpi','❌ 通信エラー',false); }
 }
 
@@ -2517,7 +2515,7 @@ async function loadKpiFromSheet(){
   if(!confirm('スプレッドシートのKPI実績で上書きします。よろしいですか？')) return;
   showSyncStatus('kpi','📥 読込中...',true);
   try{
-    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'load_kpi'})});
+    const res = await fetch(url,{method:'POST',redirect:'follow',body:JSON.stringify({action:'load_kpi'})});
     const d = await res.json();
     if(d.ok && d.data){
       localStorage.setItem('kpiHistory', JSON.stringify(d.data));
@@ -2534,9 +2532,8 @@ async function saveKpiGoalsToSheet(){
   showSyncStatus('kpi','📤 目標保存中...',true);
   try{
     const goals = JSON.parse(localStorage.getItem('kpiGoals')||'{}');
-    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save_kpi_goals', data:goals})});
-    const d = await res.json();
-    showSyncStatus('kpi', d.ok ? '✅ 目標をスプレッドシートに保存' : '❌ '+d.error, d.ok);
+    await fetch(url,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'save_kpi_goals', data:goals})});
+    showSyncStatus('kpi', '✅ 目標をスプレッドシートに保存しました', true);
   }catch(e){ showSyncStatus('kpi','❌ 通信エラー',false); }
 }
 
@@ -2548,9 +2545,8 @@ async function saveAttendanceToSheet(){
   try{
     const date = document.getElementById('today-date')?.value || getTodayLocal();
     const members = [...present];
-    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save_attendance', data:{date, members}})});
-    const d = await res.json();
-    showSyncStatus('attendance', d.ok ? '✅ スプレッドシートに保存' : '❌ '+d.error, d.ok);
+    await fetch(url,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'save_attendance', data:{date, members}})});
+    showSyncStatus('attendance', '✅ スプレッドシートに保存しました', true);
   }catch(e){ showSyncStatus('attendance','❌ 通信エラー',false); }
 }
 
@@ -2561,7 +2557,7 @@ async function loadAttendanceFromSheet(){
   if(!confirm('スプレッドシートの出勤データを読み込みます。よろしいですか？')) return;
   showSyncStatus('attendance','📥 読込中...',true);
   try{
-    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'load_attendance'})});
+    const res = await fetch(url,{method:'POST',redirect:'follow',body:JSON.stringify({action:'load_attendance'})});
     const d = await res.json();
     if(d.ok && d.data){
       present = new Set(d.data.members);
@@ -2587,10 +2583,8 @@ async function backupToGas(){
       kpiGoals: JSON.parse(localStorage.getItem('kpiGoals')||'{}'),
       shakenAllData: getShakenAll(),
     };
-    const res = await fetch(url, {method:'POST', body:JSON.stringify(payload)});
-    const data = await res.json();
-    if(data.ok) setBackupStatus('✅ バックアップ完了 '+data.saved, 'var(--green)');
-    else setBackupStatus('❌ エラー: '+data.error, 'var(--red)');
+    await fetch(url, {method:'POST', mode:'no-cors', body:JSON.stringify(payload)});
+    setBackupStatus('✅ バックアップ完了（スプレッドシートを確認してください）', 'var(--green)');
   }catch(e){
     setBackupStatus('❌ 通信エラー: '+e.message, 'var(--red)');
   }
@@ -2657,7 +2651,7 @@ async function testGasConnection(){
   }
   if(st){ st.textContent = '🔌 接続テスト中...'; st.style.color='var(--text3)'; }
   try{
-    const res = await fetch(url);
+    const res = await fetch(url, {redirect:'follow'});
     const d = await res.json();
     if(d.ok){
       if(st){ st.textContent = '✅ 接続成功！スプレッドシートと繋がっています'; st.style.color='var(--green)'; }

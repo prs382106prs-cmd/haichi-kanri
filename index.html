@@ -570,6 +570,55 @@ input,textarea,select{max-width:100%;box-sizing:border-box}
     </div>
   </div>
 </div>
+
+<!-- 設定パネル -->
+<div class="panel" id="panel-settings">
+  <div class="gc">
+    <div class="gc-head">
+      <div><div class="gc-title">設定</div><div class="gc-sub">スプレッドシート連携・バックアップ</div></div>
+    </div>
+
+    <!-- GAS URL設定 -->
+    <div style="background:var(--accent-light);border:1.5px solid rgba(0,113,227,.2);border-radius:14px;padding:16px;margin-bottom:14px">
+      <div style="font-size:15px;font-weight:700;color:var(--accent);margin-bottom:6px">☁️ スプレッドシート連携URL</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:10px;line-height:1.6">GASのデプロイURLを入力してください。保存後、各タブの📤ボタンでデータが自動保存されます。</div>
+      <input type="url" id="gas-url" placeholder="https://script.google.com/macros/s/..." inputmode="url"
+        style="width:100%;padding:10px 12px;border:1.5px solid rgba(0,113,227,.3);border-radius:10px;background:var(--surface);color:var(--text);font-size:13px;font-family:var(--sans);outline:none;box-sizing:border-box;margin-bottom:10px"
+        oninput="saveGasUrl()">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button onclick="testGasConnection()" style="padding:10px;background:var(--surface2);color:var(--text2);border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--sans)">🔌 接続テスト</button>
+        <button onclick="clearGasUrl()" style="padding:10px;background:var(--red-bg);color:var(--red);border:1.5px solid rgba(255,59,48,.2);border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--sans)">🗑️ URLをクリア</button>
+      </div>
+      <div id="gas-status" style="text-align:center;font-size:12px;margin-top:8px;min-height:16px"></div>
+    </div>
+
+    <!-- 一括バックアップ -->
+    <div style="background:var(--surface2);border-radius:14px;padding:16px;margin-bottom:14px">
+      <div style="font-size:15px;font-weight:700;color:var(--text2);margin-bottom:6px">📦 一括バックアップ</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:10px">全データ（車検・KPI・出勤）を一度にスプレッドシートへ保存します。</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button onclick="backupToGas()" style="padding:11px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)">📤 全データ保存</button>
+        <button onclick="restoreFromGas()" style="padding:11px;background:var(--surface);color:var(--text2);border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)">📥 全データ読込</button>
+      </div>
+      <div id="backup-status" style="text-align:center;font-size:12px;color:var(--text3);margin-top:8px;min-height:16px"></div>
+    </div>
+
+    <!-- GASコードコピー -->
+    <div style="background:var(--surface2);border-radius:14px;padding:16px;margin-bottom:14px">
+      <div style="font-size:15px;font-weight:700;color:var(--text2);margin-bottom:6px">📋 GASコード</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:10px;line-height:1.6">GoogleスプレッドシートのApps Scriptに貼り付けてデプロイしてください。</div>
+      <button onclick="copyGasCode()" style="width:100%;padding:11px;background:var(--surface);color:var(--text2);border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)">📋 GASコードをコピー</button>
+    </div>
+
+    <!-- データ削除 -->
+    <div style="background:var(--red-bg);border:1px solid rgba(255,59,48,.15);border-radius:14px;padding:16px">
+      <div style="font-size:15px;font-weight:700;color:var(--red);margin-bottom:6px">⚠️ データ管理</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:10px">アプリ内のデータを削除します（スプレッドシートのデータは残ります）。</div>
+      <button onclick="confirmResetHistory()" style="width:100%;padding:11px;background:var(--surface);color:var(--red);border:1.5px solid rgba(255,59,48,.3);border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)">🗑️ KPI実績データを削除</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // 時計
 function updateClock(){
@@ -2144,7 +2193,10 @@ const GAS_CODE = `
 
 // CORSヘッダー付きレスポンス（どの端末からでもアクセス可能）
 function doGet(e) {
-  return ok('GASサーバー稼働中');
+  // 接続テスト用（どの端末からもアクセス可能）
+  return ContentService
+    .createTextOutput(JSON.stringify({ok:true, message:'GASサーバー稼働中', time: new Date().toLocaleString('ja-JP')}))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 function doPost(e) {
@@ -2413,7 +2465,7 @@ function showSyncStatus(tabId, msg, isOk){
   el.textContent = msg;
   el.style.color = isOk ? 'var(--green)' : 'var(--red)';
   el.style.display = 'inline';
-  setTimeout(()=>{ if(el) el.style.display='none'; }, 3000);
+  setTimeout(()=>{ if(el) el.style.display='none'; }, 5000);
 }
 
 // 車検データ 保存
@@ -2422,7 +2474,7 @@ async function saveShakenToSheet(){
   if(!url){ showSyncStatus('shaken','⚠️ GAS URLを設定してください',false); return; }
   showSyncStatus('shaken','📤 保存中...',true);
   try{
-    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'save_shaken', data:getShakenAll()})});
+    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save_shaken', data:getShakenAll()})});
     const d = await res.json();
     showSyncStatus('shaken', d.ok ? '✅ スプレッドシートに保存' : '❌ '+d.error, d.ok);
   }catch(e){ showSyncStatus('shaken','❌ 通信エラー',false); }
@@ -2435,7 +2487,7 @@ async function loadShakenFromSheet(){
   if(!confirm('スプレッドシートのデータで上書きします。よろしいですか？')) return;
   showSyncStatus('shaken','📥 読込中...',true);
   try{
-    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'load_shaken'})});
+    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'load_shaken'})});
     const d = await res.json();
     if(d.ok && d.data){
       saveShakenAll(d.data);
@@ -2452,7 +2504,7 @@ async function saveKpiToSheet(){
   showSyncStatus('kpi','📤 保存中...',true);
   try{
     const history = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
-    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'save_kpi', data:history})});
+    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save_kpi', data:history})});
     const d = await res.json();
     showSyncStatus('kpi', d.ok ? '✅ スプレッドシートに保存' : '❌ '+d.error, d.ok);
   }catch(e){ showSyncStatus('kpi','❌ 通信エラー',false); }
@@ -2465,7 +2517,7 @@ async function loadKpiFromSheet(){
   if(!confirm('スプレッドシートのKPI実績で上書きします。よろしいですか？')) return;
   showSyncStatus('kpi','📥 読込中...',true);
   try{
-    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'load_kpi'})});
+    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'load_kpi'})});
     const d = await res.json();
     if(d.ok && d.data){
       localStorage.setItem('kpiHistory', JSON.stringify(d.data));
@@ -2482,7 +2534,7 @@ async function saveKpiGoalsToSheet(){
   showSyncStatus('kpi','📤 目標保存中...',true);
   try{
     const goals = JSON.parse(localStorage.getItem('kpiGoals')||'{}');
-    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'save_kpi_goals', data:goals})});
+    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save_kpi_goals', data:goals})});
     const d = await res.json();
     showSyncStatus('kpi', d.ok ? '✅ 目標をスプレッドシートに保存' : '❌ '+d.error, d.ok);
   }catch(e){ showSyncStatus('kpi','❌ 通信エラー',false); }
@@ -2496,7 +2548,7 @@ async function saveAttendanceToSheet(){
   try{
     const date = document.getElementById('today-date')?.value || getTodayLocal();
     const members = [...present];
-    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'save_attendance', data:{date, members}})});
+    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save_attendance', data:{date, members}})});
     const d = await res.json();
     showSyncStatus('attendance', d.ok ? '✅ スプレッドシートに保存' : '❌ '+d.error, d.ok);
   }catch(e){ showSyncStatus('attendance','❌ 通信エラー',false); }
@@ -2509,7 +2561,7 @@ async function loadAttendanceFromSheet(){
   if(!confirm('スプレッドシートの出勤データを読み込みます。よろしいですか？')) return;
   showSyncStatus('attendance','📥 読込中...',true);
   try{
-    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'load_attendance'})});
+    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'load_attendance'})});
     const d = await res.json();
     if(d.ok && d.data){
       present = new Set(d.data.members);
@@ -2571,7 +2623,60 @@ async function restoreFromGas(){
 function initSettings(){
   const saved = localStorage.getItem('gasUrl');
   const inp = document.getElementById('gas-url');
-  if(inp && saved) inp.value = saved;
+  if(inp){
+    inp.value = saved || '';
+    // ステータス表示
+    const st = document.getElementById('gas-status');
+    if(st) st.textContent = saved ? '✅ URL設定済み' : '⚠️ URLが未設定です';
+    if(st) st.style.color = saved ? 'var(--green)' : 'var(--orange)';
+  }
+}
+
+// GAS URL 入力時に即座にlocalStorageへ保存
+function saveGasUrl(){
+  const inp = document.getElementById('gas-url');
+  const url = inp?.value?.trim() || '';
+  if(url){
+    localStorage.setItem('gasUrl', url);
+    const st = document.getElementById('gas-status');
+    if(st){ st.textContent = '✅ 保存しました'; st.style.color = 'var(--green)'; }
+  } else {
+    localStorage.removeItem('gasUrl');
+    const st = document.getElementById('gas-status');
+    if(st){ st.textContent = '⚠️ URLが空です'; st.style.color = 'var(--orange)'; }
+  }
+}
+
+// 接続テスト
+async function testGasConnection(){
+  const url = getGasUrl();
+  const st = document.getElementById('gas-status');
+  if(!url){
+    if(st){ st.textContent = '⚠️ URLを入力してください'; st.style.color='var(--orange)'; }
+    return;
+  }
+  if(st){ st.textContent = '🔌 接続テスト中...'; st.style.color='var(--text3)'; }
+  try{
+    const res = await fetch(url);
+    const d = await res.json();
+    if(d.ok){
+      if(st){ st.textContent = '✅ 接続成功！スプレッドシートと繋がっています'; st.style.color='var(--green)'; }
+    } else {
+      if(st){ st.textContent = '❌ エラー: '+d.error; st.style.color='var(--red)'; }
+    }
+  }catch(e){
+    if(st){ st.textContent = '❌ 接続失敗。URLを確認してください'; st.style.color='var(--red)'; }
+  }
+}
+
+// URL クリア
+function clearGasUrl(){
+  if(!confirm('GAS URLを削除しますか？\n自動保存が無効になります。')) return;
+  localStorage.removeItem('gasUrl');
+  const inp = document.getElementById('gas-url');
+  if(inp) inp.value = '';
+  const st = document.getElementById('gas-status');
+  if(st){ st.textContent = 'URLを削除しました'; st.style.color='var(--text3)'; }
 }
 
 // ── 実績グラフ ──
@@ -3633,5 +3738,4 @@ init();
 </script>
 </body>
 </html>
-      
- 
+   

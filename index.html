@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
 
 <style>
+*,*::before,*::after{box-sizing:border-box}
 :root{
   --bg:#f5f5f7;
   --surface:#ffffff;
@@ -36,7 +37,8 @@
   --shadow-sm:0 1px 4px rgba(0,0,0,.05);
 }
 @media(prefers-color-scheme:dark){
-  :root{
+  *,*::before,*::after{box-sizing:border-box}
+:root{
     --bg:#000;--surface:#1c1c1e;--surface2:#2c2c2e;
     --border:rgba(255,255,255,.1);--text:#f5f5f7;--text2:#aeaeb2;--text3:#636366;
     --accent:#0a84ff;--accent-light:rgba(10,132,255,.15);
@@ -48,78 +50,75 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg)}
-body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh;padding-bottom:env(safe-area-inset-bottom);overflow-x:hidden;-webkit-overflow-scrolling:touch}
 
 /* STATUS BAR */
 .status-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 0;font-size:15px;font-weight:600;color:var(--text)}
-.time{font-size:17px;font-weight:700}
+.time{font-size:15px;font-weight:700}
 .status-icons{display:flex;align-items:center;gap:6px}
 
 /* WIDGET TOP */
 .widget-top{margin:10px 16px 0;background:var(--surface);border-radius:var(--rx);padding:18px 20px;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
 .widget-date{font-size:12px;color:var(--text3);font-weight:500;margin-bottom:2px}
-.widget-title{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.widget-title{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.5px}
 .widget-sub{font-size:13px;color:var(--text2);margin-top:4px}
 .widget-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap;gap:8px}
-.w-date-input{padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:13px;font-family:var(--sans);outline:none}
-.w-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:700}
+.w-date-input{padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:15px;font-family:var(--sans);outline:none}
+.w-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:20px;font-size:15px;font-weight:700}
 .b-ok{background:var(--green-bg);color:var(--green)}
 .b-warn{background:var(--orange-bg);color:var(--orange)}
 .b-bad{background:var(--red-bg);color:var(--red)}
 .bdot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:pulse 2s ease infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.ios-add-btn{display:none;padding:7px 14px;background:var(--accent-light);color:var(--accent);border:1px solid rgba(0,113,227,.25);border-radius:var(--rs);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+.ios-add-btn{display:none;padding:7px 14px;background:var(--accent-light);color:var(--accent);border:1px solid rgba(0,113,227,.25);border-radius:var(--rs);font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans)}
 
 /* TABS */
-.seg-wrap{background:var(--surface2);border-radius:var(--r);padding:3px;display:flex;gap:2px;margin:14px 16px 0}
-.seg{flex:1;padding:9px 6px;background:transparent;color:var(--text3);font-size:12px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);border-radius:11px;transition:all .2s;text-align:center;white-space:nowrap}
+.seg-wrap{background:var(--surface2);border-radius:var(--r);padding:3px;display:flex;gap:2px;margin:14px 16px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.seg-wrap::-webkit-scrollbar{display:none}
+.seg{flex:0 0 auto;padding:9px 13px;background:transparent;color:var(--text3);font-size:15px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);border-radius:11px;transition:all .2s;text-align:center;white-space:nowrap}
 .seg:hover{color:var(--text2)}
 .seg.active{background:var(--surface);color:var(--text);font-weight:700;box-shadow:var(--shadow-sm)}
 
 /* WRAP */
-.wrap{max-width:860px;margin:0 auto;padding:16px 16px 60px}
+.wrap{max-width:860px;margin:0 auto;padding:16px 12px 60px;overflow-x:hidden}
+input,textarea,select{max-width:100%;box-sizing:border-box}
 
 /* PANELS */
 .panel{display:none}.panel.active{display:block;animation:fadeUp .22s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 /* CARDS */
-.gc{background:var(--surface);border-radius:var(--rx);border:1px solid var(--border);padding:20px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
+.gc{background:var(--surface);border-radius:var(--rx);border:1px solid var(--border);padding:14px 12px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
 .gc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
-.gc-title{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.4px}
+.gc-title{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.4px}
 .gc-sub{font-size:12px;color:var(--text3);margin-top:2px}
 
 /* STAFF GRID */
-.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
-.sbtn{padding:14px 10px;border-radius:var(--r);border:1.5px solid var(--border);background:var(--surface2);cursor:pointer;text-align:left;transition:all .18s;user-select:none;position:relative;overflow:hidden}
-.sbtn:hover{border-color:var(--accent)}
-.sbtn.present{border-color:var(--accent);background:var(--accent-light)}
-.sbtn.absent{opacity:.32;filter:grayscale(.4)}
-.sbtn.alert{border-color:var(--accent)!important;background:var(--accent-light)!important;opacity:1!important;filter:none!important;animation:alertPulse 1.8s ease infinite}
-@keyframes alertPulse{0%,100%{box-shadow:0 0 0 0 rgba(10,132,255,.35)}50%{box-shadow:0 0 0 6px rgba(10,132,255,0)}}
-.schk{position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.4);transition:all .22s cubic-bezier(.34,1.56,.64,1)}
-.sbtn.present .schk{opacity:1;transform:scale(1)}
-.schk svg{width:9px;height:9px;stroke:#fff;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.s-name{font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px;letter-spacing:.05em;font-family:'M PLUS Rounded 1c',sans-serif;line-height:1.1}
-.sbtn.present .s-name{color:var(--accent);font-family:'M PLUS Rounded 1c',sans-serif}
-.sn{font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px;letter-spacing:.05em;font-family:'M PLUS Rounded 1c',sans-serif;line-height:1.1}
-.sbtn.present .sn{color:var(--accent);font-family:'M PLUS Rounded 1c',sans-serif}
-.s-role{font-size:11px;color:var(--text2);line-height:1.4;margin-bottom:7px;font-weight:500}
-.s-type{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--surface2);color:var(--text2);border:1px solid var(--border);display:inline-block}
-.sbtn.present .s-type{background:var(--accent-light);color:var(--accent);border-color:rgba(0,113,227,.2)}
-.alert-hint{font-size:11px;color:var(--accent);font-weight:700;margin-top:6px;padding:3px 8px;background:var(--accent-light);border-radius:6px;display:inline-block}
-.ios-cta{width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:var(--r);font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;letter-spacing:-.2px;transition:opacity .15s}
+.sgrp-label{font-size:13px;font-weight:700;color:var(--text3);margin:10px 0 6px;padding-left:2px}
+.srow{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.sbtn{padding:9px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;text-align:center;transition:all .18s;user-select:none;font-size:15px;font-weight:700;color:var(--text);font-family:'M PLUS Rounded 1c',sans-serif;white-space:nowrap}
+.sbtn:active{opacity:.7}
+.sbtn.present{border-color:var(--accent);background:var(--accent);color:#fff}
+.sbtn.absent{opacity:.3;background:var(--surface2);border-color:var(--border);color:var(--text3)}
+.sbtn.alert{border-color:var(--orange)!important;background:var(--orange-bg)!important;color:var(--orange)!important;opacity:1!important;animation:alertPulse 1.8s ease infinite}
+.sbtn.mechanic.present{border-color:var(--green);background:var(--green);color:#fff}
+@keyframes alertPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,149,0,.4)}50%{box-shadow:0 0 0 6px rgba(255,149,0,0)}}
+.alert-hint{display:none}
+.schk{display:none}.sn{display:none}.sr{display:none}.st{display:none}
+.sbtn.mechanic.present .s-type{background:var(--green-bg);color:var(--green);border-color:rgba(52,199,89,.3)}
+.alert-hint{font-size:15px;color:var(--accent);font-weight:700;margin-top:6px;padding:3px 8px;background:var(--accent-light);border-radius:6px;display:inline-block}
+.ios-cta{width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:var(--r);font-size:15px;font-weight:700;font-family:var(--sans);cursor:pointer;letter-spacing:-.2px;transition:opacity .15s}
 .ios-cta:hover{opacity:.85}
 
 /* LAYOUT MAP */
-.map-dir{text-align:center;font-size:11px;color:var(--text3);padding:8px 0;letter-spacing:.06em}
-.map-ctr{text-align:center;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-light);border:1px solid rgba(0,113,227,.2);border-radius:8px;padding:6px;letter-spacing:.04em}
-.map-rl{font-size:10px;font-weight:700;color:var(--text2);margin:16px 0 8px;letter-spacing:.08em;text-transform:uppercase}
+.map-dir{text-align:center;font-size:12px;color:var(--text3);padding:8px 0;letter-spacing:.06em}
+.map-ctr{text-align:center;font-size:15px;font-weight:700;color:var(--accent);background:var(--accent-light);border:1px solid rgba(0,113,227,.2);border-radius:8px;padding:6px;letter-spacing:.04em}
+.map-rl{font-size:12px;font-weight:700;color:var(--text2);margin:16px 0 8px;letter-spacing:.08em;text-transform:uppercase}
 .seat-row,.srow{display:flex;gap:10px;flex-wrap:wrap}
 .seat{flex:1;min-width:110px;padding:13px 12px;border-radius:var(--r);border:1px solid var(--border);background:var(--surface2);text-align:center;transition:all .2s}
 .seat.empty{border-style:dashed;opacity:.3}
 .seat-n{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;letter-spacing:-.2px}
-.seat-r{font-size:11px;color:var(--text2);line-height:1.4;font-weight:500}
+.seat-r{font-size:12px;color:var(--text2);line-height:1.4;font-weight:500}
 .seat-blue{background:rgba(0,113,227,.08);border-color:rgba(0,113,227,.25)}.seat-blue .seat-n{color:var(--accent)}
 .seat-teal{background:rgba(52,199,89,.07);border-color:rgba(52,199,89,.25)}.seat-teal .seat-n{color:#1a8f3c}
 .seat-purple{background:rgba(191,90,242,.07);border-color:rgba(191,90,242,.25)}.seat-purple .seat-n{color:var(--purple)}
@@ -128,7 +127,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .seat-editable{border-style:dashed!important;border-color:rgba(0,113,227,.35)!important;background:var(--accent-light)!important;cursor:pointer}
 .seat-selected{border-color:var(--accent)!important;box-shadow:0 0 0 3px rgba(0,113,227,.25)!important;transform:scale(1.04)}
 .drag-hover{border-color:var(--accent)!important;background:var(--accent-light)!important;transform:scale(1.03)}
-.seat-select-hint{text-align:center;font-size:11px;color:var(--accent);padding:6px;margin-top:4px;background:var(--accent-light);border-radius:8px;margin-bottom:8px}
+.seat-select-hint{text-align:center;font-size:15px;color:var(--accent);padding:6px;margin-top:4px;background:var(--accent-light);border-radius:8px;margin-bottom:8px}
 .drag-handle{display:none}
 .seat-drop-zone{min-height:60px}
 
@@ -137,45 +136,50 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .pat-ok{background:var(--green-bg);border-color:rgba(52,199,89,.2)}.pat-ok .pt{color:var(--green)}
 .pat-warn{background:var(--orange-bg);border-color:rgba(255,149,0,.2)}.pat-warn .pt{color:var(--orange)}
 .pat-danger{background:var(--red-bg);border-color:rgba(255,59,48,.2)}.pat-danger .pt{color:var(--red)}
-.pt{font-size:13px;font-weight:700;margin-bottom:10px;letter-spacing:-.2px}
+.pt{font-size:14px;font-weight:700;margin-bottom:10px;letter-spacing:-.2px}
 .pl{padding-left:14px}
 .pl li{font-size:13px;color:var(--text);margin-bottom:5px;line-height:1.7}
 .alert-blk{margin-top:10px;padding:10px 12px;background:rgba(255,59,48,.06);border-radius:var(--rs);border-left:3px solid var(--red)}
-.alert-blk strong{font-size:11px;color:var(--red);font-weight:700;display:block;margin-bottom:4px;letter-spacing:.04em}
-.alert-blk p{font-size:12px;color:var(--text2);line-height:1.7}
+.alert-blk strong{font-size:13px;color:var(--red);font-weight:700;display:block;margin-bottom:4px;letter-spacing:.04em}
+.alert-blk p{font-size:13px;color:var(--text2);line-height:1.7}
 .ab-block{margin-top:12px;padding:12px 14px;background:var(--surface2);border-radius:var(--rs);border:1px solid var(--border)}
-.ab-block strong{font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.06em;display:block;margin-bottom:6px}
-.atag{display:inline-block;padding:3px 9px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text2);margin:2px}
+.ab-block strong{font-size:12px;color:var(--text3);font-weight:700;letter-spacing:.06em;display:block;margin-bottom:6px}
+.atag{display:inline-block;padding:3px 9px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:15px;color:var(--text2);margin:2px}
 .rule-blk{margin-top:14px;padding:14px;background:var(--surface2);border-radius:var(--rs);border:1px solid var(--border)}
-.rule-blk strong{font-size:12px;font-weight:700;display:block;margin-bottom:8px;color:var(--text)}
-.rule-blk p{font-size:13px;color:var(--text2);line-height:2.1}
+.rule-blk strong{font-size:13px;font-weight:700;display:block;margin-bottom:8px;color:var(--text)}
+.rule-blk p{font-size:15px;color:var(--text2);line-height:2.1}
 
 /* CHECKLIST */
 .prog-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
 .prog-track{flex:1;height:4px;background:var(--surface2);border-radius:4px;overflow:hidden}
 .prog-fill{height:4px;background:var(--accent);border-radius:4px;transition:width .4s cubic-bezier(.4,0,.2,1)}
-.prog-n{font-size:12px;color:var(--text2);white-space:nowrap;font-weight:600}
-.rst-btn{padding:5px 12px;background:transparent;border:1px solid var(--border);border-radius:var(--rs);font-size:11px;color:var(--text2);cursor:pointer;font-family:var(--sans)}
+.prog-n{font-size:15px;color:var(--text2);white-space:nowrap;font-weight:600}
+.rst-btn{padding:5px 12px;background:transparent;border:1px solid var(--border);border-radius:var(--rs);font-size:15px;color:var(--text2);cursor:pointer;font-family:var(--sans)}
 .rst-btn:hover{background:var(--surface2)}
 .csec{margin-bottom:20px}
-.csec-h{font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.06em;margin-bottom:10px;padding:7px 12px;background:var(--surface2);border-radius:var(--rs)}
+.csec-h{font-size:15px;font-weight:700;color:var(--text2);letter-spacing:.06em;margin-bottom:10px;padding:7px 12px;background:var(--surface2);border-radius:var(--rs)}
 .ci{display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)}
 .ci:last-child{border-bottom:none}
 .ci input[type=checkbox]{width:17px;height:17px;margin-top:1px;cursor:pointer;flex-shrink:0;accent-color:var(--accent)}
-.ci label{font-size:13px;color:var(--text);cursor:pointer;line-height:1.6;font-weight:500}
+.ci label{font-size:15px;color:var(--text);cursor:pointer;line-height:1.6;font-weight:500}
 .ci.done label{color:var(--text3);text-decoration:line-through}
 
 /* INSTALL */
 .inst-bar{display:none;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rx);padding:14px 18px;margin:12px 16px 0;box-shadow:var(--shadow-sm)}
-.inst-bar p{font-size:13px;color:var(--text);flex:1;line-height:1.5}
-.inst-bar p span{display:block;font-size:11px;color:var(--text3);margin-top:1px}
-.inst-btn{padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:var(--rs);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap}
-.inst-x{background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:0 2px;flex-shrink:0}
+.inst-bar p{font-size:15px;color:var(--text);flex:1;line-height:1.5}
+.inst-bar p span{display:block;font-size:15px;color:var(--text3);margin-top:1px}
+.inst-btn{padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:var(--rs);font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+.inst-x{background:none;border:none;color:var(--text3);font-size:21px;cursor:pointer;padding:0 2px;flex-shrink:0}
 .ios-guide{display:none;background:var(--accent-light);border:1px solid rgba(0,113,227,.2);border-radius:var(--rx);padding:16px 18px;margin:12px 16px 0;position:relative}
-.ios-guide strong{display:block;font-size:14px;font-weight:700;margin-bottom:10px;color:var(--text)}
-.ios-guide ol{padding-left:18px;color:var(--text2);font-size:13px;line-height:2.2}
+.ios-guide strong{display:block;font-size:15px;font-weight:700;margin-bottom:10px;color:var(--text)}
+.ios-guide ol{padding-left:18px;color:var(--text2);font-size:15px;line-height:2.2}
 .ig-x{position:absolute;top:14px;right:16px;background:none;border:none;font-size:18px;color:var(--text3);cursor:pointer}
+.stats-period-btn,.stats-type-btn{padding:7px 14px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:15px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all .15s}
+.stats-period-btn.active,.stats-type-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+#custom-range{display:flex}
+@keyframes guardFadeIn{from{opacity:0}to{opacity:1}}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -193,7 +197,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
   <div class="widget-title">人員配置管理</div>
   <div class="widget-sub">出勤者を選ぶと配置が自動で決まります</div>
   <div class="widget-row">
-    <input type="date" id="today-date" class="w-date-input">
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="date" id="today-date" class="w-date-input">
+      <button onclick="returnToToday()" id="today-return-btn" style="display:none;padding:5px 10px;background:var(--accent-light);color:var(--accent);border:1px solid rgba(0,113,227,.2);border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans)">今日に戻る</button>
+    </div>
     <span id="count-display" class="w-badge b-ok"><span class="bdot"></span>6名出勤</span>
     <button id="ios-install-btn" class="ios-add-btn" onclick="showIosGuide()">ホーム画面に追加</button>
   </div>
@@ -218,8 +225,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
   <button class="seg active" onclick="switchTab('attendance')">出勤選択</button>
   <button class="seg" onclick="switchTab('layout')">配置図</button>
   <button class="seg" onclick="switchTab('pattern')">欠員対応</button>
-  <button class="seg" onclick="switchTab('checklist')">工程会議 <span id="check-badge" style="display:none;background:var(--blue);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:3px;font-weight:700"></span></button>
+  <button class="seg" onclick="switchTab('checklist')">工程会議 <span id="check-badge" style="display:none;background:var(--blue);color:#fff;border-radius:10px;padding:1px 6px;font-size:14px;margin-left:3px;font-weight:700"></span></button>
   <button class="seg" onclick="switchTab('kpi')">KPI</button>
+  <button class="seg" onclick="switchTab('stats')">実績</button>
+  <button class="seg" onclick="switchTab('morning')">朝礼</button>
+  <button class="seg" onclick="switchTab('shaken')">車検</button>
+  <button class="seg" onclick="switchTab('settings')">設定</button>
 </div>
 
 <!-- 出勤選択 -->
@@ -229,6 +240,15 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
       <div><div class="gc-title">本日の出勤者</div><div class="gc-sub">タップで出欠を切り替え</div></div>
     </div>
     <div class="sgrid" id="staff-grid"></div>
+
+    <div style="margin-top:16px;padding:12px 14px;background:var(--surface2);border-radius:12px;border:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:8px;font-weight:600">☁️ スプレッドシート連携</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button onclick="saveAttendanceToSheet()" style="padding:10px 4px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)">📤 保存</button>
+        <button onclick="loadAttendanceFromSheet()" style="padding:10px 4px;background:var(--surface);color:var(--text2);border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)">📥 読込</button>
+      </div>
+      <div id="sync-status-attendance" style="text-align:center;font-size:12px;color:var(--green);margin-top:6px;min-height:14px"></div>
+    </div>
     <button class="ios-cta" onclick="switchTab('layout')">配置図を確認 →</button>
   </div>
 </div>
@@ -265,53 +285,17 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 </div>
 
 <div class="panel" id="panel-kpi">
-  <!-- 来店カウンター -->
-  <div class="gc" style="margin-bottom:14px">
-    <div class="gc-head">
-      <div><div class="gc-title">来店カウンター</div><div class="gc-sub">本日の来店組数</div></div>
-      <button class="rst-btn" onclick="resetCounter()">リセット</button>
-    </div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:20px;padding:12px 0 8px">
-      <button onclick="changeCount(-1)" style="width:52px;height:52px;border-radius:50%;border:none;background:rgba(255,59,48,.1);color:#ff3b30;font-size:26px;font-weight:300;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">−</button>
-      <div style="text-align:center">
-        <div id="visit-count" style="font-size:56px;font-weight:700;color:var(--blue);letter-spacing:-2px;line-height:1">0</div>
-        <div style="font-size:12px;color:#8e8e93;margin-top:4px">組</div>
-      </div>
-      <button onclick="changeCount(1)" style="width:52px;height:52px;border-radius:50%;border:none;background:rgba(58,142,255,.12);color:var(--blue);font-size:26px;font-weight:300;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">＋</button>
-    </div>
-    <div style="display:flex;gap:8px;margin-top:8px">
-      <div style="flex:1;text-align:center;padding:10px 8px;background:rgba(52,199,89,.08);border-radius:10px;border:1px solid rgba(52,199,89,.2)">
-        <div style="font-size:18px;font-weight:700;color:#1a8f3c" id="visit-target">30</div>
-        <div style="font-size:10px;color:#8e8e93;margin-top:2px">目標</div>
-      </div>
-      <div style="flex:1;text-align:center;padding:10px 8px;background:rgba(58,142,255,.06);border-radius:10px;border:1px solid rgba(58,142,255,.15)">
-        <div style="font-size:18px;font-weight:700;color:var(--blue)" id="visit-remain">30</div>
-        <div style="font-size:10px;color:#8e8e93;margin-top:2px">残り</div>
-      </div>
-      <div style="flex:1;text-align:center;padding:10px 8px;background:rgba(255,159,10,.07);border-radius:10px;border:1px solid rgba(255,159,10,.2)">
-        <div style="font-size:18px;font-weight:700;color:#a05f00" id="visit-rate">0%</div>
-        <div style="font-size:10px;color:#8e8e93;margin-top:2px">達成率</div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;margin-top:10px">
-      <span style="font-size:12px;color:#8e8e93">目標来店数：</span>
-      <input type="number" id="target-input" value="30" min="1" max="99"
-        style="width:60px;padding:6px 10px;border:1px solid rgba(0,0,0,.1);border-radius:8px;font-size:14px;font-family:inherit;text-align:center;color:#1c1c1e;background:#fff"
-        oninput="updateCounter()">
-      <span style="font-size:12px;color:#8e8e93">組</span>
-    </div>
-  </div>
-
-  <!-- KPI入力 -->
   <div class="gc">
     <div class="gc-head">
-      <div><div class="gc-title">本日のKPI</div><div class="gc-sub">目標 / 実績を入力</div></div>
-      <button class="rst-btn" onclick="resetKpi()">リセット</button>
+      <div><div class="gc-title">本日のKPI実績</div><div class="gc-sub">声かけ件数と獲得件数を入力して保存</div></div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button onclick="openBulkGoalModal()" style="padding:6px 10px;background:var(--green-bg);color:var(--green);border:1px solid rgba(52,199,89,.3);border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans)">📋 目標一括</button>
+        <button class="rst-btn" onclick="resetKpi()">リセット</button>
+      </div>
     </div>
-    <!-- 担当者選択 -->
     <div style="margin-bottom:14px">
       <select id="kpi-person-select" onchange="onKpiPersonChange(this.value)"
-        style="width:100%;padding:11px 14px;border:1.5px solid rgba(0,0,0,.1);border-radius:12px;background:#fff;color:#1c1c1e;font-size:15px;font-family:inherit;outline:none;-webkit-appearance:none;appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22><path d=%22M1 1l5 5 5-5%22 fill=%22none%22 stroke=%22%238e8e93%22 stroke-width=%221.5%22 stroke-linecap=%22round%22/></svg>');background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;font-weight:500">
+        style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);font-size:17px;font-family:inherit;outline:none;-webkit-appearance:none;appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22><path d=%22M1 1l5 5 5-5%22 fill=%22none%22 stroke=%22%238e8e93%22 stroke-width=%221.5%22 stroke-linecap=%22round%22/></svg>');background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;font-weight:500">
         <option value="">担当者を選択してください</option>
         <option value="fujita">藤田さん</option>
         <option value="kado">角さん</option>
@@ -322,46 +306,379 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
       </select>
     </div>
     <div id="kpi-area"></div>
+    <button id="kpi-save-btn" onclick="saveKpiData()" style="display:none;width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:var(--r);font-size:15px;font-weight:700;font-family:var(--sans);cursor:pointer;margin-top:14px">本日の実績を保存</button>
+  </div>
+</div>
+
+<!-- 実績グラフ -->
+<div class="panel" id="panel-stats">
+  <div class="gc">
+    <div class="gc-head">
+      <div><div class="gc-title">実績グラフ</div><div class="gc-sub">声かけ・獲得の推移</div></div>
+      <button onclick="confirmResetHistory()" style="padding:5px 12px;background:var(--red-bg);color:var(--red);border:1px solid rgba(255,59,48,.2);border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans)">データ消去</button>
+    </div>
+    <!-- 期間切り替え -->
+    <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="stats-period-btn active" onclick="setStatsPeriod('daily')">日毎</button>
+      <button class="stats-period-btn" onclick="setStatsPeriod('weekly')">週毎</button>
+      <button class="stats-period-btn" onclick="setStatsPeriod('monthly')">月毎</button>
+      <button class="stats-period-btn" onclick="setStatsPeriod('custom')">日付指定</button>
+    </div>
+    <!-- 日付指定 -->
+    <div id="custom-range" style="display:none;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+      <input type="date" id="stats-from" style="padding:7px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:15px;font-family:inherit">
+      <span style="color:var(--text2);font-size:15px">〜</span>
+      <input type="date" id="stats-to" style="padding:7px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:15px;font-family:inherit">
+      <button onclick="renderStatsChart()" style="padding:7px 16px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans)">表示</button>
+    </div>
+    <!-- 表示切り替え：推移 / 個人比較 -->
+    <div style="display:flex;gap:6px;margin-bottom:12px">
+      <button class="stats-type-btn active" id="mode-btn-trend" onclick="setStatsMode('trend')">推移</button>
+      <button class="stats-type-btn" id="mode-btn-compare" onclick="setStatsMode('compare')">個人比較</button>
+      <button class="stats-type-btn active" id="chart-type-bar" onclick="setStatsType('bar')" style="margin-left:auto">棒</button>
+      <button class="stats-type-btn" id="chart-type-line" onclick="setStatsType('line')">折れ線</button>
+    </div>
+    <!-- フィルター行 -->
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <select id="stats-person-select" onchange="renderStatsChart()"
+        style="flex:1;padding:9px 10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-size:15px;font-family:inherit;outline:none">
+        <option value="all">全員</option>
+        <option value="fujita">藤田さん</option>
+        <option value="kado">角さん</option>
+        <option value="tanoue">田上さん</option>
+        <option value="kitazawa">北沢さん</option>
+        <option value="tominae">冨永さん</option>
+        <option value="other">その他</option>
+      </select>
+      <select id="stats-kpi-select" onchange="renderStatsChart()"
+        style="flex:1;padding:9px 10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-size:15px;font-family:inherit;outline:none">
+        <option value="total">全項目</option>
+        <option value="reserve">予約</option>
+        <option value="monthly">当月予約</option>
+        <option value="nextmonth">来月予約</option>
+        <option value="line">LINE登録</option>
+        <option value="oil">オイルパック</option>
+        <option value="replace">乗換提案</option>
+        <option value="ins">保険提案</option>
+        <option value="freecheck">無料点検</option>
+        <option value="inen">1年点検</option>
+      </select>
+    </div>
+    <canvas id="stats-chart" style="width:100%;max-height:280px"></canvas>
+    <div id="stats-summary" style="margin-top:14px"></div>
+  </div>
+</div>
+
+<!-- 車検進捗 -->
+<div class="panel" id="panel-morning">
+  <div class="gc">
+    <div class="gc-head">
+      <div><div class="gc-title">朝礼発表</div><div class="gc-sub">昨日の実績・当月累計</div></div>
+      <button onclick="renderMorning()" style="padding:5px 12px;background:var(--surface2);color:var(--text2);border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans)">更新</button>
+    </div>
+    <div id="morning-area"><div style="text-align:center;padding:24px;color:var(--text3);font-size:15px">読み込み中...</div></div>
+  </div>
+</div>
+
+<div class="panel" id="panel-shaken">
+  <div class="gc">
+    <div class="gc-head">
+      <div><div class="gc-title">車検 進捗管理</div><div class="gc-sub">月別・年間の生産データを管理</div></div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button onclick="toggleManualInput()" style="padding:6px 12px;background:var(--green-bg);color:var(--green);border:1px solid rgba(52,199,89,.3);border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--sans)">✏️ 手打ち</button>
+        <button class="rst-btn" onclick="confirmResetShakenMonth()">リセット</button>
+      </div>
+    </div>
+
+    <!-- 手打ち入力パネル -->
+    <div id="manual-input-panel" style="display:none;background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="font-size:14px;font-weight:700;color:var(--text2)">✏️ 手打ち入力（4〜3月）</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="number" id="manual-fiscal-year" min="40" max="99" inputmode="numeric"
+            style="width:68px;padding:6px 8px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:16px;font-weight:800;text-align:center;font-family:var(--sans);outline:none"
+            onchange="buildManualGrid()">
+          <span style="font-size:14px;color:var(--text3);font-weight:700">期</span>
+        </div>
+      </div>
+      <!-- 月別12行グリッド -->
+      <div id="manual-grid"></div>
+      <button onclick="saveAllManualInput()" style="width:100%;margin-top:12px;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)">すべてグラフに反映</button>
+      <div id="manual-msg" style="text-align:center;font-size:13px;color:var(--green);margin-top:8px;min-height:16px"></div>
+    </div>
+
+    <!-- 対象月 -->
+    <!-- ビュー選択 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px">
+      <button id="shaken-view-day" onclick="setShakenView('day')" style="padding:9px 2px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap">日別</button>
+      <button id="shaken-view-month" onclick="setShakenView('month')" style="padding:9px 2px;background:var(--surface2);color:var(--text2);border:1px solid var(--border);border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap">月別</button>
+      <button id="shaken-view-yeartotal" onclick="setShakenView('yeartotal')" style="padding:9px 2px;background:var(--surface2);color:var(--text2);border:1px solid var(--border);border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap">年合計</button>
+    </div>
+
+    <div style="margin-bottom:14px;overflow:hidden">
+      <div style="width:100%">
+        <!-- 日別・月別用：日付 -->
+        <div id="shaken-picker-day">
+          <div style="font-size:15px;font-weight:700;color:var(--text2);margin-bottom:6px">対象日</div>
+          <input type="date" id="shaken-month"
+            style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-size:15px;font-family:var(--sans);outline:none"
+            onchange="onShakenMonthChange(this.value)">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">
+            <button onclick="shakenDateStep(-1)" style="padding:8px 2px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--sans);color:var(--text2);white-space:nowrap">◀ 前日</button>
+            <button onclick="shakenDateToday()" style="padding:8px 2px;background:var(--accent-light);border:1px solid rgba(0,113,227,.2);border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--sans);color:var(--accent);font-weight:700">今日</button>
+            <button onclick="shakenDateStep(1)" style="padding:8px 2px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--sans);color:var(--text2);white-space:nowrap">翌日 ▶</button>
+          </div>
+        </div>
+
+        <!-- 月別用：月選択 -->
+        <div id="shaken-picker-month" style="display:none">
+          <div style="font-size:15px;font-weight:700;color:var(--text2);margin-bottom:6px">対象月</div>
+          <input type="month" id="shaken-month-only"
+            style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-size:15px;font-family:var(--sans);outline:none"
+            onchange="renderShakenChart()">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">
+            <button onclick="shakenMonthStep(-1)" style="padding:8px 2px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--sans);color:var(--text2);white-space:nowrap">◀ 前月</button>
+            <button onclick="shakenMonthCurrent()" style="padding:8px 2px;background:var(--green-bg);border:1px solid rgba(52,199,89,.3);border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--sans);color:var(--green);font-weight:700">今月</button>
+            <button onclick="shakenMonthStep(1)" style="padding:8px 2px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--sans);color:var(--text2);white-space:nowrap">翌月 ▶</button>
+          </div>
+        </div>
+
+        <!-- 年合計用：年選択 -->
+        <div id="shaken-picker-year" style="display:none">
+          <div style="font-size:15px;font-weight:700;color:var(--text2);margin-bottom:6px">対象年</div>
+          <input type="number" id="shaken-year-only" min="40" max="99" inputmode="numeric"
+            style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-size:22px;font-weight:800;font-family:var(--sans);outline:none;text-align:center"
+            onchange="renderShakenChart()">
+          <div style="text-align:center;font-size:13px;color:var(--text3);margin-top:4px">期を入力（例：42）</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">
+            <button onclick="shakenYearStep(-1)" style="padding:8px 2px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--sans);color:var(--text2);white-space:nowrap">◀ 前年</button>
+            <button onclick="shakenYearCurrent()" style="padding:8px 2px;background:var(--orange-bg);border:1px solid rgba(255,149,0,.3);border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--sans);color:var(--orange);font-weight:700">今年</button>
+            <button onclick="shakenYearStep(1)" style="padding:8px 2px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--sans);color:var(--text2);white-space:nowrap">翌年 ▶</button>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:13px;font-weight:700;color:var(--text3);white-space:nowrap">稼働日数</span>
+        <button onclick="stepShaken('workdays',-1)" style="width:28px;height:28px;border-radius:50%;border:none;background:var(--surface2);color:var(--text2);font-size:16px;cursor:pointer">−</button>
+        <input type="number" id="shaken-workdays" value="22" min="1" max="31" inputmode="numeric"
+          style="width:56px;padding:5px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:15px;font-weight:700;text-align:center;font-family:var(--sans);outline:none"
+          oninput="calcShaken()">
+        <button onclick="stepShaken('workdays',1)" style="width:28px;height:28px;border-radius:50%;border:none;background:var(--surface2);color:var(--text2);font-size:16px;cursor:pointer">＋</button>
+        <span style="font-size:13px;color:var(--text3)">日</span>
+      </div>
+    </div>
+
+    <!-- 入力エリア（月別表示時は非表示） -->
+    <div id="shaken-input-area">
+
+    <!-- 目標 -->
+    <div style="padding:10px 14px;background:rgba(191,90,242,.1);border-radius:12px;border:1.5px solid rgba(191,90,242,.35);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;overflow:hidden">
+      <div style="font-size:15px;font-weight:700;color:rgba(191,90,242,1);white-space:nowrap">🎯 車検目標台数</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button onclick="stepShaken('target',-1)" style="width:34px;height:34px;border-radius:50%;border:none;background:var(--surface);color:rgba(191,90,242,1);font-size:18px;cursor:pointer;font-weight:700">−</button>
+        <input type="number" id="shaken-target" value="0" min="0" inputmode="numeric"
+          style="width:88px;font-size:26px;font-weight:800;color:rgba(191,90,242,1);text-align:center;border:none;background:transparent;font-family:var(--sans);outline:none"
+          oninput="calcShaken()">
+        <span style="font-size:17px;color:rgba(191,90,242,.8);font-weight:700">台</span>
+        <button onclick="stepShaken('target',1)" style="width:34px;height:34px;border-radius:50%;border:none;background:rgba(191,90,242,.2);color:rgba(191,90,242,1);font-size:18px;cursor:pointer;font-weight:700">＋</button>
+      </div>
+    </div>
+
+    <!-- 生産 -->
+    <div style="padding:10px 14px;background:var(--accent-light);border-radius:12px;border:1.5px solid rgba(0,113,227,.2);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;overflow:hidden">
+      <div style="font-size:15px;font-weight:700;color:var(--accent);white-space:nowrap">🚗 生産台数</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button onclick="stepShaken('produced',-1)" style="width:34px;height:34px;border-radius:50%;border:none;background:var(--surface);color:var(--accent);font-size:18px;cursor:pointer;font-weight:700">−</button>
+        <input type="number" id="shaken-produced" value="0" min="0" inputmode="numeric"
+          style="width:88px;font-size:26px;font-weight:800;color:var(--accent);text-align:center;border:none;background:transparent;font-family:var(--sans);outline:none"
+          oninput="calcShaken()">
+        <span style="font-size:17px;color:var(--accent);font-weight:700">台</span>
+        <button onclick="stepShaken('produced',1)" style="width:34px;height:34px;border-radius:50%;border:none;background:var(--accent-light);color:var(--accent);font-size:18px;cursor:pointer;font-weight:700">＋</button>
+      </div>
+    </div>
+
+    <!-- 予約確定・本日入庫 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <div style="padding:10px;background:var(--green-bg);border-radius:14px;border:1.5px solid rgba(52,199,89,.25)">
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:8px">📋 予約確定台数</div>
+        <div style="display:flex;align-items:center;gap:6px;justify-content:center">
+          <button onclick="stepShaken('reserved',-1)" style="width:30px;height:30px;border-radius:50%;border:none;background:var(--surface);color:var(--text2);font-size:18px;cursor:pointer">−</button>
+          <input type="number" id="shaken-reserved" value="0" min="0" inputmode="numeric"
+            style="width:72px;font-size:20px;font-weight:800;color:var(--green);text-align:center;border:none;background:transparent;font-family:var(--sans);outline:none"
+            oninput="calcShaken()">
+          <button onclick="stepShaken('reserved',1)" style="width:30px;height:30px;border-radius:50%;border:none;background:var(--green-bg);color:var(--green);font-size:18px;cursor:pointer">＋</button>
+        </div>
+        <div style="font-size:13px;color:var(--green);text-align:center;margin-top:4px">台</div>
+      </div>
+      <div style="padding:10px;background:var(--orange-bg);border-radius:14px;border:1.5px solid rgba(255,149,0,.25)">
+        <div style="font-size:13px;font-weight:700;color:var(--orange);margin-bottom:8px">🚙 本日の入庫</div>
+        <div style="display:flex;align-items:center;gap:6px;justify-content:center">
+          <button onclick="stepShaken('todayIn',-1)" style="width:30px;height:30px;border-radius:50%;border:none;background:var(--surface);color:var(--text2);font-size:18px;cursor:pointer">−</button>
+          <input type="number" id="shaken-todayIn" value="0" min="0" inputmode="numeric"
+            style="width:72px;font-size:20px;font-weight:800;color:var(--orange);text-align:center;border:none;background:transparent;font-family:var(--sans);outline:none"
+            oninput="calcShaken()">
+          <button onclick="stepShaken('todayIn',1)" style="width:30px;height:30px;border-radius:50%;border:none;background:var(--orange-bg);color:var(--orange);font-size:18px;cursor:pointer">＋</button>
+        </div>
+        <div style="font-size:13px;color:var(--orange);text-align:center;margin-top:4px">台</div>
+      </div>
+    </div>
+
+    <!-- 自動計算結果 -->
+    <div id="shaken-calc" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px"></div>
+
+    <!-- 採算性（手打ち） -->
+    <div style="padding:14px;background:var(--surface2);border-radius:14px;border:1px solid var(--border);margin-bottom:16px">
+      <div style="font-size:15px;font-weight:700;color:var(--text2);margin-bottom:10px">💰 採算性メモ</div>
+      <input type="text" id="shaken-profit-memo" placeholder="例：時間単価 4,500円 など"
+        style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-size:15px;font-family:var(--sans);outline:none;box-sizing:border-box"
+        oninput="saveShaken()">
+    </div>
+
+    <!-- 進捗メモ -->
+    <div style="font-size:15px;font-weight:700;color:var(--text2);margin-bottom:8px">📝 本日の進捗メモ</div>
+    <textarea id="shaken-memo" placeholder="気になる点・明日への申し送りなど..."
+      style="width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-size:15px;font-family:var(--sans);resize:vertical;min-height:80px;outline:none;line-height:1.6"
+      oninput="saveShaken()"></textarea>
+    <button onclick="saveAndConfirmShaken()" style="width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:var(--r);font-size:15px;font-weight:700;font-family:var(--sans);cursor:pointer;margin-top:10px">保存</button>
+    </div><!-- /shaken-input-area -->
+
+    <!-- 保存確認サマリー -->
+    <div id="shaken-confirm" style="display:none;margin-top:14px;padding:16px;background:var(--green-bg);border:1.5px solid rgba(52,199,89,.3);border-radius:14px">
+      <div style="font-size:15px;font-weight:700;color:var(--green);margin-bottom:10px">✅ 保存しました</div>
+      <div id="shaken-confirm-body"></div>
+    </div>
+
+    <!-- グラフ -->
+    <div id="shaken-graph-area" style="margin-top:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-size:15px;font-weight:700;color:var(--text2)">📊 生産推移</div>
+        <div id="shaken-annual-total" style="font-size:13px;font-weight:700;color:var(--green);background:var(--green-bg);border:1px solid rgba(52,199,89,.25);border-radius:8px;padding:4px 10px;white-space:nowrap"></div>
+      </div>
+      <canvas id="shaken-chart" style="width:100%;max-height:240px"></canvas>
+      <div id="shaken-yearly" style="margin-top:12px;padding:12px 14px;background:var(--green-bg);border:1px solid rgba(52,199,89,.25);border-radius:12px;text-align:center"></div>
+      <div id="shaken-monthly-list" style="margin-top:10px"></div>
+    </div>
+
+    <!-- 車検データ 同期バー -->
+    <div style="margin-top:16px;padding:12px 14px;background:var(--surface2);border-radius:12px;border:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:8px;font-weight:600">☁️ スプレッドシート連携</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button onclick="saveShakenToSheet()" style="padding:10px 4px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)">📤 スプレッドシートに保存</button>
+        <button onclick="loadShakenFromSheet()" style="padding:10px 4px;background:var(--surface);color:var(--text2);border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)">📥 スプレッドシートから読込</button>
+      </div>
+      <div id="sync-status-shaken" style="text-align:center;font-size:12px;color:var(--text3);margin-top:6px;min-height:16px"></div>
+    </div>
   </div>
 </div>
 <script>
 // 時計
 function updateClock(){
   const n=new Date();
-  document.getElementById('clock').textContent=n.getHours()+':'+(n.getMinutes()<10?'0':'')+n.getMinutes();
+  const clEl=document.getElementById('clock'); if(clEl) clEl.textContent=n.getHours()+':'+(n.getMinutes()<10?'0':'')+n.getMinutes();
 }
 updateClock();setInterval(updateClock,10000);
 
 // 日付表示
 const DAYS=['日','月','火','水','木','金','土'];
+function returnToToday(){
+  const ds = getTodayLocal();
+  const inp = document.getElementById('today-date');
+  if(inp){ inp.value = ds; inp.max = ds; } else return;
+  const btn = document.getElementById('today-return-btn');
+  if(btn) btn.style.display = 'none';
+  updateDateLabel(ds);
+  if(typeof renderKpi==='function' && kpiPerson) renderKpi();
+  const morningPanel = document.getElementById('panel-morning');
+  if(morningPanel && morningPanel.classList.contains('active')) renderMorning();
+}
+
 function updateDateLabel(d){
   const dt=new Date(d+'T00:00:00');
-  document.getElementById('widget-date').textContent=`${dt.getMonth()+1}月${dt.getDate()}日（${DAYS[dt.getDay()]}）`;
+  const wdEl=document.getElementById('widget-date'); if(wdEl) wdEl.textContent=`${dt.getMonth()+1}月${dt.getDate()}日（${DAYS[dt.getDay()]}）`;
 }
-document.getElementById('today-date').addEventListener('change',e=>updateDateLabel(e.target.value));
+document.getElementById('today-date').addEventListener('change',e=>{
+  const todayStr = getTodayLocal();
+  if(e.target.value > todayStr){
+    e.target.value = todayStr;
+    showDateGuard();
+    updateDateLabel(todayStr);
+    const btn = document.getElementById('today-return-btn');
+    if(btn) btn.style.display = 'none';
+    return;
+  }
+  updateDateLabel(e.target.value);
+  const btn = document.getElementById('today-return-btn');
+  if(btn) btn.style.display = e.target.value !== todayStr ? 'inline-block' : 'none';
+  // 日付が変わったらKPIと朝礼を再描画
+  if(kpiPerson) renderKpi();
+  const morningPanel = document.getElementById('panel-morning');
+  if(morningPanel && morningPanel.classList.contains('active')) renderMorning();
+});
+
+function showDateGuard(){
+  const ex = document.getElementById('date-guard');
+  if(ex) ex.remove();
+  const el = document.createElement('div');
+  el.id = 'date-guard';
+  el.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9998;display:flex;align-items:center;justify-content:center;animation:guardFadeIn .15s ease';
+  el.innerHTML = '<div style="background:var(--surface);border-radius:18px;padding:28px 24px;text-align:center;max-width:280px;width:88%">'
+    +'<div style="font-size:34px;margin-bottom:12px">📅</div>'
+    +'<div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px">先の日は入力できません</div>'
+    +'<div style="font-size:15px;color:var(--text2);margin-bottom:20px">今日以前の日付を選んでください</div>'
+    +'<button onclick="document.getElementById(\'date-guard\').remove()" style="width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:12px;font-size:17px;font-weight:700;cursor:pointer;font-family:var(--sans)">OK</button>'
+    +'</div>';
+  document.body.appendChild(el);
+}
 
 const STAFF=[
-  {id:'yoshinaga',name:'吉永さん',role:'司令塔・数字管理',type:'社員',color:'coral'},
-  {id:'fujita',name:'藤田さん',role:'コントローラー・緊急時入出庫サポート',type:'社員',color:'blue'},
-  {id:'tanoue',name:'田上さん',role:'全体サポート',type:'社員',color:'purple'},
-  {id:'kado',name:'角さん',role:'接客メイン',type:'社員',color:'teal'},
-  {id:'tominae',name:'冨永さん',role:'接客サポート',type:'パート',color:'teal'},
-  {id:'kitazawa',name:'北沢さん',role:'書類作成（固定）',type:'パート',color:'gray'},
-  {id:'sato',name:'佐藤さん',role:'書類作成（緊急代行）',type:'社員',color:'blue'},
+  // フロントスタッフ
+  {id:'yoshinaga',name:'吉永さん',role:'司令塔・数字管理',type:'社員',color:'coral',group:'front'},
+  {id:'fujita',name:'藤田さん',role:'コントローラー・緊急時入出庫サポート',type:'社員',color:'blue',group:'front'},
+  {id:'tanoue',name:'田上さん',role:'全体サポート',type:'社員',color:'purple',group:'front'},
+  {id:'kado',name:'角さん',role:'接客メイン',type:'社員',color:'teal',group:'front'},
+  {id:'tominae',name:'冨永さん',role:'接客サポート',type:'パート',color:'teal',group:'front'},
+  {id:'kitazawa',name:'北沢さん',role:'書類作成（固定）',type:'パート',color:'gray',group:'front'},
+  {id:'sato',name:'佐藤さん',role:'書類作成（緊急代行）',type:'社員',color:'blue',group:'front'},
+  // 整備士
+  {id:'mechanic_sato',name:'佐藤',role:'整備士',type:'整備士',color:'green',group:'mechanic'},
+  {id:'mechanic_sakae',name:'栄',role:'整備士',type:'整備士',color:'green',group:'mechanic'},
+  {id:'mechanic_tanaka',name:'田中',role:'整備士',type:'整備士',color:'green',group:'mechanic'},
+  {id:'mechanic_siragami',name:'白神',role:'整備士',type:'整備士',color:'green',group:'mechanic'},
+  {id:'mechanic_tanimoto',name:'谷本',role:'整備士',type:'整備士',color:'green',group:'mechanic'},
+  {id:'mechanic_yanagawa',name:'柳川',role:'整備士',type:'整備士',color:'green',group:'mechanic'},
+  {id:'mechanic_matt',name:'マット',role:'整備士',type:'整備士',color:'green',group:'mechanic'},
+  {id:'mechanic_kokoi',name:'ここい',role:'整備士',type:'整備士',color:'green',group:'mechanic'},
 ];
 
-// 通常メンバー（佐藤さんは緊急要員なので人数カウント除外）
+// フロントコアメンバー（佐藤さんは緊急要員なので除外）
 const CORE_STAFF = ['yoshinaga','fujita','tanoue','kado','tominae','kitazawa'];
+const MECHANIC_STAFF = STAFF.filter(s=>s.group==='mechanic').map(s=>s.id);
 
 let present=new Set(STAFF.map(s=>s.id));
 let checks={};
 
 function init(){
-  const d=new Date();
-  const ds=d.toISOString().split('T')[0];
-  document.getElementById('today-date').value=ds;
+  const ds=getTodayLocal();
+  const tdEl=document.getElementById('today-date'); if(tdEl){tdEl.value=ds;tdEl.max=ds;} // 未来日付を無効化
+  const statsTo=document.getElementById('stats-to'); if(statsTo) statsTo.max=ds;
   updateDateLabel(ds);
   renderStaffGrid();renderAll();
+  checkKpiDateReset();
+  loadKpiGoals();
+  // localStorageの古い形式データを安全に移行
+  migrateKpiHistory();
+  // ワンタイムリセット済み
+  loadShaken();
+  // 8月データを削除（ワンタイム・フラグで管理）
+  if(!localStorage.getItem('aug_deleted_v1')){
+    const all = JSON.parse(localStorage.getItem('shakenAllData')||'{}');
+    let changed = false;
+    Object.keys(all).forEach(k=>{ if(k.includes('-08')){ delete all[k]; changed=true; } });
+    if(changed) localStorage.setItem('shakenAllData', JSON.stringify(all));
+    localStorage.setItem('aug_deleted_v1','1');
+  }
+  const m=document.getElementById("shaken-month");
+  if(m&&!m.value){ m.value=getTodayLocal(); }
 }
 
 function toggleStaff(id){
@@ -386,11 +703,11 @@ function showOverLimitAlert(){
   modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
   modal.innerHTML=`
     <div style="background:#fff;border-radius:22px;padding:28px 24px;width:100%;max-width:320px;box-shadow:0 24px 60px rgba(0,0,0,.35);text-align:center">
-      <div style="font-size:36px;margin-bottom:12px">⚠️</div>
+      <div style="font-size:39px;margin-bottom:12px">⚠️</div>
       <div style="font-size:17px;font-weight:700;color:#1c1c1e;margin-bottom:10px;line-height:1.4">4名以上不在は<br>対応できません</div>
-      <div style="font-size:13px;color:#636366;margin-bottom:22px;line-height:1.6">最低4名の出勤が必要です。<br>出勤者を全員出勤に戻しました。</div>
+      <div style="font-size:15px;color:#636366;margin-bottom:22px;line-height:1.6">最低4名の出勤が必要です。<br>出勤者を全員出勤に戻しました。</div>
       <button onclick="document.getElementById('over-limit-modal').remove()"
-        style="width:100%;padding:13px;background:#ff3b30;color:#fff;border:none;border-radius:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit">
+        style="width:100%;padding:13px;background:#ff3b30;color:#fff;border:none;border-radius:13px;font-size:17px;font-weight:700;cursor:pointer;font-family:inherit">
         確認
       </button>
     </div>`;
@@ -400,7 +717,7 @@ function showOverLimitAlert(){
 
 
 function updateBadge(){
-  // 佐藤さんを除いたコアメンバーの出勤数でバッジ表示
+  // フロントコアメンバーのみ出勤バッジ表示（整備士除外）
   const n=CORE_STAFF.filter(id=>present.has(id)).length;
   const el=document.getElementById('count-display');
   el.innerHTML=`<span class="bdot"></span>${n}名出勤`;
@@ -493,7 +810,7 @@ function seatHtml(s, rowId, idx){
   if(s.empty){
     if(s.editable){
       return`<div class="seat seat-editable draggable-seat" data-row="${rowId}" data-idx="${idx}" data-name="">
-        <div class="seat-n" style="color:#8e8e93;font-size:14px">空席</div>
+        <div class="seat-n" style="color:#8e8e93;font-size:15px">空席</div>
         <div class="seat-r">タップして入力</div>
       </div>`;
     }
@@ -523,7 +840,7 @@ function renderLayout(){
   }
   const coreAbsentCount = CORE_STAFF.filter(id=>!present.has(id)).length;
   const row2note = coreAbsentCount >= 3
-    ? ' <span style="font-size:10px;color:var(--blue);background:rgba(58,142,255,.1);padding:2px 7px;border-radius:5px;margin-left:4px">北沢さん書類対応 or 佐藤さんに要相談</span>'
+    ? ' <span style="font-size:14px;color:var(--blue);background:rgba(58,142,255,.1);padding:2px 7px;border-radius:5px;margin-left:4px">北沢さん書類対応 or 佐藤さんに要相談</span>'
     : '';
 
   const renderRow = (seats, rowId) =>
@@ -531,10 +848,10 @@ function renderLayout(){
       ${seats.map((s,i)=>seatHtml(s,rowId,i)).join('')}
     </div>`;
 
-  document.getElementById('layout-area').innerHTML=`
+  (document.getElementById('layout-area')||{}).innerHTML=`
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
       <div class="map-dir" style="margin:0">▼ &nbsp;お客様入口・来店方向</div>
-      <button onclick="resetLayout()" style="font-size:11px;padding:4px 10px;background:transparent;border:1px solid var(--line);border-radius:6px;color:#8e8e93;cursor:pointer;font-family:inherit">リセット</button>
+      <button onclick="resetLayout()" style="font-size:15px;padding:4px 10px;background:transparent;border:1px solid var(--line);border-radius:6px;color:#8e8e93;cursor:pointer;font-family:inherit">リセット</button>
     </div>
     <div class="seat-select-hint">席をタップして選択 → 移動先をタップで入れ替え</div>
     <div class="map-ctr">入出庫受付カウンター</div>
@@ -573,20 +890,20 @@ function renderShaken(){
   const menuItems = [['','担当者を選択',false]].concat(
     SHAKEN_MEMBERS.map(name=>[name, allNames.includes(name)?name+'（登録で外出中）':name, allNames.includes(name)])
   ).map(([v,label,gray])=>
-    '<div onclick="onShakenChange(\'' + v + '\')" style="padding:12px 16px;font-size:14px;cursor:pointer;border-bottom:1px solid var(--border);color:'+(gray?'var(--text3)':'var(--text)')+(v===shakenSelected?';background:var(--accent-light);font-weight:700':'')+'">' + label + '</div>'
+    '<div onclick="onShakenChange(\'' + v + '\')" style="padding:12px 16px;font-size:15px;cursor:pointer;border-bottom:1px solid var(--border);color:'+(gray?'var(--text3)':'var(--text)')+(v===shakenSelected?';background:var(--accent-light);font-weight:700':'')+'">' + label + '</div>'
   ).join('');
 
   return '<div style="margin-top:18px;padding:16px;background:var(--surface);border-radius:16px;border:1px solid var(--border)">'
-    + '<div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.1em;margin-bottom:12px">🚗 車検更新</div>'
+    + '<div style="font-size:15px;font-weight:700;color:var(--text3);letter-spacing:.1em;margin-bottom:12px">🚗 車検更新</div>'
     + '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">'
     + '<div style="flex:1;min-width:130px;padding:12px 14px;background:'+dispBg+';border:1.5px solid '+dispBorder+';border-radius:12px;text-align:center">'
-    + '<div style="font-size:15px;font-weight:700;color:'+dispColor+'">'+dispName+'</div>'
-    + '<div style="font-size:10px;color:var(--text3);margin-top:3px">担当者</div>'
+    + '<div style="font-size:17px;font-weight:700;color:'+dispColor+'">'+dispName+'</div>'
+    + '<div style="font-size:14px;color:var(--text3);margin-top:3px">担当者</div>'
     + '</div>'
     + '<div style="flex:1;min-width:130px;position:relative">'
-    + '<button onclick="toggleShakenDd()" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);font-size:14px;font-family:var(--sans);outline:none;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center">'
+    + '<button onclick="toggleShakenDd()" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);font-size:15px;font-family:var(--sans);outline:none;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center">'
     + '<span>'+(shakenSelected||'選択してください')+'</span>'
-    + '<span style="font-size:12px;color:var(--text3)">▲</span>'
+    + '<span style="font-size:15px;color:var(--text3)">▲</span>'
     + '</button>'
     + '<div id="shaken-dd-list" style="display:none;position:absolute;bottom:calc(100% + 6px);left:0;right:0;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;box-shadow:0 -6px 24px rgba(0,0,0,.14);z-index:200;overflow:hidden">'
     + menuItems
@@ -769,16 +1086,16 @@ function showNameInput(rowId, idx){
   modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
   modal.innerHTML=`
     <div style="background:var(--white);border-radius:20px;padding:24px;width:100%;max-width:320px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
-      <div style="font-size:16px;font-weight:700;color:#1c1c1e;margin-bottom:16px">席に名前を入力</div>
+      <div style="font-size:18px;font-weight:700;color:#1c1c1e;margin-bottom:16px">席に名前を入力</div>
       <input id="name-input" type="text" placeholder="名前を入力" maxlength="10"
-        style="width:100%;padding:12px 14px;border:1.5px solid rgba(0,0,0,.15);border-radius:12px;font-size:15px;font-family:inherit;outline:none;color:#1c1c1e;background:#fff;margin-bottom:8px">
+        style="width:100%;padding:12px 14px;border:1.5px solid rgba(0,0,0,.15);border-radius:12px;font-size:17px;font-family:inherit;outline:none;color:#1c1c1e;background:#fff;margin-bottom:8px">
       <input id="role-input" type="text" placeholder="役割を入力（任意）" maxlength="20"
-        style="width:100%;padding:10px 14px;border:1.5px solid rgba(0,0,0,.1);border-radius:12px;font-size:13px;font-family:inherit;outline:none;color:#1c1c1e;background:#fff;margin-bottom:16px">
+        style="width:100%;padding:10px 14px;border:1.5px solid rgba(0,0,0,.1);border-radius:12px;font-size:15px;font-family:inherit;outline:none;color:#1c1c1e;background:#fff;margin-bottom:16px">
       <div style="display:flex;gap:10px">
         <button onclick="document.getElementById('name-modal').remove()"
-          style="flex:1;padding:12px;background:rgba(0,0,0,.06);border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;color:#3c3c43">キャンセル</button>
+          style="flex:1;padding:12px;background:rgba(0,0,0,.06);border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;color:#3c3c43">キャンセル</button>
         <button onclick="applyNameInput('${rowId}',${idx})"
-          style="flex:1;padding:12px;background:var(--blue);border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;color:#fff">決定</button>
+          style="flex:1;padding:12px;background:var(--blue);border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;color:#fff">決定</button>
       </div>
     </div>`;
   document.body.appendChild(modal);
@@ -795,11 +1112,6 @@ function applyNameInput(rowId, idx){
   if(!manualLayout[rowId]) return;
   manualLayout[rowId][idx] = {name, role: role||'（手動入力）', color:'teal', empty:false};
   renderLayout();
-}
-
-function clearSelect(){
-  document.querySelectorAll('.seat-selected').forEach(el=>el.classList.remove('seat-selected'));
-  selectedSeat = null;
 }
 
 function renderPattern(){
@@ -943,54 +1255,66 @@ function renderPattern(){
   }
 
   html+=`<div class="rule-blk"><strong>ALWAYS — どのパターンでも守る3点</strong><p>① 来店時3秒以内の声かけ<br>② 待機中フォロー（5分以上待たせない）<br>③ お客様が出口を出るまで見送る</p></div>`;
-  document.getElementById('pattern-area').innerHTML=html;
-}
-
-function init(){
-  const d=new Date();
-  const ds=d.toISOString().split('T')[0];
-  document.getElementById('today-date').value=ds;
-  updateDateLabel(ds);
-  renderStaffGrid();renderAll();
+  (document.getElementById('pattern-area')||{}).innerHTML=html;
 }
 
 function renderStaffGrid(){
   const coreAbsentCount = CORE_STAFF.filter(id => !present.has(id)).length;
   const satoAlert = coreAbsentCount >= 3;
   const kitazawaPresent = present.has('kitazawa');
-  document.getElementById('staff-grid').innerHTML=STAFF
-    .filter(s => s.id !== 'sato' || satoAlert)
-    .map(s=>{
-      const isPresent = present.has(s.id);
-      let cls, hint='';
-      if(s.id==='sato'){
-        cls='alert';
-        hint = kitazawaPresent
-          ? '<div class="alert-hint">📋 北沢さん出勤中 — 書類対応できるか要確認</div>'
-          : '<div class="alert-hint">⚡ 要相談・書類代行を依頼</div>';
-      } else {
-        cls = isPresent ? 'present' : 'absent';
-      }
-      return `<div class="sbtn ${cls}" onclick="toggleStaff('${s.id}')">
-        <div class="schk"><svg viewBox="0 0 10 10"><polyline points="2,5 4.5,8 8,2"/></svg></div>
-        <div class="sn">${s.name}</div>
-        <div class="sr">${s.role}</div>
-        <span class="st">${s.type}</span>
-        ${hint}
-      </div>`;
-    }).join('');
+  const grid = document.getElementById('staff-grid');
+  if(!grid) return;
+
+  const makeBtn = (s, isMech) => {
+    const isPresent = present.has(s.id);
+    const isSato = s.id === 'sato';
+    let cls = isMech ? 'mechanic ' : '';
+    cls += isSato ? 'alert' : (isPresent ? 'present' : 'absent');
+    const label = s.name.replace('さん','');
+    return `<div class="sbtn ${cls}" onclick="toggleStaff('${s.id}')">${label}</div>`;
+  };
+
+  const frontStaff = STAFF.filter(s => s.group==='front' && (s.id !== 'sato' || satoAlert));
+  const mechStaff  = STAFF.filter(s => s.group==='mechanic');
+
+  // フロント: 3人ずつ2行
+  const f1 = frontStaff.slice(0,3), f2 = frontStaff.slice(3);
+  // 整備士: 4人ずつ2行
+  const m1 = mechStaff.slice(0,4), m2 = mechStaff.slice(4);
+
+  grid.innerHTML =
+    '<div class="sgrp-label">👔 フロント</div>'
+    + '<div class="srow">' + f1.map(s=>makeBtn(s,false)).join('') + '</div>'
+    + (f2.length ? '<div class="srow">' + f2.map(s=>makeBtn(s,false)).join('') + '</div>' : '')
+    + '<div class="sgrp-label" style="margin-top:12px">🔧 整備士</div>'
+    + (m1.length ? '<div class="srow">' + m1.map(s=>makeBtn(s,true)).join('') + '</div>' : '')
+    + (m2.length ? '<div class="srow">' + m2.map(s=>makeBtn(s,true)).join('') + '</div>' : '');
+
   updateBadge();
 }
 
 
-
 const CHECKS=[
-  {sec:'TODAY — 現場状況',items:['入庫予定台数を確認した','納車・完成予定台数を確認した','代車状況を確認した','要注意案件・遅れそうな案件を共有した']},
-  {sec:'ROLE — 役割分担',items:['本日の出勤者・欠員を全員に共有した','フロアコントロール担当を確認した','入庫・出庫担当を確認した','役割変更があれば口頭で全員に伝えた']},
-  {sec:'KPI — 目標数字',items:['車検予約獲得の目標件数を共有した','LINE登録の目標件数を共有した','マイカー登録の目標件数を共有した','保険提案・オイルパック・乗り換えの目標を共有した']},
-  {sec:'RISK — 危険ポイント',items:['混雑ピーク時間帯を予測して共有した','人員が薄い時間帯を確認した','長引きそうな作業を把握した','放置しやすい時間帯を確認した']},
-  {sec:'REVIEW — 昨日の振り返り',items:['良かったことを1つ共有した','詰まったことを確認した','今日改善することを1つ決めた']},
-  {sec:'SERVICE — お客様対応',items:['常連客の来店予定を全員に共有した','3秒声かけルールを確認した','5分以上待たせない基準を確認した','見送りルールを確認した']},
+  {sec:'予約件数', items:[
+    '予約件数を全員に共有した',
+    '当月予約（内訳）を確認した',
+    '来月予約（内訳）を確認した',
+  ]},
+  {sec:'登録系', items:[
+    'LINE登録（マイカー登録まで完了）件数を共有した',
+  ]},
+  {sec:'提案・獲得系', items:[
+    'オイルパック獲得件数を共有した',
+    '乗換提案件数を共有した',
+    '保険提案件数を共有した',
+    '無料点検獲得件数を共有した',
+    '1年点検獲得件数を共有した',
+  ]},
+  {sec:'振り返り', items:[
+    '良かったことを1つ共有した',
+    '改善点を1つ決めた',
+    '明日の目標を確認した',
+  ]},
 ];
 
 function pat(type,title,items,alerts){
@@ -998,7 +1322,7 @@ function pat(type,title,items,alerts){
 }
 
 function renderChecklist(){
-  document.getElementById('checklist-area').innerHTML=CHECKS.map((sec,si)=>`
+  (document.getElementById('checklist-area')||{}).innerHTML=CHECKS.map((sec,si)=>`
     <div class="csec">
       <div class="csec-h">${sec.sec}</div>
       ${sec.items.map((item,ii)=>{
@@ -1020,8 +1344,8 @@ function toggleCheck(key,val){
 
 function updateProgress(){
   const total=CHECKS.reduce((s,sec)=>s+sec.items.length,0),done=Object.values(checks).filter(Boolean).length;
-  document.getElementById('check-progress').textContent=`${done}/${total}`;
-  document.getElementById('progress-bar').style.width=Math.round(done/total*100)+'%';
+  (document.getElementById('check-progress')||{}).textContent=`${done}/${total}`;
+  (document.getElementById('progress-bar')||{style:{}}).style.width=Math.round(done/total*100)+'%';
   const badge=document.getElementById('check-badge');
   if(badge){
     const pct=Math.round(done/total*100);
@@ -1035,46 +1359,39 @@ function resetChecks(){checks={};renderChecklist();}
 function renderAll(){renderLayout();renderPattern();renderChecklist();renderKpi();}
 
 function switchTab(id){
-  const ids=['attendance','layout','pattern','checklist','kpi'];
+  const ids=['attendance','layout','pattern','checklist','kpi','stats','morning','shaken','settings'];
   document.querySelectorAll('.seg').forEach((t,i)=>t.classList.toggle('active',ids[i]===id));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('panel-'+id).classList.add('active');
+  const panel = document.getElementById('panel-'+id);
+  if(panel) panel.classList.add('active');
+  if(id==='stats') setTimeout(renderStatsChart, 100);
+  if(id==='morning') renderMorning();
+  if(id==='settings') initSettings();
+  // アクティブなタブを中央にスクロール
+  const idx = ids.indexOf(id);
+  const wrap = document.querySelector('.seg-wrap');
+  const segs = document.querySelectorAll('.seg');
+  if(wrap && segs[idx]){
+    const seg = segs[idx];
+    const wrapLeft = wrap.getBoundingClientRect().left;
+    const segLeft  = seg.getBoundingClientRect().left;
+    const segW     = seg.offsetWidth;
+    const wrapW    = wrap.offsetWidth;
+    wrap.scrollBy({left: segLeft - wrapLeft - wrapW/2 + segW/2, behavior:'smooth'});
+  }
 }
-
-// ── 来店カウンター ──
-let visitCount = 0;
-function changeCount(d){
-  visitCount = Math.max(0, visitCount + d);
-  updateCounter();
-}
-function updateCounter(){
-  const target = parseInt(document.getElementById('target-input')?.value)||30;
-  const remain = Math.max(0, target - visitCount);
-  const rate   = target > 0 ? Math.round(visitCount/target*100) : 0;
-  const el = document.getElementById('visit-count');
-  if(el) el.textContent = visitCount;
-  const te = document.getElementById('visit-target');
-  if(te) te.textContent = target;
-  const re = document.getElementById('visit-remain');
-  if(re) re.textContent = remain;
-  const rat = document.getElementById('visit-rate');
-  if(rat){ rat.textContent = rate+'%'; rat.style.color = rate>=100?'#1a8f3c':rate>=70?'#a05f00':'#ff3b30'; }
-}
-function resetCounter(){ visitCount=0; updateCounter(); }
 
 // ── KPI入力（人別） ──
 const KPI_ITEMS = [
-  {id:'line',      label:'LINE登録',         unit:'件'},
-  {id:'mycar',     label:'マイカー登録',     unit:'件'},
-  {id:'ins',       label:'保険提案',         unit:'件'},
-  {id:'oil',       label:'オイルパック',     unit:'件'},
-  {id:'replace',   label:'乗り換え提案',     unit:'件'},
-  {id:'reserve',   label:'車検予約獲得',     unit:'件'},
-  {id:'pair',      label:'ペア予約',         unit:'件'},
-  {id:'monthly',   label:'当月予約',         unit:'件'},
-  {id:'tel',       label:'電話予約獲得',     unit:'件'},
-  {id:'freecheck', label:'無料点検予約',     unit:'件'},
-  {id:'inen',      label:'1年点検予約',      unit:'件'},
+  {id:'reserve', label:'予約件数', unit:'件'},
+  {id:'monthly', label:'当月予約（内訳）', unit:'件'},
+  {id:'nextmonth', label:'来月予約（内訳）', unit:'件'},
+  {id:'line', label:'LINE登録(マイカー登録完了)', unit:'件'},
+  {id:'oil', label:'オイルパック', unit:'件'},
+  {id:'replace', label:'乗換提案', unit:'件'},
+  {id:'ins', label:'保険提案', unit:'件'},
+  {id:'freecheck', label:'無料点検', unit:'件'},
+  {id:'inen', label:'1年点検', unit:'件'},
 ];
 const KPI_PERSONS = [
   {id:'fujita',   name:'藤田さん'},
@@ -1084,91 +1401,2231 @@ const KPI_PERSONS = [
   {id:'tominae',  name:'冨永さん'},
   {id:'other',    name:'その他'},
 ];
+
+// ── KPI 人別実績入力（+/-カウンター） ──
+// kpiData[personId][dateStr][itemId] = {dailyGoal, approach, acquired}
 let kpiData = {};
-KPI_PERSONS.forEach(p=>{ kpiData[p.id]={}; KPI_ITEMS.forEach(k=>{ kpiData[p.id][k.id]=''; }); });
+KPI_PERSONS.forEach(p=>{ kpiData[p.id]={}; });
+function getDateData(personId, dateStr){
+  if(!kpiData[personId]) kpiData[personId]={};
+  // 常にlocalStorageから最新データを読み込む（キャッシュしない）
+  const history = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
+  const rec = history.find(r=>r.person===personId && r.date===dateStr);
+  kpiData[personId][dateStr]={};
+  KPI_ITEMS.forEach(k=>{
+    if(rec && rec.data){
+      const raw = rec.data[k.id];
+      if(!raw || typeof raw !== 'object'){
+        kpiData[personId][dateStr][k.id]={dailyGoal:0,approach:0,acquired:typeof raw==='number'?raw:0};
+      } else {
+        kpiData[personId][dateStr][k.id]={
+          dailyGoal:parseInt(raw.dailyGoal)||0,
+          approach:parseInt(raw.approach)||0,
+          acquired:parseInt(raw.acquired)||0
+        };
+      }
+    } else {
+      kpiData[personId][dateStr][k.id]={dailyGoal:0,approach:0,acquired:0};
+    }
+  });
+  return kpiData[personId][dateStr];
+}
+function toLocalDateStr(d){
+  // タイムゾーンに依存せずローカル日付をYYYY-MM-DDで返す
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+day;
+}
+function getTodayLocal(){
+  return toLocalDateStr(new Date());
+}
+function getCurrentDate(){
+  return document.getElementById('today-date')?.value || getTodayLocal();
+}
+let kpiGoals = {}; // 月間目標 {person: {item: number}} - 永続
+KPI_PERSONS.forEach(p=>{ kpiGoals[p.id]={}; KPI_ITEMS.forEach(k=>{ kpiGoals[p.id][k.id]=0; }); });
 let kpiPerson = '';
+let kpiGoalMode = false; // 目標編集モード
+
+function loadKpiGoals(){
+  const saved = JSON.parse(localStorage.getItem('kpiGoals')||'null');
+  if(saved) kpiGoals = saved;
+}
+function saveKpiGoals(){
+  localStorage.setItem('kpiGoals', JSON.stringify(kpiGoals));
+}
+// 共通集計：personIdのitemIdの獲得件数をfromDate〜toDateで合計
+function sumAcquired(personId, itemId, fromDate, toDate){
+  const history = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
+  let total = 0;
+  history
+    .filter(r=>r.person===personId && r.date>=fromDate && r.date<=toDate)
+    .forEach(r=>{
+      const v = r.data?.[itemId];
+      if(v && typeof v==='object') total += (parseInt(v.acquired)||0);
+      else if(typeof v==='number') total += v;
+    });
+  // toDateが今日(実日付)で未保存の場合はメモリからも加算
+  const todayReal = getTodayLocal();
+  if(toDate === todayReal){
+    const inHistory = history.some(r=>r.person===personId && r.date===todayReal);
+    if(!inHistory){
+      const mem = kpiData[personId]?.[todayReal]?.[itemId];
+      if(mem && typeof mem==='object') total += (parseInt(mem.acquired)||0);
+    }
+  }
+  return total;
+}
+
+function getMonthlyAcquired(personId, itemId){
+  const selectedDate = getCurrentDate();
+  const ym = selectedDate.slice(0,7);
+  const fromDate = ym+'-01';
+  return sumAcquired(personId, itemId, fromDate, selectedDate);
+}
 
 function onKpiPersonChange(val){
   kpiPerson = val;
+  checkKpiDateReset();
   renderKpi();
 }
 
-function kpiInput(itemId, val){
-  if(!kpiPerson) return;
-  kpiData[kpiPerson][itemId] = String(Math.max(0, parseInt(val)||0));
-  // 色だけ即時更新（再描画なし）
-  const a = parseInt(kpiData[kpiPerson][itemId])||0;
-  const inp = document.querySelector('[data-kpi="'+kpiPerson+'-'+itemId+'"]');
-  if(inp) inp.style.color = a>0 ? '#3a8eff' : '#1c1c1e';
+function migrateKpiHistory(){
+  try {
+    const history = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
+    let changed = false;
+    history.forEach(r=>{
+      if(!r.data) return;
+      KPI_ITEMS.forEach(k=>{
+        const d = r.data[k.id];
+        if(d === undefined || d === null) {
+          r.data[k.id] = {dailyGoal:0,approach:0,acquired:0};
+          changed = true;
+        } else if(typeof d === 'number') {
+          // 旧形式（数値）→ 新形式（オブジェクト）
+          r.data[k.id] = {dailyGoal:0,approach:0,acquired:d};
+          changed = true;
+        } else if(typeof d === 'object' && d.dailyGoal===undefined) {
+          d.dailyGoal = 0;
+          changed = true;
+        }
+      });
+    });
+    if(changed) localStorage.setItem('kpiHistory', JSON.stringify(history));
+  } catch(e) {
+    console.warn('kpiHistory migration failed, resetting:', e);
+    localStorage.removeItem('kpiHistory');
+  }
 }
 
-function kpiStep(itemId, d){
-  if(!kpiPerson) return;
-  const cur = parseInt(kpiData[kpiPerson][itemId])||0;
-  kpiData[kpiPerson][itemId] = String(Math.max(0, cur+d));
+function checkKpiDateReset(){
+  const today = getTodayLocal();
+  const lastDate = localStorage.getItem('kpiLastDate');
+
+  // 日付が変わっていた場合、メモリ上のデータをlocalStorageに保存してから初期化
+  if(lastDate && lastDate !== today){
+    const history = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
+    KPI_PERSONS.forEach(p=>{
+      const dayData = kpiData[p.id]?.[lastDate];
+      if(!dayData) return;
+      const hasData = KPI_ITEMS.some(k=>{
+        const v = dayData[k.id];
+        return v && ((parseInt(v.approach)||0)+(parseInt(v.acquired)||0)+(parseInt(v.dailyGoal)||0)>0);
+      });
+      if(!hasData) return;
+      const idx = history.findIndex(r=>r.date===lastDate && r.person===p.id);
+      const record = {date:lastDate, person:p.id, data:JSON.parse(JSON.stringify(dayData))};
+      if(idx>=0) history[idx]=record; else history.push(record);
+    });
+    localStorage.setItem('kpiHistory', JSON.stringify(history));
+  }
+
+  localStorage.setItem('kpiLastDate', today);
+
+  // historyをメモリに展開（今日分のみ上書きしない）
+  const history = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
+  history.forEach(r=>{
+    if(!r.person || !r.date || !r.data) return;
+    if(!kpiData[r.person]) kpiData[r.person]={};
+    if(!kpiData[r.person][r.date]){
+      kpiData[r.person][r.date]={};
+      KPI_ITEMS.forEach(k=>{
+        const raw = r.data[k.id];
+        let d;
+        if(!raw || typeof raw !== 'object') d={dailyGoal:0,approach:0,acquired:typeof raw==='number'?raw:0};
+        else d={dailyGoal:parseInt(raw.dailyGoal)||0, approach:parseInt(raw.approach)||0, acquired:parseInt(raw.acquired)||0};
+        kpiData[r.person][r.date][k.id]=d;
+      });
+    }
+  });
+}
+
+
+// ── KPI数値入力モーダル ──
+function openKpiModal(itemId, field, currentVal){
+  const existing = document.getElementById('kpi-num-modal');
+  if(existing) existing.remove();
+
+  const fieldLabels = {goal:'個人目標', dailyGoal:'日次目標', approach:'声かけ', acquired:'獲得'};
+  const fieldColors = {goal:'var(--green)', dailyGoal:'var(--orange)', approach:'var(--text)', acquired:'var(--accent)'};
+  const fieldBg     = {goal:'var(--green-bg)', dailyGoal:'var(--orange-bg)', approach:'var(--surface2)', acquired:'var(--accent-light)'};
+  const label = fieldLabels[field]||field;
+  const color = fieldColors[field]||'var(--text)';
+  const bg    = fieldBg[field]||'var(--surface)';
+
+  const modal = document.createElement('div');
+  modal.id = 'kpi-num-modal';
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:flex-end;justify-content:center';
+  modal.innerHTML=`
+    <div style="background:var(--surface);border-radius:22px 22px 0 0;padding:24px 20px 40px;width:100%;max-width:400px;box-shadow:0 -8px 40px rgba(0,0,0,.25)">
+      <div style="text-align:center;font-size:15px;font-weight:700;color:var(--text3);margin-bottom:12px">${label} を入力</div>
+      <input id="kpi-modal-input" type="number" min="0" max="999" value="${currentVal}" inputmode="numeric" pattern="[0-9]*"
+        style="width:100%;font-size:39px;font-weight:800;color:${color};text-align:center;border:none;border-bottom:2px solid ${color};background:transparent;font-family:var(--sans);outline:none;padding:8px 0;margin-bottom:20px">
+      <div style="display:flex;gap:10px">
+        <button onclick="document.getElementById('kpi-num-modal').remove()"
+          style="flex:1;padding:14px;background:var(--surface2);border:none;border-radius:14px;font-size:17px;font-weight:700;cursor:pointer;font-family:var(--sans);color:var(--text2)">キャンセル</button>
+        <button onclick="confirmKpiModal('${itemId}','${field}')"
+          style="flex:2;padding:14px;background:${color};border:none;border-radius:14px;font-size:17px;font-weight:800;cursor:pointer;font-family:var(--sans);color:#fff">決定</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
+  const inp = document.getElementById('kpi-modal-input');
+  inp.select();
+  setTimeout(()=>inp.focus(),100);
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter') confirmKpiModal(itemId, field); });
+}
+
+function confirmKpiModal(itemId, field){
+  const inp = document.getElementById('kpi-modal-input');
+  if(!inp) return;
+  const val = Math.max(0, parseInt(inp.value)||0);
+  document.getElementById('kpi-num-modal')?.remove();
+  if(field==='__goal__'){
+    setKpi(itemId, field, val);
+    renderKpi();
+  } else {
+    setKpi(itemId, field, val); // setKpi内でautoSaveKpi済み
+    renderKpi();
+  }
+}
+
+function setKpiAndRender(itemId, field, val){
+  setKpi(itemId, field, val);
   renderKpi();
 }
+
+function updateRemaining(itemId){
+  // autoSaveKpi後にrenderKpiで全体再描画するため、ここはシンプルに再描画を呼ぶのみ
+  renderKpi();
+}
+
+function setKpi(itemId, field, val){
+  if(!kpiPerson) return;
+  if(field==='__goal__'){
+    if(!kpiGoals[kpiPerson]) kpiGoals[kpiPerson]={};
+    kpiGoals[kpiPerson][itemId] = Math.max(0, parseInt(val)||0);
+    saveKpiGoals();
+    return;
+  }
+  const dateK = getCurrentDate();
+  const dK = getDateData(kpiPerson, dateK);
+  dK[itemId][field] = Math.max(0, parseInt(val)||0);
+  autoSaveKpi();
+}
+
+function stepKpi(itemId, field, d){
+  if(!kpiPerson) return;
+  const dateS = getCurrentDate();
+  const dS = getDateData(kpiPerson, dateS);
+  dS[itemId][field] = Math.max(0, (parseInt(dS[itemId][field])||0)+d);
+  autoSaveKpi();
+  renderKpi();
+}
+
+function autoSaveKpi(){
+  // 入力のたびに自動保存
+  if(!kpiPerson) return;
+  const dateA = getCurrentDate();
+  const d = kpiData[kpiPerson]?.[dateA];
+  if(!d) return;
+  // 何も入力がなければ保存しない（0だらけのレコードを作らない）
+  const hasAny = KPI_ITEMS.some(k=>{
+    const v = d[k.id];
+    return v && ((parseInt(v.approach)||0)+(parseInt(v.acquired)||0)+(parseInt(v.dailyGoal)||0)>0);
+  });
+  if(!hasAny) return;
+  const saved = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
+  const idx = saved.findIndex(r=>r.date===dateA && r.person===kpiPerson);
+  const record = {date:dateA, person:kpiPerson, data:JSON.parse(JSON.stringify(d))};
+  if(idx>=0) saved[idx]=record; else saved.push(record);
+  localStorage.setItem('kpiHistory', JSON.stringify(saved));
+}
+
+// 後方互換
+function kpiStep(itemId, d){ stepKpi(itemId,'acquired',d); }
+function kpiInput(itemId, val){ setKpi(itemId,'acquired',val); }
+
+// 保存（今日も過去も同じ関数）
+function saveKpiData(){
+  const dateS = getCurrentDate();
+  const d = kpiData[kpiPerson]?.[dateS];
+  if(!d || !kpiPerson) return;
+  const saved = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
+  const idx = saved.findIndex(r=>r.date===dateS && r.person===kpiPerson);
+  const record = {date:dateS, person:kpiPerson, data:JSON.parse(JSON.stringify(d))};
+  if(idx>=0) saved[idx]=record; else saved.push(record);
+  localStorage.setItem('kpiHistory', JSON.stringify(saved));
+  const btn = document.getElementById('kpi-save-btn');
+  if(btn){
+    const label = dateS < getTodayLocal() ? '過去の実績を保存' : '本日の実績を保存';
+    btn.textContent='✅ 保存しました'; btn.style.background='var(--green)';
+    setTimeout(()=>{ btn.textContent=label; btn.style.background='var(--accent)'; },2000);
+  }
+}
+
 
 function renderKpiSummary(){
   const totals = {};
-  KPI_ITEMS.forEach(k=>{ totals[k.id]=0; });
-  KPI_PERSONS.forEach(p=>{ KPI_ITEMS.forEach(k=>{ totals[k.id]+=(parseInt(kpiData[p.id][k.id])||0); }); });
-  const hasData = Object.values(totals).some(v=>v>0);
+  const todayReal = getTodayLocal();
+  KPI_ITEMS.forEach(k=>{ totals[k.id]={approach:0,acquired:0}; });
+  KPI_PERSONS.forEach(p=>{
+    const dayData = kpiData[p.id]?.[todayReal];
+    if(!dayData) return;
+    KPI_ITEMS.forEach(k=>{
+      const d = dayData[k.id];
+      if(d && typeof d==='object'){
+        totals[k.id].approach += (parseInt(d.approach)||0);
+        totals[k.id].acquired += (parseInt(d.acquired)||0);
+      }
+    });
+  });
+  const hasData = Object.values(totals).some(v=>v.acquired>0||v.approach>0);
   if(!hasData) return '';
-  const rows = KPI_ITEMS.filter(k=>totals[k.id]>0).map(k=>
-    '<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span style="color:#636366">'+k.label+'</span><span style="font-weight:700;color:#1c1c1e">'+totals[k.id]+' '+k.unit+'</span></div>'
+  const rows = KPI_ITEMS.filter(k=>totals[k.id].acquired>0||totals[k.id].approach>0).map(k=>
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0;font-size:15px;border-bottom:1px solid var(--border)">'
+    +'<span style="color:var(--text2)">'+k.label+'</span>'
+    +'<span style="color:var(--text3);font-size:15px">声かけ '+totals[k.id].approach+' / '
+    +'<span style="font-weight:700;color:var(--accent)">獲得 '+totals[k.id].acquired+'</span></span>'
+    +'</div>'
   ).join('');
-  return '<div style="margin-top:16px;padding:14px;background:rgba(0,0,0,.03);border:1px solid rgba(0,0,0,.07);border-radius:12px"><div style="font-size:11px;font-weight:700;color:#8e8e93;letter-spacing:.08em;margin-bottom:10px">全員合計</div>'+rows+'</div>';
+  return '<div style="margin-top:16px;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:12px">'
+    +'<div style="font-size:15px;font-weight:700;color:var(--text2);letter-spacing:.06em;margin-bottom:10px">全員合計（本日）</div>'+rows+'</div>';
 }
 
 function renderKpi(){
+  try {
   const el = document.getElementById('kpi-area');
+  const btn = document.getElementById('kpi-save-btn');
   if(!el) return;
   if(!kpiPerson){
-    el.innerHTML = '<div style="text-align:center;padding:28px 0;color:#8e8e93;font-size:13px">上のプルダウンから担当者を選択してください</div>';
+    el.innerHTML = '<div style="text-align:center;padding:24px 0;color:var(--text3);font-size:15px">担当者を選択してください</div>';
+    if(btn) btn.style.display='none';
     return;
   }
+  const todayReal = getTodayLocal();
+  const selectedDate = document.getElementById('today-date')?.value || todayReal;
+  const isPastDate = selectedDate < todayReal;
+
+  if(btn){
+    btn.style.display='block';
+    btn.textContent = isPastDate ? '過去の実績を保存' : '本日の実績を保存';
+    btn.onclick = ()=>saveKpiData();
+  }
+
+  // 選択日のデータを取得（なければ空で初期化）
+  const data = getDateData(kpiPerson, selectedDate);
   const person = KPI_PERSONS.find(p=>p.id===kpiPerson);
-  const data = kpiData[kpiPerson];
-  const personRow = '<div style="padding:10px 14px;background:rgba(58,142,255,.07);border-radius:10px;margin-bottom:14px;display:flex;align-items:center;gap:8px"><span style="font-size:15px;font-weight:700;color:var(--blue)">'+person.name+'</span><span style="font-size:12px;color:#8e8e93">の実績入力</span></div>';
-  const grid = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px">'
-    + KPI_ITEMS.map(k=>{
-      const a = parseInt(data[k.id])||0;
-      const kid = k.id;
-      const pid = kpiPerson;
-      const numColor = a>0 ? '#3a8eff' : '#1c1c1e';
-      const bg = a>0 ? 'rgba(58,142,255,.07)' : 'rgba(0,0,0,.03)';
-      const border = a>0 ? '1.5px solid rgba(58,142,255,.25)' : '1px solid rgba(0,0,0,.08)';
-      return '<div style="background:'+bg+';border:'+border+';border-radius:12px;padding:10px 6px;text-align:center">'
-        +'<div style="font-size:11px;font-weight:600;color:#636366;margin-bottom:6px;line-height:1.3">'+k.label+'</div>'
-        +'<input type="number" min="0" max="999" value="'+a+'" inputmode="numeric" pattern="[0-9]*"'
-        +' data-kpi="'+pid+'-'+kid+'"'
-        +' oninput="kpiInput(\''+kid+'\',this.value)"'
-        +' style="width:56px;font-size:24px;font-weight:700;color:'+numColor+';line-height:1;margin-bottom:8px;text-align:center;border:none;background:transparent;font-family:inherit;outline:none;-webkit-appearance:none;appearance:none;">'
-        +'<div style="display:flex;justify-content:center;gap:6px">'
-        +'<button onclick="kpiStep(\''+kid+'\', -1)" style="width:30px;height:30px;border-radius:50%;border:none;background:rgba(0,0,0,.07);color:#3c3c43;font-size:18px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent">−</button>'
-        +'<button onclick="kpiStep(\''+kid+'\', 1)" style="width:30px;height:30px;border-radius:50%;border:none;background:rgba(58,142,255,.12);color:var(--blue);font-size:18px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent">＋</button>'
+  const today = selectedDate;
+  const ym = today.slice(0,7);
+
+  const goalBtnLabel = kpiGoalMode ? '✅ 完了' : '🎯 目標を編集';
+  const goalBtnBg    = kpiGoalMode ? 'var(--green)' : 'var(--surface2)';
+  const goalBtnColor = kpiGoalMode ? '#fff' : 'var(--text2)';
+  const gridCols     = kpiGoalMode ? '1fr' : '1fr 1fr 1fr';
+
+  const header = '<div style="padding:10px 14px;background:var(--accent-light);border-radius:10px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">'
+    +'<div style="display:flex;align-items:center;gap:8px">'
+      +'<span style="font-size:17px;font-weight:700;color:var(--accent)">'+person.name+'</span>'
+      +'<span style="font-size:15px;color:var(--text3)">'+( kpiGoalMode?'月間目標を設定':'の実績入力 — '+ym.replace('-','年')+'月' )+'</span>'
+    +'</div>'
+    +'<button onclick="toggleGoalMode()" style="padding:5px 12px;background:'+goalBtnBg+';color:'+goalBtnColor+';border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans)">'+goalBtnLabel+'</button>'
+  +'</div>'
+  +(isPastDate
+    ?'<div style="font-size:15px;color:var(--orange);background:var(--orange-bg);border-radius:8px;padding:7px 12px;margin-bottom:8px;text-align:center">📅 '+selectedDate+' の実績（編集可）</div>'
+    :''
+  )
+  +(kpiGoalMode
+    ?'<div style="font-size:15px;color:var(--text3);text-align:center;padding:6px 0 10px">各項目の月間目標件数を設定してください</div>'
+    :'<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px;padding:6px 2px;border-bottom:2px solid var(--border);margin-bottom:8px;text-align:center">'
+      +'<div style="font-size:14px;font-weight:700;color:var(--orange)">目標声かけ</div>'
+      +'<div style="font-size:14px;font-weight:700;color:var(--text2)">実際声かけ</div>'
+      +'<div style="font-size:14px;font-weight:700;color:var(--accent)">今日の獲得</div>'
+      +'<div style="font-size:14px;font-weight:700;color:var(--text3)">月間残り</div>'
+    +'</div>'
+  );
+
+  const rows = KPI_ITEMS.map(k=>{
+    // data[k.id] を安全に取り出す（旧形式・未定義対応）
+    let rawD = data[k.id];
+    if(rawD === undefined || rawD === null) rawD = {dailyGoal:0,approach:0,acquired:0};
+    else if(typeof rawD === 'number') rawD = {dailyGoal:0,approach:0,acquired:rawD};
+    else if(typeof rawD !== 'object') rawD = {dailyGoal:0,approach:0,acquired:0};
+    const d = rawD;
+    const goal       = parseInt(kpiGoals[kpiPerson]?.[k.id])||0;
+    const dailyGoal  = parseInt(d.dailyGoal)||0;
+    const approach   = parseInt(d.approach)||0;
+    const todayAcq   = parseInt(d.acquired)||0;
+    // 過去日表示時は月間累計をその日付基準で計算
+    const monthTotal = getMonthlyAcquired(kpiPerson, k.id);
+    const diff       = monthTotal - goal;
+    const rate       = goal>0 ? Math.min(999,Math.round(monthTotal/goal*100)) : 0;
+    const barW       = Math.min(100, rate);
+    const barColor   = rate>=100?'var(--green)':rate>=70?'var(--orange)':'var(--accent)';
+    const rateColor  = rate>=100?'var(--green)':rate>=70?'var(--orange)':'var(--text3)';
+    const remVal     = goal===0?'—': diff>=0?('+'+diff): String(Math.abs(diff));
+    const remColor   = goal===0?'var(--text3)':diff>=0?'var(--green)':'var(--red)';
+    const remBg      = goal===0?'var(--surface2)':diff>=0?'var(--green-bg)':'var(--red-bg)';
+    const remBorder  = goal===0?'var(--border)':diff>=0?'rgba(52,199,89,.3)':'rgba(255,59,48,.2)';
+    const remLabel   = goal===0?'残り':diff>=0?'達成！':'残り';
+
+    const cardStyle = isPastDate
+      ? 'background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:10px 12px;margin-bottom:10px;opacity:.85'
+      : 'background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:10px 12px;margin-bottom:10px';
+    return '<div style="'+cardStyle+'">'
+      // タイトル行 + 達成率
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
+        +'<span style="font-size:15px;font-weight:700;color:var(--text)">'+k.label+'</span>'
+        +'<div style="display:flex;align-items:center;gap:6px">'
+          +'<span style="font-size:15px;color:var(--text3)">'+(isPastDate?'':('月計:'+monthTotal+'件'))+'</span>'
+          +'<span id="rate-'+kpiPerson+'-'+k.id+'" style="font-size:15px;font-weight:700;color:'+rateColor+'">'+( goal>0?rate+'%':'—' )+'</span>'
         +'</div>'
-        +'</div>';
-    }).join('')
-    + '</div>';
-  el.innerHTML = personRow + grid + renderKpiSummary();
+      +'</div>'
+      // プログレスバー
+      +(goal>0
+        ?'<div style="height:4px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:10px">'
+          +'<div id="bar-'+kpiPerson+'-'+k.id+'" style="height:4px;width:'+barW+'%;background:'+barColor+';border-radius:4px;transition:width .3s"></div>'
+          +'</div>'
+        :'<div style="height:1px;background:var(--border);margin-bottom:10px"></div>'
+      )
+      // 目標編集モード時は目標のみ・通常時は声かけ/獲得/残り
+      +(kpiGoalMode
+        ?'<div style="display:flex;align-items:center;justify-content:center;gap:12px;text-align:center">'
+          +'<button onclick="stepGoal(\''+k.id+'\', -1)" style="width:32px;height:32px;border-radius:50%;border:none;background:var(--surface);color:var(--text3);font-size:18px;cursor:pointer">−</button>'
+          +'<div onclick="openKpiGoalModal(\''+k.id+'\','+goal+')" style="font-size:28px;font-weight:800;color:var(--green);min-width:60px;text-align:center;border:1.5px solid rgba(52,199,89,.35);border-radius:10px;padding:8px 12px;background:var(--green-bg);cursor:pointer">'+goal+'</div>'
+          +'<span style="font-size:15px;color:var(--text3)">件</span>'
+          +'<button onclick="stepGoal(\''+k.id+'\', 1)" style="width:32px;height:32px;border-radius:50%;border:none;background:var(--green-bg);color:var(--green);font-size:18px;cursor:pointer">＋</button>'
+        +'</div>'
+        :'<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;text-align:center">'
+        +'<div style="display:flex;flex-direction:column">'
+          +'<div onclick="openKpiModal(\'' +k.id+ '\',\'dailyGoal\',' +dailyGoal+ ')" style="height:48px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:var(--orange);border:1.5px solid rgba(255,149,0,.4);border-radius:10px;background:var(--orange-bg);cursor:pointer;box-sizing:border-box">'+dailyGoal+'</div>'
+          +'<div style="display:flex;justify-content:center;gap:12px;margin-top:7px">'
+            +'<button onclick="stepKpi(\'' +k.id+ '\',\'dailyGoal\',-1)" style="width:30px;height:30px;border-radius:50%;border:none;background:var(--surface);color:var(--text3);font-size:18px;font-weight:700;cursor:pointer;line-height:1">−</button>'
+            +'<button onclick="stepKpi(\'' +k.id+ '\',\'dailyGoal\',1)" style="width:30px;height:30px;border-radius:50%;border:none;background:var(--orange-bg);color:var(--orange);font-size:18px;font-weight:700;cursor:pointer;line-height:1">＋</button>'
+          +'</div>'
+        +'</div>'
+        +'<div style="display:flex;flex-direction:column">'
+          +'<div onclick="openKpiModal(\'' +k.id+ '\',\'approach\',' +approach+ ')" style="height:48px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--text);border:1.5px solid var(--border);border-radius:10px;background:var(--surface);cursor:pointer;box-sizing:border-box">'+approach+'</div>'
+          +'<div style="display:flex;justify-content:center;gap:12px;margin-top:7px">'
+            +'<button onclick="stepKpi(\'' +k.id+ '\',\'approach\',-1)" style="width:30px;height:30px;border-radius:50%;border:none;background:var(--surface);color:var(--text3);font-size:18px;font-weight:700;cursor:pointer;line-height:1">−</button>'
+            +'<button onclick="stepKpi(\'' +k.id+ '\',\'approach\',1)" style="width:30px;height:30px;border-radius:50%;border:none;background:var(--surface2);color:var(--text2);font-size:18px;font-weight:700;cursor:pointer;line-height:1">＋</button>'
+          +'</div>'
+        +'</div>'
+        +'<div style="display:flex;flex-direction:column">'
+          +'<div onclick="openKpiModal(\'' +k.id+ '\',\'acquired\',' +todayAcq+ ')" style="height:48px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:var(--accent);border:1.5px solid rgba(0,113,227,.3);border-radius:10px;background:var(--accent-light);cursor:pointer;box-sizing:border-box">'+todayAcq+'</div>'
+          +'<div style="display:flex;justify-content:center;gap:12px;margin-top:7px">'
+            +'<button onclick="stepKpi(\'' +k.id+ '\',\'acquired\',-1)" style="width:30px;height:30px;border-radius:50%;border:none;background:var(--surface);color:var(--accent);font-size:18px;font-weight:700;cursor:pointer;line-height:1">−</button>'
+            +'<button onclick="stepKpi(\'' +k.id+ '\',\'acquired\',1)" style="width:30px;height:30px;border-radius:50%;border:none;background:var(--accent-light);color:var(--accent);font-size:18px;font-weight:700;cursor:pointer;line-height:1">＋</button>'
+          +'</div>'
+        +'</div>'
+        +'<div style="display:flex;flex-direction:column">'
+          +'<div id="rem-'+kpiPerson+'-'+k.id+'" style="height:48px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:'+remColor+';background:'+remBg+';border-radius:10px;border:1.5px solid '+remBorder+';box-sizing:border-box">'+remVal+'</div>'
+          +'<div style="height:37px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text3);margin-top:7px">件</div>'
+        +'</div>'
+      +'</div>'   // 通常グリッド閉じ
+      )
+    +'</div>';
+  }).join('');
+
+  el.innerHTML = header + rows;
+  } catch(e) {
+    console.error('renderKpi error:', e);
+    const el2 = document.getElementById('kpi-area');
+    if(el2) el2.innerHTML = '<div style="padding:20px;color:var(--red);font-size:15px;text-align:center">表示エラーが発生しました。<br>リセットボタンをお試しください。</div>';
+  }
 }
 
-function resetKpi(){
-  KPI_PERSONS.forEach(p=>{ KPI_ITEMS.forEach(k=>{ kpiData[p.id][k.id]=''; }); });
-  const sel = document.getElementById('kpi-person-select');
-  if(sel) sel.value='';
-  kpiPerson='';
+function openBulkGoalModal(){
+  const existing = document.getElementById('bulk-goal-modal');
+  if(existing) existing.remove();
+
+  // テーブルHTML生成（人×項目）
+  const shortLabel = {
+    reserve:'予約', monthly:'当月予約', nextmonth:'来月予約',
+    line:'LINE', oil:'オイル', replace:'乗換', ins:'保険',
+    freecheck:'無料点検', inen:'1年点検'
+  };
+
+  let thead = '<tr><th style="padding:6px 4px;font-size:11px;color:var(--text3);font-weight:700;text-align:left;min-width:52px">項目</th>';
+  KPI_PERSONS.forEach(p=>{
+    thead += '<th style="padding:6px 4px;font-size:11px;color:var(--text3);font-weight:700;text-align:center;min-width:48px">'+p.name.replace('さん','')+'</th>';
+  });
+  thead += '</tr>';
+
+  let tbody = '';
+  KPI_ITEMS.forEach(k=>{
+    tbody += '<tr>';
+    tbody += '<td style="padding:5px 4px;font-size:12px;color:var(--text2);font-weight:600;white-space:nowrap">'+shortLabel[k.id]+'</td>';
+    KPI_PERSONS.forEach(p=>{
+      const val = kpiGoals[p.id]?.[k.id] || 0;
+      tbody += '<td style="padding:3px 2px;text-align:center">'
+        +'<input type="number" id="bg-'+p.id+'-'+k.id+'" value="'+val+'" min="0" inputmode="numeric"'
+        +' style="width:44px;padding:4px 2px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-size:14px;font-weight:700;text-align:center;font-family:var(--sans);outline:none">'
+        +'</td>';
+    });
+    tbody += '</tr>';
+  });
+
+  const modal = document.createElement('div');
+  modal.id = 'bulk-goal-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto;-webkit-overflow-scrolling:touch';
+  modal.innerHTML = `
+    <div style="background:var(--surface);border-radius:18px;padding:20px 16px;width:100%;max-width:480px;margin:auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="font-size:17px;font-weight:700;color:var(--text)">📋 月間目標 一括設定</div>
+        <button onclick="document.getElementById('bulk-goal-modal').remove()" style="width:30px;height:30px;border-radius:50%;border:none;background:var(--surface2);color:var(--text2);font-size:18px;cursor:pointer">✕</button>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:12px">全スタッフの月間目標をまとめて設定できます</div>
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <table style="width:100%;border-collapse:collapse;border-spacing:0">
+          <thead style="background:var(--surface2)">${thead}</thead>
+          <tbody>${tbody}</tbody>
+        </table>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px">
+        <button onclick="document.getElementById('bulk-goal-modal').remove()" style="padding:12px;background:var(--surface2);border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);color:var(--text2)">キャンセル</button>
+        <button onclick="saveBulkGoals()" style="padding:12px;background:var(--green);border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);color:#fff">✅ 保存する</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
+}
+
+function saveBulkGoals(){
+  KPI_PERSONS.forEach(p=>{
+    if(!kpiGoals[p.id]) kpiGoals[p.id]={};
+    KPI_ITEMS.forEach(k=>{
+      const el = document.getElementById('bg-'+p.id+'-'+k.id);
+      if(el) kpiGoals[p.id][k.id] = parseInt(el.value)||0;
+    });
+  });
+  saveKpiGoals();
+  document.getElementById('bulk-goal-modal')?.remove();
+  if(kpiPerson) renderKpi();
+  // フラッシュ通知
+  const notif = document.createElement('div');
+  notif.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;font-weight:700;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2)';
+  notif.textContent='✅ 月間目標を保存しました';
+  document.body.appendChild(notif);
+  setTimeout(()=>notif.remove(), 2000);
+}
+
+function toggleGoalMode(){
+  kpiGoalMode = !kpiGoalMode;
+  renderKpi();
+}
+
+function openKpiGoalModal(itemId, currentVal){
+  openKpiModal(itemId, '__goal__', currentVal);
+}
+function stepGoal(itemId, d){
+  if(!kpiPerson) return;
+  if(!kpiGoals[kpiPerson]) kpiGoals[kpiPerson]={};
+  kpiGoals[kpiPerson][itemId] = Math.max(0, (parseInt(kpiGoals[kpiPerson][itemId])||0)+d);
+  saveKpiGoals();
   renderKpi();
 }
 
 
+
+function resetKpi(){
+  if(!kpiPerson) return;
+  const dateR = getCurrentDate();
+  // メモリをリセット
+  if(!kpiData[kpiPerson]) kpiData[kpiPerson]={};
+  kpiData[kpiPerson][dateR]={};
+  KPI_ITEMS.forEach(k=>{ kpiData[kpiPerson][dateR][k.id]={dailyGoal:0,approach:0,acquired:0}; });
+  // localStorageからも削除
+  const saved = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
+  const filtered = saved.filter(r=>!(r.date===dateR && r.person===kpiPerson));
+  localStorage.setItem('kpiHistory', JSON.stringify(filtered));
+  renderKpi();
+}
+
+
+
+// ── 朝礼発表 ──
+const MORNING_ITEMS = [
+  {id:'reserve', label:'予約獲得'},
+  {id:'monthly', label:'当月予約'},
+  {id:'line',    label:'LINEマイカー登録'},
+  {id:'oil',     label:'オイルパック獲得'},
+];
+
+function renderMorning(){
+  const el = document.getElementById('morning-area');
+  if(!el) return;
+
+  const selectedTopDate = getCurrentDate();
+  const ydParts = selectedTopDate.split('-');
+  const ydDate = new Date(parseInt(ydParts[0]), parseInt(ydParts[1])-1, parseInt(ydParts[2])-1);
+  const yesterdayStr = toLocalDateStr(ydDate);
+  const ym = selectedTopDate.slice(0,7);
+  const history = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
+
+  // 個人ごとの昨日・当月累計を集計（sumAcquiredで統一）
+  const fromDate = ym+'-01';
+  const personStats = KPI_PERSONS.map(p=>{
+    const yd = {};
+    const mo = {};
+    MORNING_ITEMS.forEach(k=>{
+      // 昨日のみ（yesterdayStr単日）
+      yd[k.id] = sumAcquired(p.id, k.id, yesterdayStr, yesterdayStr);
+      // 当月累計（月初〜selectedTopDate）
+      mo[k.id] = sumAcquired(p.id, k.id, fromDate, selectedTopDate);
+    });
+    return {person:p, yd, mo};
+  });
+
+  // 全員合計
+  const totYd = {}, totMo = {};
+  MORNING_ITEMS.forEach(k=>{ totYd[k.id]=0; totMo[k.id]=0; });
+  personStats.forEach(s=>{
+    MORNING_ITEMS.forEach(k=>{ totYd[k.id]+=s.yd[k.id]; totMo[k.id]+=s.mo[k.id]; });
+  });
+
+  const ydLabel = yesterdayStr.slice(5).replace('-','/');
+  const moLabel = ym.replace('-','年')+'月';
+
+  // 合計カード
+  let html = '<div style="margin-bottom:16px">';
+  html += '<div style="font-size:17px;font-weight:700;color:var(--text2);margin-bottom:10px">📊 全員合計</div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px">';
+  // 昨日合計
+  html += '<div style="background:var(--accent-light);border:1px solid rgba(0,113,227,.15);border-radius:12px;padding:10px 12px">';
+  html += '<div style="font-size:15px;font-weight:700;color:var(--accent);margin-bottom:8px">📅 昨日（'+ydLabel+'）</div>';
+  MORNING_ITEMS.forEach(k=>{
+    html += '<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:15px">'
+      +'<span style="color:var(--text2)">'+k.label+'</span>'
+      +'<span style="font-weight:700;font-size:15px;color:var(--accent)">'+totYd[k.id]+'件</span></div>';
+  });
+  html += '</div>';
+  // 当月合計
+  html += '<div style="background:var(--green-bg);border:1px solid rgba(52,199,89,.2);border-radius:12px;padding:10px 12px">';
+  html += '<div style="font-size:15px;font-weight:700;color:var(--green);margin-bottom:8px">📆 '+moLabel+'累計</div>';
+  MORNING_ITEMS.forEach(k=>{
+    html += '<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:15px">'
+      +'<span style="color:var(--text2)">'+k.label+'</span>'
+      +'<span style="font-weight:700;font-size:15px;color:var(--green)">'+totMo[k.id]+'件</span></div>';
+  });
+  html += '</div>';
+  html += '</div></div>';
+
+  // 個人別カード
+  html += '<div style="font-size:17px;font-weight:700;color:var(--text2);margin-bottom:10px">👤 個人別</div>';
+  personStats.forEach(s=>{
+    const hasAny = MORNING_ITEMS.some(k=>s.yd[k.id]>0||s.mo[k.id]>0);
+    html += '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:10px">';
+    html += '<div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:10px">'+s.person.name+'</div>';
+    html += '<div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:4px 8px;align-items:center">';
+    html += '<div style="font-size:14px;color:var(--text3)"></div>'
+      +'<div style="font-size:14px;font-weight:700;color:var(--accent);text-align:center">昨日</div>'
+      +'<div style="font-size:14px;font-weight:700;color:var(--green);text-align:center">当月累計</div>';
+    MORNING_ITEMS.forEach(k=>{
+      const ydV = s.yd[k.id];
+      const moV = s.mo[k.id];
+      html += '<div style="font-size:15px;color:var(--text2);padding:4px 0;border-top:1px solid var(--border)">'+k.label+'</div>'
+        +'<div style="font-size:18px;font-weight:800;color:'+(ydV>0?'var(--accent)':'var(--text3)')+';text-align:center;border-top:1px solid var(--border);padding:5px 0">'+ydV+'</div>'
+        +'<div style="font-size:18px;font-weight:800;color:'+(moV>0?'var(--green)':'var(--text3)')+';text-align:center;border-top:1px solid var(--border);padding:5px 0">'+moV+'</div>';
+    });
+    html += '</div></div>';
+  });
+
+  // データ件数チェック
+  const ydHasData = MORNING_ITEMS.some(k=>totYd[k.id]>0);
+  const moHasData = MORNING_ITEMS.some(k=>totMo[k.id]>0);
+  
+  // デバッグ情報（昨日のレコードが存在するか確認）
+  const ydRecExists = history.some(r=>r.date===yesterdayStr);
+  const debugInfo = !ydHasData && !ydRecExists
+    ? '<div style="margin-bottom:12px;padding:8px 12px;background:var(--orange-bg);border-radius:8px;font-size:15px;color:var(--orange)">⚠️ '+yesterdayStr+' の保存データが見つかりません。KPIタブで'+yesterdayStr+'を選び「本日の実績を保存」を押してください。</div>'
+    : '';
+
+  // 車検進捗ミニカード（KPIデータがなくても常に表示）
+  const shakenSaved = JSON.parse(localStorage.getItem('shakenData')||'null');
+  let shakenHtml = '';
+  if(shakenSaved){
+    const sTarget   = parseInt(shakenSaved.target)||0;
+    const sProduced = parseInt(shakenSaved.produced)||0;
+    const sReserved = parseInt(shakenSaved.reserved)||0;
+    const sTodayIn  = parseInt(shakenSaved.todayIn)||0;
+    const sRate     = sTarget>0 ? Math.round(sReserved/sTarget*100) : 0; // 予約確定÷目標
+    const sRateColor = sRate>=100?'var(--green)':sRate>=70?'var(--orange)':'var(--accent)';
+    const sBg       = sRate>=100?'var(--green-bg)':sRate>=70?'var(--orange-bg)':'var(--accent-light)';
+    const sBorder   = sRate>=100?'rgba(52,199,89,.25)':sRate>=70?'rgba(255,149,0,.25)':'rgba(0,113,227,.2)';
+    const sMonth    = shakenSaved.month ? shakenSaved.month.replace('-','年')+'月' : '';
+    const cell = (bg,border,lc,label,val,unit)=>
+      '<div style="background:'+bg+';border:1px solid '+border+';border-radius:10px;padding:12px 4px;text-align:center">'
+        +'<div style="font-size:15px;font-weight:700;color:'+lc+';margin-bottom:5px">'+label+'</div>'
+        +'<div style="font-size:26px;font-weight:800;color:'+lc+'">'+val+'</div>'
+        +'<div style="font-size:15px;color:var(--text3);margin-top:3px">'+unit+'</div>'
+      +'</div>';
+    shakenHtml = '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:12px">'
+      +'<div style="font-size:15px;font-weight:700;color:var(--text2);margin-bottom:12px">🔧 車検進捗 '+sMonth+'</div>'
+      // 中段：予約確定・当月目標、下段：生産・入庫・達成率
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">'
+        +cell('var(--green-bg)','rgba(52,199,89,.3)','var(--green)','予約確定台数',sReserved,'台')
+        +cell('rgba(191,90,242,.1)','rgba(191,90,242,.35)','rgba(191,90,242,1)','当月車検目標台数',sTarget,'台')
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">'
+        +cell('var(--accent-light)','rgba(0,113,227,.2)','var(--accent)','生産台数',sProduced,'台')
+        +cell('var(--orange-bg)','rgba(255,149,0,.25)','var(--orange)','本日の入庫',sTodayIn,'台')
+        +cell(sBg,sBorder,sRateColor,'達成率',sRate+'%',sRate>=100?'達成！':'残'+(sTarget-sReserved)+'台')
+      +'</div>'
+    +'</div>';
+  }
+
+  // 本日の休みスタッフ
+  const absentFront    = STAFF.filter(s=>s.group==='front' && s.id!=='sato' && !present.has(s.id));
+  const absentMechanic = STAFF.filter(s=>s.group==='mechanic' && !present.has(s.id));
+  let absentHtml = '';
+  if(absentFront.length > 0 || absentMechanic.length > 0){
+    absentHtml = '<div style="background:var(--red-bg);border:1px solid rgba(255,59,48,.2);border-radius:12px;padding:12px 14px;margin-bottom:12px">'
+      +'<div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px">😴 本日の休み</div>'
+      +'<div style="display:flex;flex-wrap:wrap;gap:6px">';
+    absentFront.forEach(s=>{
+      absentHtml += '<span style="background:var(--surface);border:1px solid rgba(255,59,48,.3);border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700;color:var(--red)">'+s.name+'</span>';
+    });
+    absentMechanic.forEach(s=>{
+      absentHtml += '<span style="background:var(--surface);border:1px solid rgba(255,59,48,.2);border-radius:20px;padding:4px 12px;font-size:13px;color:var(--red)">'+s.name+'（整備）</span>';
+    });
+    absentHtml += '</div></div>';
+  }
+
+  if(!history.length && !moHasData){
+    el.innerHTML=shakenHtml+absentHtml+'<div style="text-align:center;padding:32px 0;color:var(--text3);font-size:15px">📭<br>実績データがありません<br><span style="font-size:15px">KPIタブで実績を保存してください</span></div>';
+    return;
+  }
+
+  el.innerHTML = shakenHtml + absentHtml + debugInfo + html;
+}
+
+// ── バックアップ ──
+const GAS_CODE = `
+// ═══════════════════════════════════════════════════════
+// 車検工場 人員配置管理アプリ - GASバックエンド
+// -------------------------------------------------------
+// 【設置手順】
+// 1. Googleスプレッドシートを新規作成
+// 2. 「拡張機能」→「Apps Script」を開く
+// 3. このコードを全て貼り付けて保存（Ctrl+S）
+// 4. 「デプロイ」→「新しいデプロイ」をクリック
+// 5. 種類:「ウェブアプリ」、アクセス:「全員」に設定
+// 6. 「デプロイ」→ URLをコピー
+// 7. アプリの設定タブにURLを貼り付ける
+//
+// 【シート構成】
+//   車検データ  - 月別生産・目標・予約データ
+//   KPI実績     - スタッフ別日次実績
+//   KPI目標     - スタッフ別月間目標
+//   出勤データ  - 出勤メンバー記録
+// ═══════════════════════════════════════════════════════
+
+// CORSヘッダー付きレスポンス（どの端末からでもアクセス可能）
+function doGet(e) {
+  return ok('GASサーバー稼働中');
+}
+
+function doPost(e) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var params = JSON.parse(e.postData.contents);
+    var action = params.action;
+
+    // ── 車検データ 保存 ──
+    if(action === 'save_shaken') {
+      var sheet = getOrCreate(ss, '車検データ');
+      sheet.clearContents();
+      sheet.appendRow(['キー','稼働日数','目標台数','生産台数','予約確定','本日入庫','採算性メモ','メモ','更新日時']);
+      var data = params.data || {};
+      var now = new Date().toLocaleString('ja-JP');
+      Object.keys(data).sort().forEach(function(k) {
+        var d = data[k];
+        sheet.appendRow([k, d.workdays||'', Number(d.target)||0, Number(d.produced)||0,
+          Number(d.reserved)||0, Number(d.todayIn)||0, d.profitMemo||'', d.memo||'', now]);
+      });
+      return ok('車検データを保存しました（' + Object.keys(data).length + '件）');
+    }
+
+    // ── 車検データ 読込 ──
+    if(action === 'load_shaken') {
+      var sheet = ss.getSheetByName('車検データ');
+      if(!sheet) return ok('データなし', {});
+      var rows = sheet.getDataRange().getValues();
+      var data = {};
+      rows.slice(1).forEach(function(r) {
+        if(!r[0]) return;
+        data[String(r[0])] = {
+          month: String(r[0]), workdays: r[1],
+          target: Number(r[2])||0, produced: Number(r[3])||0,
+          reserved: Number(r[4])||0, todayIn: Number(r[5])||0,
+          profitMemo: r[6]||'', memo: r[7]||''
+        };
+      });
+      return ok('読込完了（' + Object.keys(data).length + '件）', data);
+    }
+
+    // ── KPI実績 保存 ──
+    if(action === 'save_kpi') {
+      var sheet = getOrCreate(ss, 'KPI実績');
+      sheet.clearContents();
+      sheet.appendRow(['日付','担当者','項目','日次目標','声かけ','獲得','更新日時']);
+      var history = params.data || [];
+      var now = new Date().toLocaleString('ja-JP');
+      history.forEach(function(r) {
+        if(!r.data) return;
+        Object.keys(r.data).forEach(function(itemId) {
+          var d = r.data[itemId];
+          if(!d) return;
+          sheet.appendRow([r.date, r.person, itemId,
+            Number(d.dailyGoal)||0, Number(d.approach)||0, Number(d.acquired)||0, now]);
+        });
+      });
+      return ok('KPI実績を保存しました（' + history.length + '件）');
+    }
+
+    // ── KPI実績 読込 ──
+    if(action === 'load_kpi') {
+      var sheet = ss.getSheetByName('KPI実績');
+      if(!sheet) return ok('データなし', []);
+      var rows = sheet.getDataRange().getValues();
+      var map = {};
+      rows.slice(1).forEach(function(r) {
+        if(!r[0]) return;
+        var key = String(r[0]).slice(0,10) + '_' + r[1];
+        if(!map[key]) map[key] = {date: String(r[0]).slice(0,10), person: String(r[1]), data: {}};
+        map[key].data[r[2]] = {dailyGoal: Number(r[3])||0, approach: Number(r[4])||0, acquired: Number(r[5])||0};
+      });
+      return ok('読込完了', Object.values(map));
+    }
+
+    // ── KPI目標 保存 ──
+    if(action === 'save_kpi_goals') {
+      var sheet = getOrCreate(ss, 'KPI目標');
+      sheet.clearContents();
+      sheet.appendRow(['担当者','項目','月間目標','更新日時']);
+      var goals = params.data || {};
+      var now = new Date().toLocaleString('ja-JP');
+      Object.keys(goals).forEach(function(person) {
+        Object.keys(goals[person]).forEach(function(itemId) {
+          sheet.appendRow([person, itemId, Number(goals[person][itemId])||0, now]);
+        });
+      });
+      return ok('KPI目標を保存しました');
+    }
+
+    // ── KPI目標 読込 ──
+    if(action === 'load_kpi_goals') {
+      var sheet = ss.getSheetByName('KPI目標');
+      if(!sheet) return ok('データなし', {});
+      var rows = sheet.getDataRange().getValues();
+      var goals = {};
+      rows.slice(1).forEach(function(r) {
+        if(!r[0]) return;
+        if(!goals[r[0]]) goals[r[0]] = {};
+        goals[r[0]][r[1]] = Number(r[2])||0;
+      });
+      return ok('読込完了', goals);
+    }
+
+    // ── 出勤データ 保存 ──
+    if(action === 'save_attendance') {
+      var sheet = getOrCreate(ss, '出勤データ');
+      sheet.clearContents();
+      sheet.appendRow(['日付','スタッフID','更新日時']);
+      var data = params.data || {};
+      var now = new Date().toLocaleString('ja-JP');
+      (data.members || []).forEach(function(id) {
+        sheet.appendRow([data.date, id, now]);
+      });
+      return ok('出勤データを保存しました（' + (data.members||[]).length + '名）');
+    }
+
+    // ── 出勤データ 読込 ──
+    if(action === 'load_attendance') {
+      var sheet = ss.getSheetByName('出勤データ');
+      if(!sheet) return ok('データなし', {members:[], date:''});
+      var rows = sheet.getDataRange().getValues();
+      var members = [];
+      var date = '';
+      rows.slice(1).forEach(function(r) {
+        if(!r[0]) return;
+        date = String(r[0]).slice(0,10);
+        members.push(String(r[1]));
+      });
+      return ok('読込完了', {members: members, date: date});
+    }
+
+    // ── 全データ一括バックアップ ──
+    if(action === 'backup') {
+      var now = new Date().toLocaleString('ja-JP');
+      // 車検
+      var sh1 = getOrCreate(ss, '車検データ');
+      sh1.clearContents();
+      sh1.appendRow(['キー','稼働日数','目標台数','生産台数','予約確定','本日入庫','メモ','更新日時']);
+      var shakenAll = params.shakenAllData || {};
+      Object.keys(shakenAll).sort().forEach(function(k) {
+        var d = shakenAll[k];
+        sh1.appendRow([k, d.workdays||'', Number(d.target)||0, Number(d.produced)||0,
+          Number(d.reserved)||0, Number(d.todayIn)||0, d.memo||'', now]);
+      });
+      // KPI実績
+      var sh2 = getOrCreate(ss, 'KPI実績');
+      sh2.clearContents();
+      sh2.appendRow(['日付','担当者','項目','日次目標','声かけ','獲得','更新日時']);
+      (params.kpiHistory || []).forEach(function(r) {
+        if(!r.data) return;
+        Object.keys(r.data).forEach(function(itemId) {
+          var d = r.data[itemId];
+          if(!d) return;
+          sh2.appendRow([r.date, r.person, itemId,
+            Number(d.dailyGoal)||0, Number(d.approach)||0, Number(d.acquired)||0, now]);
+        });
+      });
+      // KPI目標
+      var sh3 = getOrCreate(ss, 'KPI目標');
+      sh3.clearContents();
+      sh3.appendRow(['担当者','項目','月間目標','更新日時']);
+      var goals = params.kpiGoals || {};
+      Object.keys(goals).forEach(function(person) {
+        Object.keys(goals[person]).forEach(function(itemId) {
+          sh3.appendRow([person, itemId, Number(goals[person][itemId])||0, now]);
+        });
+      });
+      return ok('全データをバックアップしました ' + now);
+    }
+
+    // ── 全データ一括復元 ──
+    if(action === 'restore') {
+      var result = {};
+      var sh1 = ss.getSheetByName('車検データ');
+      if(sh1) {
+        var rows = sh1.getDataRange().getValues();
+        var shaken = {};
+        rows.slice(1).forEach(function(r) {
+          if(!r[0]) return;
+          shaken[String(r[0])] = {month:String(r[0]), workdays:r[1],
+            target:Number(r[2])||0, produced:Number(r[3])||0,
+            reserved:Number(r[4])||0, todayIn:Number(r[5])||0, memo:r[6]||''};
+        });
+        result.shakenAllData = shaken;
+      }
+      var sh2 = ss.getSheetByName('KPI実績');
+      if(sh2) {
+        var rows = sh2.getDataRange().getValues();
+        var map = {};
+        rows.slice(1).forEach(function(r) {
+          if(!r[0]) return;
+          var key = String(r[0]).slice(0,10) + '_' + r[1];
+          if(!map[key]) map[key] = {date:String(r[0]).slice(0,10), person:String(r[1]), data:{}};
+          map[key].data[r[2]] = {dailyGoal:Number(r[3])||0, approach:Number(r[4])||0, acquired:Number(r[5])||0};
+        });
+        result.kpiHistory = Object.values(map);
+      }
+      var sh3 = ss.getSheetByName('KPI目標');
+      if(sh3) {
+        var rows = sh3.getDataRange().getValues();
+        var goals = {};
+        rows.slice(1).forEach(function(r) {
+          if(!r[0]) return;
+          if(!goals[r[0]]) goals[r[0]] = {};
+          goals[r[0]][r[1]] = Number(r[2])||0;
+        });
+        result.kpiGoals = goals;
+      }
+      return ok('復元完了', result);
+    }
+
+    return error('不明なアクション: ' + action);
+
+  } catch(e) {
+    return error(e.toString());
+  }
+}
+
+// ─── ヘルパー関数 ───────────────────────────
+function getOrCreate(ss, name) {
+  return ss.getSheetByName(name) || ss.insertSheet(name);
+}
+
+function ok(msg, data) {
+  var res = {ok: true, message: msg, saved: new Date().toLocaleString('ja-JP')};
+  if(data !== undefined) res.data = data;
+  return ContentService
+    .createTextOutput(JSON.stringify(res))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function error(msg) {
+  return ContentService
+    .createTextOutput(JSON.stringify({ok: false, error: msg}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+`;
+
+
+function copyGasCode(){
+  navigator.clipboard.writeText(GAS_CODE).then(()=>{
+    const el = document.querySelector('[onclick="copyGasCode()"]');
+    if(el){ el.textContent='✅ コピーしました！'; setTimeout(()=>{ el.textContent='📋 GASコードをコピー'; },2000); }
+  }).catch(()=>{
+    // フォールバック
+    const ta = document.createElement('textarea');
+    ta.value = GAS_CODE; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    const el = document.querySelector('[onclick="copyGasCode()"]');
+    if(el){ el.textContent='✅ コピーしました！'; setTimeout(()=>{ el.textContent='📋 GASコードをコピー'; },2000); }
+  });
+}
+
+
+// ═══════════════════════════════════════════
+// シート別 保存・読込関数
+// ═══════════════════════════════════════════
+
+function getGasUrl(){
+  return document.getElementById('gas-url')?.value || localStorage.getItem('gasUrl') || '';
+}
+
+function showSyncStatus(tabId, msg, isOk){
+  const el = document.getElementById('sync-status-'+tabId);
+  if(!el) return;
+  el.textContent = msg;
+  el.style.color = isOk ? 'var(--green)' : 'var(--red)';
+  el.style.display = 'inline';
+  setTimeout(()=>{ if(el) el.style.display='none'; }, 3000);
+}
+
+// 車検データ 保存
+async function saveShakenToSheet(){
+  const url = getGasUrl();
+  if(!url){ showSyncStatus('shaken','⚠️ GAS URLを設定してください',false); return; }
+  showSyncStatus('shaken','📤 保存中...',true);
+  try{
+    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'save_shaken', data:getShakenAll()})});
+    const d = await res.json();
+    showSyncStatus('shaken', d.ok ? '✅ スプレッドシートに保存' : '❌ '+d.error, d.ok);
+  }catch(e){ showSyncStatus('shaken','❌ 通信エラー',false); }
+}
+
+// 車検データ 読込
+async function loadShakenFromSheet(){
+  const url = getGasUrl();
+  if(!url){ showSyncStatus('shaken','⚠️ GAS URLを設定してください',false); return; }
+  if(!confirm('スプレッドシートのデータで上書きします。よろしいですか？')) return;
+  showSyncStatus('shaken','📥 読込中...',true);
+  try{
+    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'load_shaken'})});
+    const d = await res.json();
+    if(d.ok && d.data){
+      saveShakenAll(d.data);
+      renderShakenChart();
+      showSyncStatus('shaken','✅ 読込完了',true);
+    } else { showSyncStatus('shaken','❌ '+(d.error||'エラー'),false); }
+  }catch(e){ showSyncStatus('shaken','❌ 通信エラー',false); }
+}
+
+// KPI実績 保存
+async function saveKpiToSheet(){
+  const url = getGasUrl();
+  if(!url){ showSyncStatus('kpi','⚠️ GAS URLを設定してください',false); return; }
+  showSyncStatus('kpi','📤 保存中...',true);
+  try{
+    const history = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
+    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'save_kpi', data:history})});
+    const d = await res.json();
+    showSyncStatus('kpi', d.ok ? '✅ スプレッドシートに保存' : '❌ '+d.error, d.ok);
+  }catch(e){ showSyncStatus('kpi','❌ 通信エラー',false); }
+}
+
+// KPI実績 読込
+async function loadKpiFromSheet(){
+  const url = getGasUrl();
+  if(!url){ showSyncStatus('kpi','⚠️ GAS URLを設定してください',false); return; }
+  if(!confirm('スプレッドシートのKPI実績で上書きします。よろしいですか？')) return;
+  showSyncStatus('kpi','📥 読込中...',true);
+  try{
+    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'load_kpi'})});
+    const d = await res.json();
+    if(d.ok && d.data){
+      localStorage.setItem('kpiHistory', JSON.stringify(d.data));
+      if(kpiPerson) renderKpi();
+      showSyncStatus('kpi','✅ 読込完了',true);
+    } else { showSyncStatus('kpi','❌ '+(d.error||'エラー'),false); }
+  }catch(e){ showSyncStatus('kpi','❌ 通信エラー',false); }
+}
+
+// KPI目標 保存
+async function saveKpiGoalsToSheet(){
+  const url = getGasUrl();
+  if(!url){ showSyncStatus('kpi','⚠️ GAS URLを設定してください',false); return; }
+  showSyncStatus('kpi','📤 目標保存中...',true);
+  try{
+    const goals = JSON.parse(localStorage.getItem('kpiGoals')||'{}');
+    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'save_kpi_goals', data:goals})});
+    const d = await res.json();
+    showSyncStatus('kpi', d.ok ? '✅ 目標をスプレッドシートに保存' : '❌ '+d.error, d.ok);
+  }catch(e){ showSyncStatus('kpi','❌ 通信エラー',false); }
+}
+
+// 出勤データ 保存
+async function saveAttendanceToSheet(){
+  const url = getGasUrl();
+  if(!url){ showSyncStatus('attendance','⚠️ GAS URLを設定してください',false); return; }
+  showSyncStatus('attendance','📤 保存中...',true);
+  try{
+    const date = document.getElementById('today-date')?.value || getTodayLocal();
+    const members = [...present];
+    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'save_attendance', data:{date, members}})});
+    const d = await res.json();
+    showSyncStatus('attendance', d.ok ? '✅ スプレッドシートに保存' : '❌ '+d.error, d.ok);
+  }catch(e){ showSyncStatus('attendance','❌ 通信エラー',false); }
+}
+
+// 出勤データ 読込
+async function loadAttendanceFromSheet(){
+  const url = getGasUrl();
+  if(!url){ showSyncStatus('attendance','⚠️ GAS URLを設定してください',false); return; }
+  if(!confirm('スプレッドシートの出勤データを読み込みます。よろしいですか？')) return;
+  showSyncStatus('attendance','📥 読込中...',true);
+  try{
+    const res = await fetch(url,{method:'POST',body:JSON.stringify({action:'load_attendance'})});
+    const d = await res.json();
+    if(d.ok && d.data){
+      present = new Set(d.data.members);
+      renderStaffGrid(); renderAll();
+      showSyncStatus('attendance','✅ 読込完了',true);
+    } else { showSyncStatus('attendance','❌ '+(d.error||'エラー'),false); }
+  }catch(e){ showSyncStatus('attendance','❌ 通信エラー',false); }
+}
+
+function setBackupStatus(msg, color){
+  const el = document.getElementById('backup-status');
+  if(el){ el.textContent=msg; el.style.color=color||'var(--text3)'; }
+}
+
+async function backupToGas(){
+  const url = document.getElementById('gas-url')?.value || localStorage.getItem('gasUrl');
+  if(!url){ setBackupStatus('⚠️ GAS URLを入力してください', 'var(--red)'); return; }
+  setBackupStatus('送信中...', 'var(--text3)');
+  try{
+    const payload = {
+      action: 'backup',
+      kpiHistory: JSON.parse(localStorage.getItem('kpiHistory')||'[]'),
+      kpiGoals: JSON.parse(localStorage.getItem('kpiGoals')||'{}'),
+      shakenAllData: getShakenAll(),
+    };
+    const res = await fetch(url, {method:'POST', body:JSON.stringify(payload)});
+    const data = await res.json();
+    if(data.ok) setBackupStatus('✅ バックアップ完了 '+data.saved, 'var(--green)');
+    else setBackupStatus('❌ エラー: '+data.error, 'var(--red)');
+  }catch(e){
+    setBackupStatus('❌ 通信エラー: '+e.message, 'var(--red)');
+  }
+}
+
+async function restoreFromGas(){
+  const url = document.getElementById('gas-url')?.value || localStorage.getItem('gasUrl');
+  if(!url){ setBackupStatus('⚠️ GAS URLを入力してください', 'var(--red)'); return; }
+  if(!confirm('スプレッドシートのデータで上書きします。よろしいですか？')) return;
+  setBackupStatus('取得中...', 'var(--text3)');
+  try{
+    const payload = {action:'restore'};
+    const res = await fetch(url, {method:'POST', body:JSON.stringify(payload)});
+    const data = await res.json();
+    if(data.ok && data.data){
+      if(data.data.kpiHistory)  localStorage.setItem('kpiHistory',   JSON.stringify(data.data.kpiHistory));
+      if(data.data.kpiGoals)    localStorage.setItem('kpiGoals',     JSON.stringify(data.data.kpiGoals));
+      if(data.data.shakenAllData) localStorage.setItem('shakenAllData', JSON.stringify(data.data.shakenAllData));
+      if(data.data.shakenData)  localStorage.setItem('shakenData',   JSON.stringify(data.data.shakenData));
+      setBackupStatus('✅ 復元完了。ページを再読み込みしてください', 'var(--green)');
+    } else {
+      setBackupStatus('❌ エラー: '+(data.error||'不明'), 'var(--red)');
+    }
+  }catch(e){
+    setBackupStatus('❌ 通信エラー: '+e.message, 'var(--red)');
+  }
+}
+
+// 設定タブ初期化
+function initSettings(){
+  const saved = localStorage.getItem('gasUrl');
+  const inp = document.getElementById('gas-url');
+  if(inp && saved) inp.value = saved;
+}
+
+// ── 実績グラフ ──
+let statsPeriod = 'daily';
+let statsType = 'bar';
+let statsChart = null;
+
+function confirmResetHistory(){
+  const modal = document.createElement('div');
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  modal.innerHTML=`<div style="background:var(--surface);border-radius:22px;padding:28px 24px;width:100%;max-width:320px;text-align:center">
+    <div style="font-size:34px;margin-bottom:12px">🗑️</div>
+    <div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px">実績データを削除</div>
+    <div style="font-size:15px;color:var(--text2);margin-bottom:22px;line-height:1.6">すべての実績履歴が削除されます。<br>月間目標はそのまま残ります。</div>
+    <div style="display:flex;gap:10px">
+      <button onclick="this.closest('div[style]').remove()" style="flex:1;padding:13px;background:var(--surface2);border:none;border-radius:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);color:var(--text2)">キャンセル</button>
+      <button onclick="execResetHistory();this.closest('div[style]').remove()" style="flex:1;padding:13px;background:var(--red);border:none;border-radius:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);color:#fff">削除する</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click',e=>{ if(e.target===modal) modal.remove(); });
+}
+
+function execResetHistory(){
+  localStorage.removeItem('kpiHistory');
+  localStorage.removeItem('kpiLastDate');
+  KPI_PERSONS.forEach(p=>{ kpiData[p.id]={}; });
+  renderStatsChart();
+  if(kpiPerson) renderKpi();
+}
+
+function setStatsPeriod(p){
+  statsPeriod = p;
+  document.querySelectorAll('.stats-period-btn').forEach(b=>b.classList.toggle('active', b.textContent.includes({daily:'日',weekly:'週',monthly:'月',custom:'日'}[p])));
+  const cr = document.getElementById('custom-range');
+  if(cr) cr.style.display = p==='custom'?'flex':'none';
+  if(p!=='custom') renderStatsChart();
+}
+
+function setStatsType(t){
+  statsType = t;
+  document.getElementById('chart-type-bar')?.classList.toggle('active', t==='bar');
+  document.getElementById('chart-type-line')?.classList.toggle('active', t==='line');
+  renderStatsChart();
+}
+
+function getMergedHistory(){
+  const saved = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
+  const todayReal = getTodayLocal();
+  // 今日分がまだ未保存の場合のみメモリからマージ
+  KPI_PERSONS.forEach(p=>{
+    const memToday = kpiData[p.id]?.[todayReal];
+    if(!memToday) return;
+    const hasData = KPI_ITEMS.some(k=>{
+      const d = memToday[k.id];
+      return d && ((parseInt(d.approach)||0)>0 || (parseInt(d.acquired)||0)>0);
+    });
+    if(!hasData) return;
+    const alreadySaved = saved.some(r=>r.date===todayReal && r.person===p.id);
+    if(!alreadySaved){
+      saved.push({date:todayReal, person:p.id, data:JSON.parse(JSON.stringify(memToday))});
+    }
+  });
+  return saved;
+}
+
+function getStatsData(){
+  const saved = getMergedHistory();
+  const person = document.getElementById('stats-person-select')?.value||'all';
+  const kpiKey = document.getElementById('stats-kpi-select')?.value||'total';
+  const today = new Date();
+
+  let records = saved;
+  if(person!=='all') records = records.filter(r=>r.person===person);
+
+  // 期間フィルター
+  let labels=[], approachData=[], acquiredData=[];
+  if(statsPeriod==='daily'){
+    for(let i=6;i>=0;i--){
+      const d = new Date(today); d.setDate(d.getDate()-i);
+      const ds = toLocalDateStr(d);
+      labels.push(ds.slice(5));
+      const recs = records.filter(r=>r.date===ds);
+      approachData.push(sumField(recs, kpiKey, 'approach'));
+      acquiredData.push(sumField(recs, kpiKey, 'acquired'));
+    }
+  } else if(statsPeriod==='weekly'){
+    for(let w=3;w>=0;w--){
+      const from = new Date(today); from.setDate(from.getDate()-from.getDay()-7*w);
+      const to = new Date(from); to.setDate(to.getDate()+6);
+      labels.push(toLocalDateStr(from).slice(5,10)+'〜'+toLocalDateStr(to).slice(5,10));
+      const recs = records.filter(r=>{ const d=new Date(r.date); return d>=from && d<=to; });
+      approachData.push(sumField(recs, kpiKey, 'approach'));
+      acquiredData.push(sumField(recs, kpiKey, 'acquired'));
+    }
+  } else if(statsPeriod==='monthly'){
+    for(let m=2;m>=0;m--){
+      const d = new Date(today.getFullYear(), today.getMonth()-m, 1);
+      labels.push(d.getFullYear()+'/'+(d.getMonth()+1));
+      const recs = records.filter(r=>{ const rd=new Date(r.date); return rd.getFullYear()===d.getFullYear()&&rd.getMonth()===d.getMonth(); });
+      approachData.push(sumField(recs, kpiKey, 'approach'));
+      acquiredData.push(sumField(recs, kpiKey, 'acquired'));
+    }
+  } else if(statsPeriod==='custom'){
+    const from = document.getElementById('stats-from')?.value;
+    const to = document.getElementById('stats-to')?.value;
+    if(!from||!to) return {labels:[],approachData:[],acquiredData:[]};
+    const recs = records.filter(r=>r.date>=from && r.date<=to);
+    // 日ごとに表示
+    let cur = new Date(from);
+    const end = new Date(to);
+    while(cur<=end){
+      const ds = toLocalDateStr(cur);
+      labels.push(ds.slice(5));
+      const dr = recs.filter(r=>r.date===ds);
+      approachData.push(sumField(dr, kpiKey, 'approach'));
+      acquiredData.push(sumField(dr, kpiKey, 'acquired'));
+      cur.setDate(cur.getDate()+1);
+    }
+  }
+  return {labels, approachData, acquiredData};
+}
+
+function sumField(recs, kpiKey, field){
+  let total=0;
+  recs.forEach(r=>{
+    if(!r.data) return;
+    if(kpiKey==='total'){
+      Object.values(r.data).forEach(v=>{
+        if(v && typeof v==='object') total+=(parseInt(v[field])||0);
+      });
+    } else {
+      const item = r.data[kpiKey];
+      if(item && typeof item==='object') total += (parseInt(item[field])||0);
+    }
+  });
+  return total;
+}
+
+let statsMode = 'trend'; // trend | compare
+
+function setStatsMode(m){
+  statsMode = m;
+  document.getElementById('mode-btn-trend')?.classList.toggle('active', m==='trend');
+  document.getElementById('mode-btn-compare')?.classList.toggle('active', m==='compare');
+  const pf = document.getElementById('person-filter');
+  if(pf) pf.style.display = m==='trend'?'block':'none';
+  renderStatsChart();
+}
+
+function renderStatsChart(){
+  const canvas = document.getElementById('stats-chart');
+  if(!canvas) return;
+  if(statsChart){ statsChart.destroy(); statsChart=null; }
+
+  const isDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const gridColor = isDark?'rgba(255,255,255,.1)':'rgba(0,0,0,.08)';
+  const textColor = isDark?'#aeaeb2':'#6e6e73';
+
+  if(statsMode==='compare'){
+    renderCompareChart(canvas, isDark, gridColor, textColor);
+  } else {
+    renderTrendChart(canvas, isDark, gridColor, textColor);
+  }
+}
+
+function renderTrendChart(canvas, isDark, gridColor, textColor){
+  const {labels, approachData, acquiredData} = getStatsData();
+  statsChart = new Chart(canvas, {
+    type: statsType==='bar'?'bar':'line',
+    data:{
+      labels,
+      datasets:[
+        { label:'声かけ', data:approachData, backgroundColor:'rgba(0,113,227,.25)', borderColor:'rgba(0,113,227,.7)', borderWidth:2, borderRadius:6, tension:.4, fill:false },
+        { label:'獲得', data:acquiredData, backgroundColor:'rgba(52,199,89,.35)', borderColor:'rgba(52,199,89,.8)', borderWidth:2, borderRadius:6, tension:.4, fill:false },
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:true,
+      plugins:{ legend:{ labels:{ color:textColor, font:{size:12} } } },
+      scales:{
+        x:{ ticks:{color:textColor,font:{size:11}}, grid:{color:gridColor} },
+        y:{ ticks:{color:textColor,font:{size:11}}, grid:{color:gridColor}, beginAtZero:true }
+      }
+    }
+  });
+  const totalApproach = approachData.reduce((a,b)=>a+b,0);
+  const totalAcquired = acquiredData.reduce((a,b)=>a+b,0);
+  const rate = totalApproach>0?Math.round(totalAcquired/totalApproach*100):0;
+  const el = document.getElementById('stats-summary');
+  if(el) el.innerHTML = '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">'
+    +'<div style="flex:1;min-width:80px;text-align:center;padding:10px;background:var(--surface2);border-radius:10px"><div style="font-size:21px;font-weight:700;color:var(--text)">'+totalApproach+'</div><div style="font-size:15px;color:var(--text3);margin-top:2px">声かけ合計</div></div>'
+    +'<div style="flex:1;min-width:80px;text-align:center;padding:10px;background:var(--accent-light);border-radius:10px"><div style="font-size:21px;font-weight:700;color:var(--accent)">'+totalAcquired+'</div><div style="font-size:15px;color:var(--text3);margin-top:2px">獲得合計</div></div>'
+    +'<div style="flex:1;min-width:80px;text-align:center;padding:10px;background:var(--green-bg);border-radius:10px"><div style="font-size:21px;font-weight:700;color:var(--green)">'+rate+'%</div><div style="font-size:15px;color:var(--text3);margin-top:2px">獲得率</div></div>'
+    +'</div>';
+}
+
+function renderCompareChart(canvas, isDark, gridColor, textColor){
+  const C_APPROACH = { bg:'rgba(0,113,227,.2)', border:'rgba(0,113,227,.8)' };
+  const C_ACQUIRED = { bg:'rgba(52,199,89,.25)', border:'rgba(52,199,89,.9)' };
+  const PERSON_COLORS = ['rgba(0,113,227,.85)','rgba(52,199,89,.85)','rgba(255,149,0,.85)','rgba(255,59,48,.85)','rgba(191,90,242,.85)','rgba(90,200,250,.85)'];
+  const saved = getMergedHistory();
+  const kpiKey = document.getElementById('stats-kpi-select')?.value||'total';
+  const today = new Date();
+
+  // 期間を取得
+  let dates = [];
+  if(statsPeriod==='daily'){
+    for(let i=6;i>=0;i--){ const d=new Date(today); d.setDate(d.getDate()-i); dates.push(toLocalDateStr(d)); }
+  } else if(statsPeriod==='weekly'){
+    for(let w=3;w>=0;w--){ const d=new Date(today); d.setDate(d.getDate()-d.getDay()-7*w); dates.push(toLocalDateStr(d)); }
+  } else if(statsPeriod==='monthly'){
+    for(let m=2;m>=0;m--){ const d=new Date(today.getFullYear(),today.getMonth()-m,1); dates.push(toLocalDateStr(d)); }
+  } else {
+    const from=document.getElementById('stats-from')?.value;
+    const to=document.getElementById('stats-to')?.value;
+    if(!from||!to){
+      {const _ssEl=document.getElementById('stats-summary'); if(_ssEl) _ssEl.innerHTML='<div style="text-align:center;padding:16px;color:var(--text3);font-size:15px">日付を指定してください</div>';}
+      return;
+    }
+    let cur=new Date(from); const end=new Date(to);
+    while(cur<=end){ dates.push(toLocalDateStr(cur)); cur.setDate(cur.getDate()+1); }
+  }
+
+  // ラベル作成
+  const labels = dates.map(d=>{
+    if(statsPeriod==='monthly') return d.slice(0,7).replace('-','/');
+    return d.slice(5);
+  });
+
+  // 各人のデータセット
+  const activePersons = KPI_PERSONS.filter(p=>{
+    return saved.some(r=>r.person===p.id);
+  });
+
+  const getVal = (personId, dateStr, field) => {
+    if(statsPeriod==='weekly'){
+      const from=new Date(dateStr); const to=new Date(dateStr); to.setDate(to.getDate()+6);
+      const recs=saved.filter(r=>r.person===personId && new Date(r.date)>=from && new Date(r.date)<=to);
+      return sumField(recs,kpiKey,field);
+    } else if(statsPeriod==='monthly'){
+      const ym=dateStr.slice(0,7);
+      const recs=saved.filter(r=>r.person===personId && r.date.startsWith(ym));
+      return sumField(recs,kpiKey,field);
+    } else {
+      const recs=saved.filter(r=>r.person===personId && r.date===dateStr);
+      return sumField(recs,kpiKey,field);
+    }
+  };
+
+  const datasets = activePersons.map((p,i)=>({
+    label: p.name,
+    data: dates.map(d=>getVal(p.id,d,'acquired')),
+    backgroundColor: PERSON_COLORS[i%PERSON_COLORS.length].replace('.85)','.5)'),
+    borderColor: PERSON_COLORS[i%PERSON_COLORS.length],
+    borderWidth: 1.5,
+    borderRadius: 4,
+    tension: .4,
+  }));
+
+  if(datasets.length===0){
+    {const _ssEl=document.getElementById('stats-summary'); if(_ssEl) _ssEl.innerHTML='<div style="text-align:center;padding:20px;color:var(--text3);font-size:15px">この期間の保存データがありません</div>';}
+    return;
+  }
+
+  statsChart = new Chart(canvas, {
+    type: statsType==='bar'?'bar':'line',
+    data:{ labels, datasets },
+    options:{
+      responsive:true, maintainAspectRatio:true,
+      plugins:{ legend:{ position:'bottom', labels:{ color:textColor, font:{size:11}, boxWidth:12, padding:10 } } },
+      scales:{
+        x:{ ticks:{color:textColor,font:{size:11}}, grid:{color:gridColor} },
+        y:{ ticks:{color:textColor,font:{size:11}}, grid:{color:gridColor}, beginAtZero:true }
+      }
+    }
+  });
+
+  // 個人別サマリー
+  const el = document.getElementById('stats-summary');
+  const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+  const yesterdayStr = toLocalDateStr(yesterday);
+
+  const rows = activePersons.map((p,i)=>{
+    const totalAcq = dates.reduce((s,d)=>s+getVal(p.id,d,'acquired'),0);
+    const totalApp = dates.reduce((s,d)=>s+getVal(p.id,d,'approach'),0);
+    const rate = totalApp>0?Math.round(totalAcq/totalApp*100):0;
+    const rc = rate>=80?'var(--green)':rate>=50?'var(--orange)':'var(--text3)';
+    const dot = PERSON_COLORS[i%PERSON_COLORS.length];
+    // 昨日の獲得件数
+    const histAll = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
+    const ydRec = histAll.find(r=>r.person===p.id && r.date===yesterdayStr);
+    let ydAcq = 0;
+    if(ydRec && ydRec.data){
+      KPI_ITEMS.forEach(k=>{
+        const v = ydRec.data[k.id];
+        if(v && typeof v==='object') ydAcq += (parseInt(v.acquired)||0);
+        else if(typeof v==='number') ydAcq += v;
+      });
+    }
+    const ydColor = ydAcq>0?'var(--accent)':'var(--text3)';
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">'
+      +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">'
+        +'<div style="width:10px;height:10px;border-radius:50%;background:'+dot+';flex-shrink:0"></div>'
+        +'<div style="flex:1;font-size:15px;font-weight:700;color:var(--text)">'+p.name+'</div>'
+        +'<div style="text-align:center;min-width:44px"><div style="font-size:15px;font-weight:700;color:var(--text2)">'+totalApp+'</div><div style="font-size:14px;color:var(--text3)">声かけ</div></div>'
+        +'<div style="text-align:center;min-width:44px"><div style="font-size:15px;font-weight:700;color:var(--accent)">'+totalAcq+'</div><div style="font-size:14px;color:var(--text3)">獲得累計</div></div>'
+        +'<div style="text-align:center;min-width:40px"><div style="font-size:15px;font-weight:700;color:'+rc+'">'+rate+'%</div><div style="font-size:14px;color:var(--text3)">率</div></div>'
+      +'</div>'
+      +'<div style="display:flex;align-items:center;gap:8px;padding:5px 10px;background:var(--surface);border-radius:8px;margin-left:18px">'
+        +'<span style="font-size:15px;color:var(--text3);flex:1">📅 昨日（'+yesterdayStr.slice(5).replace('-','/')+'）の獲得</span>'
+        +'<span style="font-size:17px;font-weight:800;color:'+ydColor+'">'+ydAcq+'件</span>'
+      +'</div>'
+    +'</div>';
+  }).join('');
+  if(el) el.innerHTML='<div style="margin-top:12px;background:var(--surface2);border-radius:12px;padding:10px 14px"><div style="font-size:15px;font-weight:700;color:var(--text3);margin-bottom:6px">個人別実績</div>'+rows+'</div>';
+}
+
+
+
+// ── 車検進捗 ──
+function stepShaken(field, d){
+  const el = document.getElementById('shaken-'+field);
+  if(!el) return;
+  const cur = parseFloat(el.value)||0;
+  el.value = Math.max(0, cur+d);
+  calcShaken();
+}
+
+let shakenView = 'day'; // 'day' | 'month'
+
+function toggleManualInput(){
+  const panel = document.getElementById('manual-input-panel');
+  if(!panel) return;
+  const isOpen = panel.style.display !== 'none';
+  panel.style.display = isOpen ? 'none' : 'block';
+  const btn = document.querySelector('[onclick="toggleManualInput()"]');
+  if(btn) btn.textContent = isOpen ? '✏️ 手打ち' : '✏️ 閉じる';
+  if(!isOpen){
+    // 年度初期値（期番号で設定）
+    const yrEl = document.getElementById('manual-fiscal-year');
+    if(yrEl && !yrEl.value){
+      const today = getTodayLocal();
+      const mo = parseInt(today.slice(5,7));
+      const fy = mo >= 4 ? parseInt(today.slice(0,4)) : parseInt(today.slice(0,4))-1;
+      yrEl.value = fy - 1978; // 期番号
+    }
+    buildManualGrid();
+  }
+}
+
+function buildManualGrid(){
+  const yrEl = document.getElementById('manual-fiscal-year');
+  const kiInput = parseInt(yrEl?.value || '42');
+  const fiscalYear = kiInput + 1978; // 期→西暦変換
+  const all = getShakenAll();
+  const grid = document.getElementById('manual-grid');
+  if(!grid) return;
+
+  // ヘッダー
+  let html = '<div style="display:grid;grid-template-columns:52px 1fr 1fr;gap:4px;margin-bottom:4px;text-align:center">'
+    +'<div style="font-size:12px;color:var(--text3);font-weight:700;padding:4px">月</div>'
+    +'<div style="font-size:12px;color:rgba(191,90,242,1);font-weight:700;padding:4px">目標台数</div>'
+    +'<div style="font-size:12px;color:var(--accent);font-weight:700;padding:4px">生産台数</div>'
+  +'</div>';
+
+  for(let i=0;i<12;i++){
+    const mo = ((3+i)%12)+1; // 4,5,...,12,1,2,3
+    const yr = mo >= 4 ? fiscalYear : fiscalYear+1;
+    const ym = yr+'-'+String(mo).padStart(2,'0');
+    // 月キー優先で既存データ取得
+    const existing = all[ym] || (()=>{ const days=Object.keys(all).filter(k=>k.startsWith(ym+'-')).sort(); return days.length?all[days[days.length-1]]:null; })();
+    const tVal = existing ? parseInt(existing.target||0) : 0;
+    const pVal = existing ? parseInt(existing.produced||0) : 0;
+    const isCurrentMonth = ym === getTodayLocal().slice(0,7);
+    const rowBg = isCurrentMonth ? 'var(--accent-light)' : (i%2===0?'var(--surface)':'var(--surface2)');
+    html += '<div style="display:grid;grid-template-columns:52px 1fr 1fr;gap:4px;margin-bottom:3px;align-items:center;background:'+rowBg+';border-radius:8px;padding:2px 4px">'
+      +'<div style="font-size:15px;font-weight:700;color:'+(isCurrentMonth?'var(--accent)':'var(--text2)')+';text-align:center">'+mo+'月</div>'
+      +'<input type="number" id="mg-tgt-'+ym+'" value="'+tVal+'" min="0" inputmode="numeric"'
+        +' style="padding:5px 4px;border:1.5px solid rgba(191,90,242,.3);border-radius:7px;background:var(--surface);color:rgba(191,90,242,1);font-size:14px;font-weight:800;text-align:center;font-family:var(--sans);outline:none;width:100%">'
+      +'<input type="number" id="mg-prod-'+ym+'" value="'+pVal+'" min="0" inputmode="numeric"'
+        +' style="padding:5px 4px;border:1.5px solid rgba(0,113,227,.3);border-radius:7px;background:var(--surface);color:var(--accent);font-size:14px;font-weight:800;text-align:center;font-family:var(--sans);outline:none;width:100%">'
+    +'</div>';
+  }
+  grid.innerHTML = html;
+}
+
+function confirmDeleteShakenMonth(key){
+  const modal = document.createElement('div');
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  const label = key.length===7 ? key.replace('-','年')+'月' : key.replace('-','年').replace('-','月')+'日';
+  modal.innerHTML=`<div style="background:var(--surface);border-radius:22px;padding:28px 24px;width:100%;max-width:320px;text-align:center">
+    <div style="font-size:28px;margin-bottom:12px">🗑️</div>
+    <div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px">${label} を削除</div>
+    <div style="font-size:14px;color:var(--text2);margin-bottom:24px;line-height:1.6">このデータを完全に削除します。<br>元に戻せません。</div>
+    <div style="display:flex;gap:10px">
+      <button onclick="this.closest('[style]').remove()" style="flex:1;padding:14px;background:var(--surface2);border:none;border-radius:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);color:var(--text2)">キャンセル</button>
+      <button onclick="execDeleteShakenMonth('${key}');this.closest('[style]').remove()" style="flex:1;padding:14px;background:var(--red);border:none;border-radius:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);color:#fff">削除する</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click',e=>{ if(e.target===modal) modal.remove(); });
+}
+
+function execDeleteShakenMonth(key){
+  const all = getShakenAll();
+  delete all[key];
+  saveShakenAll(all);
+  renderShakenChart();
+}
+
+function saveAllManualInput(){
+  const yrEl = document.getElementById('manual-fiscal-year');
+  const kiInput2 = parseInt(yrEl?.value || '42');
+  const fiscalYear = kiInput2 + 1978; // 期→西暦変換
+  const all = getShakenAll();
+  let saved = 0;
+
+  for(let i=0;i<12;i++){
+    const mo = ((3+i)%12)+1;
+    const yr = mo >= 4 ? fiscalYear : fiscalYear+1;
+    const ym = yr+'-'+String(mo).padStart(2,'0');
+    const tgtEl  = document.getElementById('mg-tgt-'+ym);
+    const prodEl = document.getElementById('mg-prod-'+ym);
+    if(!tgtEl || !prodEl) continue;
+    const tgt  = parseInt(tgtEl.value)||0;
+    const prod = parseInt(prodEl.value)||0;
+    if(tgt===0 && prod===0) continue; // 両方0はスキップ
+
+    // 必ず月キー(ym)で保存（日別キーと混在しないよう）
+    const existingMonth = all[ym] ? {...all[ym]} : null;
+    const existingDay = (()=>{ const days=Object.keys(all).filter(k=>k.startsWith(ym+'-')).sort(); return days.length?{...all[days[days.length-1]]}:null; })();
+    const base = existingMonth || existingDay || {workdays:22,reserved:0,todayIn:0,profitMemo:'',memo:''};
+    base.target   = tgt;
+    base.produced = prod;
+    all[ym] = {...base, month: ym}; // 常に月キーで保存
+    saved++;
+  }
+
+  saveShakenAll(all);
+  const msgEl = document.getElementById('manual-msg');
+  if(msgEl){ msgEl.textContent='✅ '+saved+'ヶ月分を保存しました'; setTimeout(()=>{ if(msgEl) msgEl.textContent=''; },2000); }
+
+  // パネルを閉じて月別グラフ表示
+  setTimeout(()=>{
+    const panel = document.getElementById('manual-input-panel');
+    if(panel) panel.style.display='none';
+    const btn = document.querySelector('[onclick="toggleManualInput()"]');
+    if(btn) btn.textContent='✏️ 手打ち';
+    const moEl = document.getElementById('shaken-month-only');
+    if(moEl) moEl.value = getTodayLocal().slice(0,7);
+    setShakenView('month');
+  }, 800);
+}
+
+function loadManualInputData(ym){ /* legacy */ }
+
+function manualStepTarget(d){
+  const el = document.getElementById('manual-target');
+  if(el) el.value = Math.max(0, (parseInt(el.value)||0) + d);
+}
+function manualStep(d){
+  const el = document.getElementById('manual-produced');
+  if(el) el.value = Math.max(0, (parseInt(el.value)||0) + d);
+}
+
+function saveManualInput(){
+  const ymEl  = document.getElementById('manual-ym');
+  const prodEl = document.getElementById('manual-produced');
+  const msgEl  = document.getElementById('manual-msg');
+  if(!ymEl?.value){ if(msgEl) msgEl.textContent='年月を選択してください'; return; }
+
+  const ym = ymEl.value; // YYYY-MM
+  const produced = parseInt(prodEl?.value)||0;
+  const target   = parseInt(document.getElementById('manual-target')?.value)||0;
+  const all = getShakenAll();
+
+  // 月キー優先で既存データ取得、常に月キーで保存
+  const base = all[ym]
+    ? {...all[ym]}
+    : (()=>{ const days=Object.keys(all).filter(k=>k.startsWith(ym+'-')).sort(); return days.length?{...all[days[days.length-1]]}:{workdays:22,reserved:0,todayIn:0,profitMemo:'',memo:''}; })();
+  base.produced = produced;
+  base.target   = target;
+  all[ym] = {...base, month: ym};
+  saveShakenAll(all);
+  localStorage.setItem('shakenData', JSON.stringify(all[ym]));
+
+  // フィードバック & パネルを閉じてグラフ表示
+  if(msgEl){
+    msgEl.textContent = '✅ '+ym.replace('-','年')+'月 '+produced+'台 を保存しました';
+  }
+  setTimeout(()=>{
+    // パネルを閉じる
+    const panel = document.getElementById('manual-input-panel');
+    if(panel) panel.style.display = 'none';
+    // 月別ビューで保存した月を表示
+    const moEl = document.getElementById('shaken-month-only');
+    if(moEl) moEl.value = ym;
+    setShakenView('month');
+  }, 800);
+}
+
+function monthViewStep(d){
+  const el = document.getElementById('monthview-produced');
+  if(!el) return;
+  el.value = Math.max(0, (parseInt(el.value)||0) + d);
+}
+
+function monthViewUpdate(){
+  // 入力値変化時にリアルタイム反映（必要なら）
+}
+
+function monthViewSave(){
+  const el = document.getElementById('monthview-produced');
+  if(!el) return;
+  const newProduced = parseInt(el.value)||0;
+  const selYM = document.getElementById('shaken-month-only')?.value || getTodayLocal().slice(0,7);
+  // shakenAllData に直接保存（月別ビューから）
+  const all = getShakenAll();
+  // 月キー優先で既存データ取得、常に月キーで保存
+  const existingMonthData = all[selYM] ? {...all[selYM]} : null;
+  const existingDayData = (()=>{ const days=Object.keys(all).filter(k=>k.startsWith(selYM+'-')).sort(); return days.length?{...all[days[days.length-1]]}:null; })();
+  const base = existingMonthData || existingDayData || {workdays:22,target:0,reserved:0,todayIn:0,profitMemo:'',memo:''};
+  base.produced = newProduced;
+  all[selYM] = {...base, month:selYM};
+  saveShakenAll(all);
+  localStorage.setItem('shakenData', JSON.stringify(all[key]));
+  // shaken-produced も同期
+  const prod = document.getElementById('shaken-produced');
+  if(prod) prod.value = newProduced;
+  renderShakenChart();
+  const saveBtn = document.querySelector('[onclick="monthViewSave()"]');
+  if(saveBtn){
+    const orig = saveBtn.textContent;
+    saveBtn.textContent = '✅ 保存しました';
+    saveBtn.style.background = 'var(--green)';
+    setTimeout(()=>{ saveBtn.textContent=orig; saveBtn.style.background='var(--accent)'; }, 1500);
+  }
+}
+
+function setShakenView(v){
+  shakenView = v;
+  ['day','month','yeartotal'].forEach(id=>{
+    const btn = document.getElementById('shaken-view-'+id);
+    if(!btn) return;
+    const active = v===id;
+    btn.style.background = active ? 'var(--accent)' : 'var(--surface2)';
+    btn.style.color      = active ? '#fff' : 'var(--text2)';
+    btn.style.border     = active ? 'none' : '1px solid var(--border)';
+  });
+  // ピッカーの表示切り替え
+  const pDay   = document.getElementById('shaken-picker-day');
+  const pMonth = document.getElementById('shaken-picker-month');
+  const pYear  = document.getElementById('shaken-picker-year');
+  if(pDay)   pDay.style.display   = v==='day' ? 'block' : 'none';
+  if(pMonth) pMonth.style.display = v==='month' ? 'block' : 'none';
+  if(pYear)  pYear.style.display  = v==='yeartotal' ? 'block' : 'none';
+  // 年選択の初期値セット
+  if(v==='yeartotal'){
+    const yr = document.getElementById('shaken-year-only');
+    if(yr && !yr.value){
+      const today = getTodayLocal();
+      const mo = parseInt(today.slice(5,7));
+      const fy = mo>=4 ? parseInt(today.slice(0,4)) : parseInt(today.slice(0,4))-1;
+      yr.value = fy - 1978; // 期番号
+    }
+  }
+  // 月選択の初期値セット
+  if(v==='month'){
+    const mo = document.getElementById('shaken-month-only');
+    if(mo && !mo.value) mo.value = getTodayLocal().slice(0,7);
+  }
+
+  // 入力エリアの表示切り替え（月別のみ非表示）
+  const inputArea = document.getElementById('shaken-input-area');
+  if(inputArea) inputArea.style.display = v === 'month' ? 'none' : 'block';
+  renderShakenChart();
+}
+
+function shakenMonthStep(delta){
+  const el = document.getElementById('shaken-month-only');
+  if(!el) return;
+  const cur = el.value || getTodayLocal().slice(0,7);
+  const [y,m] = cur.split('-').map(Number);
+  const d = new Date(y, m-1+delta, 1);
+  el.value = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  renderShakenChart();
+}
+function shakenMonthCurrent(){
+  const el = document.getElementById('shaken-month-only');
+  if(el){ el.value = getTodayLocal().slice(0,7); renderShakenChart(); }
+}
+function shakenYearStep(delta){
+  const el = document.getElementById('shaken-year-only');
+  if(!el) return;
+  el.value = (parseInt(el.value||getTodayLocal().slice(0,4)))+delta;
+  renderShakenChart();
+}
+function shakenYearCurrent(){
+  const el = document.getElementById('shaken-year-only');
+  if(el){ el.value = getTodayLocal().slice(0,4); renderShakenChart(); }
+}
+
+function shakenDateStep(delta){
+  const el = document.getElementById('shaken-month');
+  if(!el) return;
+  const dateStr = el.value || getTodayLocal();
+  const parts = dateStr.split('-');
+  const cur = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+  cur.setDate(cur.getDate() + delta);
+  el.value = toLocalDateStr(cur);
+  onShakenMonthChange(el.value);
+}
+
+function shakenDateToday(){
+  const el = document.getElementById('shaken-month');
+  if(!el) return;
+  el.value = getTodayLocal();
+  onShakenMonthChange(el.value);
+}
+
+function onShakenMonthChange(newDate){
+  // 現在の月のデータを保存してから切り替え
+  saveShaken();
+  // 確認欄を非表示
+  const box = document.getElementById('shaken-confirm');
+  if(box) box.style.display='none';
+
+  const all = getShakenAll();
+  const saved = all[newDate];
+  const setV = (id,v)=>{ const el=document.getElementById(id); if(el) el.value=v; };
+
+  if(saved){
+    // 保存データあり → そのデータをそのまま表示（何度でも修正可能）
+    setV('shaken-workdays', saved.workdays || 22);
+    setV('shaken-target',   saved.target   || 0);
+    setV('shaken-produced', saved.produced || 0);
+    setV('shaken-reserved', saved.reserved || 0);
+    setV('shaken-todayIn',  saved.todayIn  || 0);
+    const pm = document.getElementById('shaken-profit-memo'); if(pm) pm.value = saved.profitMemo||'';
+    const mm = document.getElementById('shaken-memo');        if(mm) mm.value = saved.memo||'';
+  } else {
+    // 保存データなし → 全項目0にリセット
+    setV('shaken-workdays', 22);
+    setV('shaken-target',   0);
+    setV('shaken-produced', 0);
+    setV('shaken-reserved', 0);
+    setV('shaken-todayIn',  0);
+    const pm = document.getElementById('shaken-profit-memo'); if(pm) pm.value='';
+    const mm = document.getElementById('shaken-memo');        if(mm) mm.value='';
+  }
+  calcShaken();
+}
+
+function getShakenAll(){
+  return JSON.parse(localStorage.getItem('shakenAllData')||'{}');
+}
+function saveShakenAll(all){
+  localStorage.setItem('shakenAllData', JSON.stringify(all));
+}
+
+function calcShaken(){
+  const target   = parseInt(document.getElementById('shaken-target')?.value)||0;
+  const produced = parseInt(document.getElementById('shaken-produced')?.value)||0;
+  const reserved  = parseInt(document.getElementById('shaken-reserved')?.value)||0;
+  const workdays = parseInt(document.getElementById('shaken-workdays')?.value)||1;
+
+  const remaining = Math.max(0, target - produced);
+  const rate = target>0 ? Math.round(reserved/target*100) : 0;
+  const perDay = workdays>0 ? (remaining/workdays).toFixed(1) : '—';
+  const rateColor = rate>=100?'var(--green)':rate>=70?'var(--orange)':'var(--accent)';
+
+  const calc = document.getElementById('shaken-calc');
+  if(calc) calc.innerHTML = [
+    {label:'目標まで残り', val:remaining+'台', sub:'', color:'rgba(90,200,250,1)', bg:'rgba(90,200,250,.1)', border:'rgba(90,200,250,.35)'},
+    {label:'達成率', val:rate+'%', sub:'予約確定÷目標', color:rateColor, bg:rate>=100?'var(--green-bg)':rate>=70?'var(--orange-bg)':'var(--accent-light)', border:rate>=100?'rgba(52,199,89,.25)':rate>=70?'rgba(255,149,0,.25)':'rgba(0,113,227,.2)'},
+    {label:'1日あたり必要台数', val:perDay+'台/日', sub:'残り÷稼働日数', color:'var(--red)', bg:'var(--red-bg)', border:'rgba(255,59,48,.25)'},
+    {label:'進捗', val:reserved+'/'+target+'台', sub:'予約確定÷目標', color:'rgba(191,90,242,1)', bg:'rgba(191,90,242,.1)', border:'rgba(191,90,242,.35)'},
+  ].map(item=>`
+    <div style="padding:12px;background:${item.bg};border-radius:12px;border:1.5px solid ${item.border};text-align:center">
+      <div style="font-size:14px;font-weight:700;color:var(--text3);margin-bottom:6px">${item.label}</div>
+      <div style="font-size:21px;font-weight:800;color:${item.color}">${item.val}</div>
+      ${item.sub?`<div style="font-size:15px;color:var(--text3);margin-top:3px">${item.sub}</div>`:''}
+    </div>`).join('');
+
+  saveShaken();
+  renderShakenChart();
+}
+
+
+// 各月の「代表生産台数」を取得（月キーがあれば優先、なければ日別最終日）
+function getMonthProduced(all, ym){
+  // まず月キー(YYYY-MM)そのものを確認
+  if(all[ym]) return parseInt(all[ym].produced||0);
+  // 次に日別キー(YYYY-MM-DD)の最終日
+  const days = Object.keys(all).filter(k=>k.startsWith(ym+'-')).sort();
+  return days.length ? parseInt(all[days[days.length-1]].produced||0) : 0;
+}
+function getMonthTarget(all, ym){
+  if(all[ym]) return parseInt(all[ym].target||0);
+  const days = Object.keys(all).filter(k=>k.startsWith(ym+'-')).sort();
+  if(!days.length) return 0;
+  let maxT=0;
+  days.forEach(k=>{ const t=parseInt(all[k].target||0); if(t>maxT) maxT=t; });
+  return maxT;
+}
+function saveAndConfirmShaken(){
+  saveShaken();
+  const month    = document.getElementById('shaken-month')?.value||'';
+  const target   = parseInt(document.getElementById('shaken-target')?.value)||0;
+  const produced = parseInt(document.getElementById('shaken-produced')?.value)||0;
+  const reserved = parseInt(document.getElementById('shaken-reserved')?.value)||0;
+  const todayIn  = parseInt(document.getElementById('shaken-todayIn')?.value)||0;
+  const all = getShakenAll();
+  const yr = month.slice(0,4);
+  // 4月〜3月の期末年度合計（各月最終日の生産台数を合計）
+  const moNum = parseInt(month.slice(5,7));
+  const fiscalYear = moNum >= 4 ? parseInt(yr) : parseInt(yr) - 1;
+  let yearTotal = 0;
+  for(let i=0;i<12;i++){
+    const mo = ((3+i)%12)+1;
+    const fyYr = mo >= 4 ? fiscalYear : fiscalYear+1;
+    const ym = fyYr+'-'+String(mo).padStart(2,'0');
+    yearTotal += getMonthProduced(all, ym);
+  }
+  const fiscalLabel = (fiscalYear-1978)+'期';
+  const rate = target>0?Math.round(reserved/target*100):0;
+  const rateColor = rate>=100?'var(--green)':rate>=70?'var(--orange)':'var(--accent)';
+  // 進捗計算
+  const workdays  = parseInt(document.getElementById('shaken-workdays')?.value)||1;
+  const remaining = Math.max(0, target - produced);
+  const perDay    = workdays>0 ? (remaining/workdays).toFixed(1) : '—';
+  // 保存日時
+  const now = new Date();
+  const dateStr = now.getFullYear()+'/'+(now.getMonth()+1)+'/'+(now.getDate());
+  const timeStr = now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
+  const body = document.getElementById('shaken-confirm-body');
+  if(body) body.innerHTML =
+    '<div style="font-size:13px;color:var(--text3);text-align:right;margin-bottom:8px">保存日時：'+dateStr+' '+timeStr+'</div>'
+    // ① 入力値
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">'
+      +'<div style="background:var(--surface);border-radius:10px;padding:10px;text-align:center"><div style="font-size:13px;color:var(--text3);margin-bottom:3px">目標台数</div><div style="font-size:17px;font-weight:800;color:rgba(191,90,242,1)">'+target+'台</div></div>'
+      +'<div style="background:var(--surface);border-radius:10px;padding:10px;text-align:center"><div style="font-size:13px;color:var(--text3);margin-bottom:3px">生産台数</div><div style="font-size:17px;font-weight:800;color:var(--accent)">'+produced+'台</div></div>'
+      +'<div style="background:var(--surface);border-radius:10px;padding:10px;text-align:center"><div style="font-size:13px;color:var(--text3);margin-bottom:3px">予約確定</div><div style="font-size:17px;font-weight:800;color:var(--green)">'+reserved+'台</div></div>'
+      +'<div style="background:var(--surface);border-radius:10px;padding:10px;text-align:center"><div style="font-size:13px;color:var(--text3);margin-bottom:3px">本日の入庫</div><div style="font-size:17px;font-weight:800;color:var(--orange)">'+todayIn+'台</div></div>'
+    +'</div>'
+    // ③ 年間累計
+    +'<div style="background:var(--green-bg);border:1px solid rgba(52,199,89,.2);border-radius:10px;padding:12px;text-align:center">'
+      +'<div style="font-size:13px;color:var(--text3);margin-bottom:4px">'+fiscalLabel+' 年間合計生産台数</div>'
+      +'<div style="font-size:23px;font-weight:800;color:var(--green)">'+yearTotal+' <span style="font-size:14px;font-weight:600">台</span></div>'
+    +'</div>';
+  const box = document.getElementById('shaken-confirm');
+  if(box){ box.style.display='block'; box.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+  renderShakenChart();
+  // スプレッドシートにも自動保存
+  if(localStorage.getItem('gasUrl')) saveShakenToSheet();
+}
+
+function saveShaken(){
+  const month = document.getElementById('shaken-month')?.value;
+  if(!month) return;
+  const all = getShakenAll();
+  all[month] = {
+    month,
+    workdays: document.getElementById('shaken-workdays')?.value,
+    target:   document.getElementById('shaken-target')?.value,
+    produced: document.getElementById('shaken-produced')?.value,
+    reserved: document.getElementById('shaken-reserved')?.value,
+    todayIn:  document.getElementById('shaken-todayIn')?.value,
+    profitMemo: document.getElementById('shaken-profit-memo')?.value||'',
+    memo:     document.getElementById('shaken-memo')?.value||'',
+  };
+  saveShakenAll(all);
+  // 後方互換: shakenDataにも最新月を保存
+  localStorage.setItem('shakenData', JSON.stringify(all[month]));
+}
+
+function loadShakenMonth(month){
+  const all = getShakenAll();
+  const saved = all[month];
+  const set = (id,val)=>{ const el=document.getElementById(id); if(el&&val!==undefined&&val!=='') el.value=val; else if(el) el.value=el.defaultValue||0; };
+  if(saved){
+    set('shaken-workdays', saved.workdays);
+    set('shaken-target',   saved.target);
+    set('shaken-produced', saved.produced);
+    set('shaken-reserved', saved.reserved);
+    set('shaken-todayIn',  saved.todayIn);
+    set('shaken-profit-memo', saved.profitMemo||'');
+    set('shaken-memo',     saved.memo||'');
+  } else {
+    // 新しい月 → 数値を0にリセット（目標は前月から引き継ぐ）
+    const months = Object.keys(all).sort();
+    const lastMonth = months[months.length-1];
+    const prevTarget = lastMonth ? (all[lastMonth].target||0) : 0;
+    const setZero = (id, val=0)=>{ const el=document.getElementById(id); if(el) el.value=val; };
+    setZero('shaken-workdays', 22);
+    setZero('shaken-target', prevTarget); // 目標は前月継続
+    setZero('shaken-produced', 0);
+    setZero('shaken-reserved', 0);
+    setZero('shaken-todayIn',  0);
+    const pm = document.getElementById('shaken-profit-memo'); if(pm) pm.value='';
+    const mm = document.getElementById('shaken-memo');        if(mm) mm.value='';
+  }
+  calcShaken();
+}
+
+function confirmResetShakenMonth(){
+  const month = document.getElementById('shaken-month')?.value||'';
+  const modal = document.createElement('div');
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  modal.innerHTML=`<div style="background:var(--surface);border-radius:22px;padding:28px 24px;width:100%;max-width:320px;text-align:center">
+    <div style="font-size:24px;margin-bottom:12px">🗑️</div>
+    <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">${month} をリセット</div>
+    <div style="font-size:14px;color:var(--text2);margin-bottom:22px;line-height:1.6">この月のデータを0に戻します。<br>他の月のデータは残ります。</div>
+    <div style="display:flex;gap:10px">
+      <button onclick="this.closest('div[style]').remove()" style="flex:1;padding:13px;background:var(--surface2);border:none;border-radius:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);color:var(--text2)">キャンセル</button>
+      <button onclick="resetShakenMonth();this.closest('div[style]').remove()" style="flex:1;padding:13px;background:var(--red);border:none;border-radius:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);color:#fff">リセット</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click',e=>{ if(e.target===modal) modal.remove(); });
+}
+
+function resetShakenMonth(){
+  const month = document.getElementById('shaken-month')?.value;
+  if(!month) return;
+  const all = getShakenAll();
+  if(all[month]) delete all[month];
+  saveShakenAll(all);
+  loadShakenMonth(month);
+}
+
+function renderShakenChart(){
+  const all = getShakenAll();
+  const allKeys = Object.keys(all).sort();
+
+  // canvas取得・確実に表示
+  const canvas = document.getElementById('shaken-chart');
+  const yearlyEl = document.getElementById('shaken-yearly');
+  const listEl = document.getElementById('shaken-monthly-list');
+  if(!canvas){ console.warn('canvas not found'); return; }
+  canvas.style.display = 'block';
+
+  // 既存チャートを破棄
+  if(window._shakenChart){ try{ window._shakenChart.destroy(); }catch(e){} window._shakenChart = null; }
+
+  // 色設定
+  const isDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const gc = isDark ? 'rgba(255,255,255,.1)' : 'rgba(0,0,0,.08)';
+  const tc = isDark ? '#aeaeb2' : '#6e6e73';
+
+  // shaken-month-onlyとshaken-year-onlyから値取得
+  const selDate   = document.getElementById('shaken-month')?.value || getTodayLocal();
+  const selYM     = document.getElementById('shaken-month-only')?.value || selDate.slice(0,7);
+  const selYear   = (document.getElementById('shaken-year-only')?.value || selDate.slice(0,4)).toString();
+  const currentMonth = selDate.slice(0,7);
+
+  // 年間合計台数を計算してバッジ更新
+  (()=>{
+    const selYearKi = parseInt(document.getElementById('shaken-year-only')?.value||'42');
+    const baseYM = shakenView==='yeartotal' ? (selYearKi+1978)+'-04' : selYM;
+    const moN = parseInt(baseYM.slice(5,7));
+    const fy  = moN >= 4 ? parseInt(baseYM.slice(0,4)) : parseInt(baseYM.slice(0,4))-1;
+    let tot = 0;
+    for(let i=0;i<12;i++){
+      const mo = ((3+i)%12)+1;
+      const yr2 = mo>=4 ? fy : fy+1;
+      tot += getMonthProduced(all, yr2+'-'+String(mo).padStart(2,'0'));
+    }
+    const badge = document.getElementById('shaken-annual-total');
+    const kiNum = fy - 1978;
+    if(badge) badge.textContent = kiNum+'期（'+fy+'年4月〜'+(fy+1)+'年3月）計 '+tot+' 台';
+  })();
+
+  // ── 日別 ──────────────────────────────
+  if(shakenView === 'day'){
+    canvas.style.height = '200px';
+    if(yearlyEl) yearlyEl.style.display = 'block';
+    const todayProduced = parseInt(all[selDate]?.produced||0);
+    const parts = selDate.split('-');
+    const ydDt = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2])-1);
+    const ydStr = toLocalDateStr(ydDt);
+    const ydProduced = parseInt(all[ydStr]?.produced||0);
+    const diff = todayProduced - ydProduced;
+    const dc = diff>0?'var(--green)':diff<0?'var(--red)':'var(--text3)';
+    if(yearlyEl){
+      yearlyEl.innerHTML =
+        '<div style="font-size:14px;font-weight:700;color:var(--green);margin-bottom:6px">'+selDate.replace('-','年').replace('-','月')+'日 生産台数</div>'
+        +'<div style="font-size:24px;font-weight:800;color:var(--green)">'+todayProduced+'<span style="font-size:14px"> 台</span></div>'
+        +(todayProduced>0||ydProduced>0
+          ? '<div style="border-top:1px solid rgba(52,199,89,.2);padding-top:6px;margin-top:6px;font-size:13px;color:var(--text3)">昨日（'+ydStr.slice(5).replace('-','/')+'）比'
+            +'<span style="font-size:17px;font-weight:800;color:'+dc+';margin-left:8px">'+(diff>0?'+':'')+diff+'台</span></div>'
+          : '');
+    }
+    const dayKeys = allKeys.filter(k=>k.startsWith(selYM)).sort();
+    if(!dayKeys.length){
+      if(listEl) listEl.innerHTML='<div style="text-align:center;padding:16px;color:var(--text3);font-size:14px">この月のデータがありません</div>';
+      return;
+    }
+    window._shakenChart = new Chart(canvas, {
+      type:'bar',
+      data:{ labels: dayKeys.map(k=>parseInt(k.slice(8))+'日'),
+        datasets:[
+          {label:'生産台数', data:dayKeys.map(k=>parseInt(all[k].produced||0)), backgroundColor:'rgba(0,113,227,.5)', borderColor:'rgba(0,113,227,.9)', borderWidth:2, borderRadius:4},
+          {label:'予約確定', data:dayKeys.map(k=>parseInt(all[k].reserved||0)), backgroundColor:'rgba(52,199,89,.4)', borderColor:'rgba(52,199,89,.8)', borderWidth:2, borderRadius:4},
+        ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom',labels:{color:tc,font:{size:13},padding:10}}},
+        scales:{x:{ticks:{color:tc,font:{size:12}},grid:{color:gc}},y:{ticks:{color:tc,font:{size:12}},grid:{color:gc},beginAtZero:true}}}
+    });
+    if(listEl){
+      const rows = dayKeys.map(k=>{
+        const d=all[k],p=parseInt(d.produced||0),t=parseInt(d.target||0),rv=parseInt(d.reserved||0);
+        const r=t>0?Math.round(rv/t*100):0, rc=r>=100?'var(--green)':r>=70?'var(--orange)':'var(--text3)';
+        return '<div style="background:var(--surface2);border-radius:10px;margin-bottom:8px;overflow:hidden">'
+          +'<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 12px;background:var(--surface)">'
+            +'<span style="font-size:15px;font-weight:700">'+k.replace('-','年').replace('-','月')+'日</span>'
+            +'<button onclick="confirmDeleteShakenMonth(\''+k+'\')" style="padding:3px 9px;background:var(--red-bg);color:var(--red);border:1px solid rgba(255,59,48,.2);border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--sans)">削除</button>'
+          +'</div>'
+          +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center">'
+            +'<div style="padding:7px 4px;border-right:1px solid var(--border)"><div style="font-size:12px;color:var(--text3)">目標</div><div style="font-size:15px;font-weight:800;color:rgba(191,90,242,1)">'+t+'台</div></div>'
+            +'<div style="padding:7px 4px;border-right:1px solid var(--border)"><div style="font-size:12px;color:var(--text3)">生産</div><div style="font-size:15px;font-weight:800;color:var(--accent)">'+p+'台</div></div>'
+            +'<div style="padding:7px 4px"><div style="font-size:12px;color:var(--text3)">達成率</div><div style="font-size:15px;font-weight:800;color:'+rc+'">'+r+'%</div></div>'
+          +'</div></div>';
+      }).join('');
+      listEl.innerHTML = '<div style="font-size:15px;font-weight:700;color:var(--text2);margin-bottom:8px">'+selYM.replace('-','年')+'月 日別実績</div>'+rows;
+    }
+
+  // ── 月別 ──────────────────────────────
+  } else if(shakenView === 'month'){
+    if(yearlyEl){ yearlyEl.style.display='none'; yearlyEl.innerHTML=''; }
+    canvas.style.height = '240px';
+    // 4月〜翌3月（期末会計年度）
+    const selBaseYear = parseInt(selYM.slice(0,4));
+    // 選択月が1〜3月なら前年度の4月始まりとして扱う
+    const selMoNum = parseInt(selYM.slice(5,7));
+    const fiscalYear = selMoNum >= 4 ? selBaseYear : selBaseYear - 1;
+    const labels=[], prod=[], tgt=[], ymList=[];
+    for(let i=0;i<12;i++){
+      const mo = ((3+i)%12)+1; // 4,5,6,...,12,1,2,3
+      const yr = mo >= 4 ? fiscalYear : fiscalYear+1;
+      const ym = yr+'-'+String(mo).padStart(2,'0');
+      ymList.push(ym);
+      labels.push(mo+'月');
+      prod.push(getMonthProduced(all, ym));
+      tgt.push(getMonthTarget(all, ym));
+    }
+    // 棒グラフ（目標・生産）+ 折れ線（生産推移）
+    window._shakenChart = new Chart(canvas, {
+      type:'bar',
+      data:{ labels,
+        datasets:[
+          {label:'目標', data:tgt,  backgroundColor:'rgba(191,90,242,.2)', borderColor:'rgba(191,90,242,.75)', borderWidth:2, borderRadius:4, order:2},
+          {label:'生産', data:prod, backgroundColor:'rgba(0,113,227,.5)',  borderColor:'rgba(0,113,227,.9)',   borderWidth:2, borderRadius:4, order:2},
+          {type:'line', label:'生産推移', data:prod,
+            borderColor:'rgba(255,149,0,1)', backgroundColor:'transparent',
+            borderWidth:2.5, tension:.35, pointRadius:5,
+            pointBackgroundColor:'rgba(255,149,0,1)', order:1},
+        ]},
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom',labels:{color:tc,font:{size:13},padding:12}}},
+        scales:{
+          x:{ticks:{color:tc,font:{size:12}},grid:{color:gc}},
+          y:{ticks:{color:tc,font:{size:12}},grid:{color:gc},beginAtZero:true}
+        }
+      }
+    });
+    // 当月実績カード
+    // 月キー優先、なければ日別最終日
+    const selLast = all[selYM] || (()=>{ const days=allKeys.filter(k=>k.startsWith(selYM+'-')).sort(); return days.length?all[days[days.length-1]]:null; })();
+    const sT=selLast?parseInt(selLast.target||0):0, sP=selLast?parseInt(selLast.produced||0):0;
+    const sR=selLast?parseInt(selLast.reserved||0):0, sTI=selLast?parseInt(selLast.todayIn||0):0;
+    const sW=selLast?(parseInt(selLast.workdays)||1):1;
+    const sRem=Math.max(0,sT-sP), sRate=sT>0?Math.round(sR/sT*100):0;
+    const sPD=sW>0?(sRem/sW).toFixed(1):'—';
+    const sRC=sRate>=100?'var(--green)':sRate>=70?'var(--orange)':'var(--accent)';
+    const sRB=sRate>=100?'var(--green-bg)':sRate>=70?'var(--orange-bg)':'var(--accent-light)';
+    const cell=(bg,c,label,val)=>'<div style="padding:10px 4px;text-align:center;background:'+bg+'"><div style="font-size:12px;color:var(--text3);margin-bottom:3px">'+label+'</div><div style="font-size:17px;font-weight:800;color:'+c+'">'+val+'</div></div>';
+    if(listEl) listEl.innerHTML =
+      '<div style="background:var(--surface2);border-radius:14px;margin-top:4px;overflow:hidden">'
+        +'<div style="padding:9px 14px;background:var(--surface);font-size:14px;font-weight:700;color:var(--text)">'+selYM.replace('-','年')+'月 実績</div>'
+        +'<div style="display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--border)">'
+          +cell('var(--surface2)','rgba(191,90,242,1)','目標台数',sT+'台')
+          +cell('var(--green-bg)','var(--green)','予約確定',sR+'台')
+          +cell('var(--orange-bg)','var(--orange)','本日入庫',sTI+'台')
+        +'</div>'
+        +'<div style="display:grid;grid-template-columns:repeat(4,1fr)">'
+          +cell('rgba(90,200,250,.1)','rgba(90,200,250,1)','目標残り',sRem+'台')
+          +cell(sRB,sRC,'達成率',sRate+'%')
+          +cell('var(--red-bg)','var(--red)','1日あたり',sPD+'台')
+          +cell('rgba(191,90,242,.1)','rgba(191,90,242,1)','進捗',sR+'/'+sT)
+        +'</div>'
+      +'</div>';
+
+    // ── 年合計 ──────────────────────────────
+  } else if(shakenView === 'yeartotal'){
+    if(yearlyEl){ yearlyEl.style.display='none'; yearlyEl.innerHTML=''; }
+    canvas.style.height = '200px';
+    const yrKi = parseInt(document.getElementById('shaken-year-only')?.value || '42');
+    const yr = yrKi + 1978; // 期→西暦変換
+    const ymKeys = [];
+    const labels=[], prod=[];
+    for(let i=0;i<12;i++){
+      const mo = ((3+i)%12)+1; // 4〜3月
+      const moYr = mo >= 4 ? yr : yr+1;
+      const ym = moYr+'-'+String(mo).padStart(2,'0');
+      ymKeys.push(ym);
+      labels.push(mo+'月');
+      prod.push(getMonthProduced(all, ym));
+    }
+    const yearTotal = prod.reduce((s,v)=>s+v,0); // 全月合計
+    const fiscalYrLabel = yrKi+'期';
+    window._shakenChart = new Chart(canvas, {
+      type:'line',
+      data:{ labels, datasets:[{label:'生産台数', data:prod, borderColor:'rgba(255,149,0,.9)', backgroundColor:'rgba(255,149,0,.1)', borderWidth:2.5, tension:.3, pointRadius:5, fill:true}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom',labels:{color:tc,font:{size:13},padding:12}}},
+        scales:{x:{ticks:{color:tc,font:{size:12}},grid:{color:gc}},y:{ticks:{color:tc,font:{size:12}},grid:{color:gc},beginAtZero:true}}}
+    });
+    if(listEl) listEl.innerHTML =
+      '<div style="background:var(--orange-bg);border:1.5px solid rgba(255,149,0,.3);border-radius:14px;padding:14px;text-align:center;margin-bottom:10px">'
+        +'<div style="font-size:15px;font-weight:700;color:var(--orange);margin-bottom:6px">'+fiscalYrLabel+' 合計</div>'
+        +'<div style="font-size:30px;font-weight:800;color:var(--orange)">'+yearTotal+'<span style="font-size:15px;font-weight:600"> 台</span></div>'
+      +'</div>';
+  }
+}
+
+function loadShaken(){
+  // 旧形式データを新形式にマイグレーション
+  const old = JSON.parse(localStorage.getItem('shakenData')||'null');
+  if(old && old.month){
+    const all = getShakenAll();
+    if(!all[old.month]){
+      all[old.month] = old;
+      saveShakenAll(all);
+    }
+  }
+  // 今日をデフォルト表示
+  const todayD = getTodayLocal();
+  const monthEl = document.getElementById('shaken-month');
+  if(monthEl && !monthEl.value) monthEl.value = todayD;
+  loadShakenMonth(todayD);
+  // ビュー初期化（日別）
+  setShakenView('day');
+}
+
+// resetShaken replaced by confirmResetShakenMonth
+
 let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('install-bar').style.display='flex';});
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;const ibEl=document.getElementById('install-bar');if(ibEl)ibEl.style.display='flex';});
 function doInstall(){if(!deferredPrompt)return;deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;closeInstallBar();});}
-function closeInstallBar(){document.getElementById('install-bar').style.display='none';}
-function showIosGuide(){document.getElementById('ios-guide').style.display='block';document.getElementById('ios-guide').scrollIntoView({behavior:'smooth'});}
+function closeInstallBar(){const ib=document.getElementById('install-bar');if(ib)ib.style.display='none';}
+function showIosGuide(){const ig=document.getElementById('ios-guide');if(ig){ig.style.display='block';ig.scrollIntoView({behavior:'smooth'});}}
 const isIos=/iphone|ipad|ipod/i.test(navigator.userAgent);
 if(isIos&&!window.navigator.standalone)document.getElementById('ios-install-btn').style.display='inline-block';
 window.addEventListener('appinstalled',()=>closeInstallBar());
@@ -1176,3 +3633,5 @@ init();
 </script>
 </body>
 </html>
+      
+ 

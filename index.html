@@ -714,6 +714,8 @@ function init(){
   renderStaffGrid();renderAll();
   checkKpiDateReset();
   loadKpiGoals();
+  // 起動時にGASから自動読み込み（データ消失対策）
+  autoRestoreFromGas();
   // localStorageの古い形式データを安全に移行
   migrateKpiHistory();
   // ワンタイムリセット済み
@@ -742,6 +744,12 @@ function toggleStaff(id){
   }
   manualLayout = null;
   renderStaffGrid();renderAll();
+  // 朝礼パネルが開いていれば即時反映
+  const mp = document.getElementById('panel-morning');
+  if(mp && mp.classList.contains('active')) renderMorning();
+  // スプレッドシートに自動保存
+  const _attDate = document.getElementById('today-date')?.value || getTodayLocal();
+  gasSend('save_attendance', {date:_attDate, members:[...present]});
 }
 
 function showOverLimitAlert(){
@@ -1497,6 +1505,54 @@ KPI_PERSONS.forEach(p=>{ kpiGoals[p.id]={}; KPI_ITEMS.forEach(k=>{ kpiGoals[p.id
 let kpiPerson = '';
 let kpiGoalMode = false; // 目標編集モード
 
+// 起動時の自動復元（スプレッドシートからlocalStorageへ）
+async function autoRestoreFromGas(){
+  const url = getGasUrl();
+  if(!url) return; // GAS未設定なら何もしない
+  try{
+    // 車検データ復元
+    const shakenData = await gasLoad('load_shaken');
+    if(shakenData && Object.keys(shakenData).length > 0){
+      const local = getShakenAll();
+      // ローカルにデータがない月のみ補完（上書きしない）
+      let updated = false;
+      Object.keys(shakenData).forEach(k=>{
+        if(!local[k]){ local[k]=shakenData[k]; updated=true; }
+      });
+      if(updated) saveShakenAll(local);
+    }
+    // KPI実績復元
+    const kpiData2 = await gasLoad('load_kpi');
+    if(kpiData2 && kpiData2.length > 0){
+      const local = JSON.parse(localStorage.getItem('kpiHistory')||'[]');
+      if(local.length === 0){
+        localStorage.setItem('kpiHistory', JSON.stringify(kpiData2));
+        migrateKpiHistory();
+      }
+    }
+    // KPI目標復元
+    const kpiGoals2 = await gasLoad('load_kpi_goals');
+    if(kpiGoals2 && Object.keys(kpiGoals2).length > 0){
+      const local = JSON.parse(localStorage.getItem('kpiGoals')||'{}');
+      if(Object.keys(local).length === 0){
+        localStorage.setItem('kpiGoals', JSON.stringify(kpiGoals2));
+        loadKpiGoals();
+      }
+    }
+    // 出勤データ復元
+    const attData = await gasLoad('load_attendance');
+    if(attData && attData.members && attData.members.length > 0){
+      // 今日のデータがない場合のみ復元
+      if(present.size === STAFF.length){ // 全員出勤のデフォルト状態
+        present = new Set(attData.members);
+        renderStaffGrid(); renderAll();
+      }
+    }
+    // 再描画
+    renderShakenChart();
+  }catch(e){}
+}
+
 function loadKpiGoals(){
   const saved = JSON.parse(localStorage.getItem('kpiGoals')||'null');
   if(saved) kpiGoals = saved;
@@ -1732,14 +1788,8 @@ function saveKpiData(){
     btn.textContent='✅ 保存しました'; btn.style.background='var(--green)';
     setTimeout(()=>{ btn.textContent=label; btn.style.background='var(--accent)'; },2000);
   }
-  // GAS URLが設定されていればスプレッドシートにも自動保存
-  if(localStorage.getItem('gasUrl')){
-    const url = localStorage.getItem('gasUrl');
-    fetch(url, {method:'POST', mode:'no-cors', body:JSON.stringify({
-      action:'save_kpi',
-      data: saved
-    })}).catch(()=>{});
-  }
+  // スプレッドシートに自動保存
+  gasSend('save_kpi', saved);
 }
 
 
@@ -2465,6 +2515,28 @@ function copyGasCode(){
 
 function getGasUrl(){
   return document.getElementById('gas-url')?.value || localStorage.getItem('gasUrl') || '';
+}
+
+// GASへサイレント送信（保存系）
+function gasSend(action, data){
+  const url = getGasUrl();
+  if(!url) return;
+  fetch(url, {method:'POST', mode:'no-cors',
+    body: JSON.stringify(data ? {action, data} : {action})
+  }).catch(()=>{});
+}
+
+// GASからデータ取得（読込系）
+async function gasLoad(action){
+  const url = getGasUrl();
+  if(!url) return null;
+  try{
+    const res = await fetch(url, {method:'POST', redirect:'follow',
+      body: JSON.stringify({action})
+    });
+    const d = await res.json();
+    return d.ok ? d.data : null;
+  }catch(e){ return null; }
 }
 
 function showSyncStatus(tabId, msg, isOk){
@@ -3434,7 +3506,7 @@ function saveAndConfirmShaken(){
   if(box){ box.style.display='block'; box.scrollIntoView({behavior:'smooth',block:'nearest'}); }
   renderShakenChart();
   // スプレッドシートにも自動保存
-  if(localStorage.getItem('gasUrl')) saveShakenToSheet();
+  gasSend('save_shaken', getShakenAll());
 }
 
 function saveShaken(){
